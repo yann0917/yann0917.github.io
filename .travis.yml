@@ -1,0 +1,31 @@
+language: node_js
+node_js: stable
+branches:
+  only:
+  - source
+cache:
+  apt: true
+  yarn: true
+  directories:
+  - node_modules
+before_install:
+- openssl aes-256-cbc -K $encrypted_1d8ec192051d_key -iv $encrypted_1d8ec192051d_iv
+  -in id_rsa.enc -out ~/.ssh/id_rsa -d
+- chmod 600 ~/.ssh/id_rsa
+- git config --global user.name "yann0917"
+- git config --global user.email "386139859@qq.com"
+- curl -o- -L https://yarnpkg.com/install.sh | bash
+- export PATH=$HOME/.yarn/bin:$PATH
+- npm install -g hexo-cli
+install:
+- yarn
+script:
+- hexo clean
+- hexo generate
+after_success:
+- cd ./public
+- git init
+- git add --all .
+- git commit -m "Travis CI Auto Builder"
+- git push --quiet --force https://$REPO_TOKEN@github.com/yann0917/yann0917.github.io.git
+  master
