@@ -144,7 +144,7 @@ social:
   #LinkLabel: Link
   GitHub: https://github.com/yann0917
   Weibo: http://weibo.com/133617179
-  Csdn: http://blog.csdn.net/abc1991234
+  csdn: http://blog.csdn.net/abc1991234
 
 
 # Social Links Icons
@@ -159,7 +159,7 @@ social_icons:
   GitHub: github
   Twitter: twitter
   Weibo: weibo
-  Csdn: csdn
+  csdn: fa-home
 
 
 # Sidebar Avatar
