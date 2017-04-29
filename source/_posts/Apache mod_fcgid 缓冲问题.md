@@ -1,5 +1,5 @@
 ---
-title: PHP基础-运算符
+title: Apache mod_fcgid 缓冲问题
 date: 2017-04-29 22:40:24
 tags: php
 categories: Apache
