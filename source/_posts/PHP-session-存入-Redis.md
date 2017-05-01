@@ -1,11 +1,11 @@
 ---
 title: PHP session 存入 Redis
-date: 2017-05-01 00:01:19
-tags: 
- - Redis
- - session
- 
+tags:
+  - Redis
+  - session
 categories: Redis
+abbrlink: 26648
+date: 2017-05-01 00:01:19
 ---
 ### 原理
 > 把 session 默认的存储方式由`file` 改为 `redis` 会提高速度，由于redis是在内存中读取的，其读取速度必然比在文件中读取速度快，同时解决了session共享的问题。

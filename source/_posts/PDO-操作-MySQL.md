@@ -1,11 +1,11 @@
 ---
 title: PDO 操作 MySQL
-date: 2017-04-29 23:39:48
-tags: 
- - MySQL
- - php
- 
+tags:
+  - MySQL
+  - php
 categories: php 函数库
+abbrlink: 58420
+date: 2017-04-29 23:39:48
 ---
 
 PHP 数据对象 （PDO） 扩展为PHP访问数据库定义了一个轻量级的一致接口。实现 PDO 接口的每个数据库驱动可以公开具体数据库的特性作为标准扩展功能。

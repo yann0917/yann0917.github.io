@@ -1,8 +1,9 @@
 ---
 title: PHP基础-类与对象
-date: 2017-04-29 13:42:58
 tags: php
 categories: php
+abbrlink: 43505
+date: 2017-04-29 13:42:58
 ---
 
 

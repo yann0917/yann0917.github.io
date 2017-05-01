@@ -1,8 +1,9 @@
 ---
 title: PHP基础-标记
-date: 2017-04-28 14:32:55
 categories: php
 tags: php
+abbrlink: 33536
+date: 2017-04-28 14:32:55
 ---
 
 > 测试环境

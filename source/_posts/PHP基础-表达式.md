@@ -1,8 +1,9 @@
 ---
 title: PHP基础-表达式
-date: 2017-04-29 13:18:54
 tags: php
 categories: php
+abbrlink: 59089
+date: 2017-04-29 13:18:54
 ---
 
 

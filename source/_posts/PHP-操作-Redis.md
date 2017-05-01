@@ -1,8 +1,9 @@
 ---
 title: PHP 操作 Redis
-date: 2017-04-30 10:04:02
 tags: Redis
 categories: Redis
+abbrlink: 29270
+date: 2017-04-30 10:04:02
 ---
 ### PHP 操作 Redis
 > - Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 

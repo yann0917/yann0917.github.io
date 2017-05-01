@@ -1,8 +1,9 @@
 ---
 title: PHP基础-变量和常量
-date: 2017-04-28 23:51:17
 tags: php
 categories: php
+abbrlink: 37653
+date: 2017-04-28 23:51:17
 ---
 
 > 测试环境

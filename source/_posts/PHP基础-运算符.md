@@ -1,8 +1,9 @@
 ---
 title: PHP基础-运算符
-date: 2017-04-29 13:21:06
 tags: php
 categories: php
+abbrlink: 6988
+date: 2017-04-29 13:21:06
 ---
 
 

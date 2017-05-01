@@ -1,8 +1,9 @@
 ---
 title: PHP基础-const关键字与define()函数定义常量的区别
-date: 2017-04-29 13:16:08
 tags: php
 categories: php
+abbrlink: 13962
+date: 2017-04-29 13:16:08
 ---
 
 

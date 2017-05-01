@@ -1,8 +1,9 @@
 ---
 title: PHP基础-命名空间
-date: 2017-04-29 13:44:15
 tags: php
 categories: php
+abbrlink: 22141
+date: 2017-04-29 13:44:15
 ---
 
 

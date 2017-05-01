@@ -1,8 +1,9 @@
 ---
 title: Apache mod_fcgid 缓冲问题
-date: 2017-04-29 22:40:24
 tags: php
 categories: Apache
+abbrlink: 58063
+date: 2017-04-29 22:40:24
 ---
 
 > 测试环境

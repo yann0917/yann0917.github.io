@@ -1,8 +1,9 @@
 ---
 title: PHP基础-数据类型
-date: 2017-04-28 22:14:36
 tags: php
 categories: php
+abbrlink: 33436
+date: 2017-04-28 22:14:36
 ---
 
 

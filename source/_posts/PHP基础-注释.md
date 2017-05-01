@@ -1,8 +1,9 @@
 ---
 title: PHP基础-注释
-date: 2017-04-28 16:03:26
 categories: php
 tags: php
+abbrlink: 55107
+date: 2017-04-28 16:03:26
 ---
 > 测试环境
 > PHP version 5.3.29/5.6.29/7.1.0

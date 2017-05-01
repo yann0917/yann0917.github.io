@@ -1,8 +1,9 @@
 ---
 title: PHP基础-函数
-date: 2017-04-29 13:26:19
 tags: php
 categories: php
+abbrlink: 40010
+date: 2017-04-29 13:26:19
 ---
 
 

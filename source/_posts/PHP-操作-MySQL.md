@@ -1,8 +1,9 @@
 ---
 title: PHP 操作 MySQL
-date: 2017-04-29 23:19:47
 tags: MySQL
 categories: php 函数库
+abbrlink: 15910
+date: 2017-04-29 23:19:47
 ---
 ###  PHP 操作 MySQL
 > PHP 5.5.0 起已废弃，并在自 PHP 7.0.0 开始被移除。应使用 MySQLi 或 PDO_MySQL 扩展来替换。
