@@ -17,6 +17,8 @@ before_install:
 - curl -o- -L https://yarnpkg.com/install.sh | bash
 - export PATH=$HOME/.yarn/bin:$PATH
 - npm install -g hexo-cli
+- npm install hexo-generator-sitemap --save
+- npm install hexo-generator-baidu-sitemap --save
 install:
 - yarn
 script:
