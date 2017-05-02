@@ -1,8 +1,9 @@
 ---
 title: MySQL基础-SQL四种语言
-date: 2017-05-02 11:43:58
 tags: MySQL
 categories: MySQL
+abbrlink: 58504
+date: 2017-05-02 11:43:58
 ---
 
 ### SQL 的四种语言

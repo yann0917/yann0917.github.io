@@ -1,11 +1,11 @@
 ---
 title: MySQL 性能优化的最佳经验
-date: 2017-05-01 17:11:15
-tags: 
- - MySQL
- - 优化
-
+tags:
+  - MySQL
+  - 优化
 categories: MySQL
+abbrlink: 62352
+date: 2017-05-01 17:11:15
 ---
 
 ### 1. 为查询缓存优化你的查询

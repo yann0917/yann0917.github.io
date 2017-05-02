@@ -1,8 +1,9 @@
 ---
 title: Redis 配置文件详解
-date: 2017-05-02 12:29:29
 tags: Redis
 categories: Redis
+abbrlink: 65309
+date: 2017-05-02 12:29:29
 ---
 ### redis.conf配置文件
 > redis.conf 主要配置项有：
