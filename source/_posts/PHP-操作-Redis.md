@@ -1,6 +1,10 @@
 ---
 title: PHP 操作 Redis
-tags: Redis
+tags: 
+ - Redis
+ - PHP
+
+
 categories: Redis
 abbrlink: 29270
 date: 2017-04-30 10:04:02
