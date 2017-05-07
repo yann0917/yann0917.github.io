@@ -80,6 +80,10 @@ deploy:
   repository: https://github.com/yann0917/yann0917.github.io.git
   branch: master
 
+# 向百度主动推送链接
+deploy:
+  type: baidu_url_submitter
+  
 # Algolia search
 # 执行 hexo algolia 时为appId
 # 执行 hexo d -g 时为 applicationID
@@ -106,7 +110,7 @@ baidu_url_submit:
   ## 比如3，代表提交最新的三个链接
   host: yann0917.github.io
   ## 在百度站长平台中注册的域名
-  token: vDV03YaAk2
+  token: jty7qrvZ0UjgqciJ
   ## 请注意这是您的秘钥， 请不要发布在公众仓库里!
   path: baidu_urls.txt
   ## 文本文档的地址， 新链接会保存在此文本文档里
