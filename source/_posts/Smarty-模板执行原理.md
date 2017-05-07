@@ -1,10 +1,11 @@
 ---
 title: Smarty 模板执行原理
-date: 2017-05-02 23:28:05
-tags: 
- - Smarty
- - PHP
+tags:
+  - Smarty
+  - PHP
 categories: PHP
+abbrlink: 64341
+date: 2017-05-02 23:28:05
 ---
 ### Smarty 模板是什么
 smarty 模板主要是为了实现业务逻辑与内容表现页的分离，<span style="color:#22b14c">其核心是将模板文件中的标签，替换成对应的php代码</span>，特点如下：

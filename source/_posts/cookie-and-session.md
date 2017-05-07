@@ -1,11 +1,11 @@
 ---
 title: cookie and session
-date: 2017-05-04 15:06:54
-tags: 
- - cookie
- - session
-
+tags:
+  - cookie
+  - session
 categories: session
+abbrlink: 9976
+date: 2017-05-04 15:06:54
 ---
 ### 原理
 #### cookie

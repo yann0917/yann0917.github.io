@@ -1,12 +1,11 @@
 ---
 title: PHP 操作 Memcache
-date: 2017-05-03 00:36:26
-tags: 
- - Memcache
- - PHP
-
-
+tags:
+  - Memcache
+  - PHP
 categories: Memcache
+abbrlink: 59655
+date: 2017-05-03 00:36:26
 ---
 
 ### PHP 操作 Memcache

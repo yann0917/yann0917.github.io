@@ -1,8 +1,9 @@
 ---
 title: linux OS 常用命令
-date: 2017-05-03 10:30:27
 tags: Linux
 categories: Linux
+abbrlink: 40912
+date: 2017-05-03 10:30:27
 ---
 本文汇总一些常用的Linux命令，分类如下：
  - 操作目录或文件的常用指令

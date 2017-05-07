@@ -80,10 +80,7 @@ deploy:
   repository: https://github.com/yann0917/yann0917.github.io.git
   branch: master
 
-# 向百度主动推送链接
-deploy:
-  type: baidu_url_submitter
-  
+
 # Algolia search
 # 执行 hexo algolia 时为appId
 # 执行 hexo d -g 时为 applicationID
