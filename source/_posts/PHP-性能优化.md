@@ -118,7 +118,9 @@ Percentage of the requests served within a certain time (ms)
 
 6. 压缩 PHP 接口输出压缩，使用gzip即可，加快数据传输速度，但是会产生额外的CPU开销(100k以上的数据效果更明显)；
 7. 缓存复用，如smarty 模板缓存。
-#### PHP 性能瓶颈究极方案
+
+
+### PHP 性能瓶颈究极方案
 > Opcode 做缓存，使用 APC扩展，（已停止维护），PHP 5.5.0 及后续版本中已经绑定了 OPcache 扩展。
 > 使用 PHP 扩展代替原生代码中的高频逻辑；
 > Runtime 优化 ，HHVM；
