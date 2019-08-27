@@ -30,3 +30,7 @@ after_success:
 - git commit -m ":art:Travis CI Auto Builder"
 - git push --quiet --force https://$REPO_TOKEN@github.com/yann0917/yann0917.github.io.git
   master
+
+notifications:
+  email:
+    - 386139859@qq.com
