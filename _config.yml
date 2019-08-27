@@ -5,10 +5,10 @@
 # Site
 title: Yann's blog
 subtitle: Stay hungry. Stay foolish.
-description:
+description: PHP
 author: Yann
 language: zh-Hans
-timezone:
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'

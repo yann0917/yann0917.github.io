@@ -9,7 +9,9 @@ date: 2017-05-01 17:11:15
 ---
 
 ### 1. 为查询缓存优化你的查询
+
 当有很多相同的查询被执行了多次的时候，这些查询结果会被放到一个缓存中，这样，后续的相同的查询就不用操作表而直接访问缓存结果了。
+
 ```php
 # query cache does NOT work
 $r = mysql_query("SELECT username FROM user WHERE signup_date >= CURDATE()");
@@ -17,21 +19,19 @@ $r = mysql_query("SELECT username FROM user WHERE signup_date >= CURDATE()");
 # query cache works!
 $today = date("Y-m-d");
 $r = mysql_query("SELECT username FROM user WHERE signup_date >= '$today'");
-
-
 ```
+
 以上两条SQL语句的差别就是 CURDATE() ，MySQL的查询缓存对这个函数不起作用。所以，像 NOW() 和 RAND() 或是其它的非确定的SQL函数都不会开启查询缓存，因为这些函数返回的结果是易变的。所以，我们需要做的就是，在php语句中用一个变量来代替MySQL的函数，从而开启缓存。
 
-
 ### 2. EXPLAIN 你的 SELECT 查询
-使用` EXPLAIN `关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。
 
+使用 `EXPLAIN` 关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。
 EXPLAIN 的查询结果还会告诉你哪个索引被利用(key列)，你的数据表是如何被搜索和排序的……查看rows列可以让我们找到潜在的性能问题。
 
 ### 3. 当只要一行数据时使用 LIMIT 1
-当你查询表的时候，你已经知道结果只会有一条结果，但因为你可能需要去fetch游标，或是你也许会去检查返回的记录数。
-在这种情况下，在查询语句上加上` LIMIT 1 `可以增加性能。这样，MySQL数据库引擎会在找到一条数据后停止搜索，而不是在整张表或索引上继续查找下一条符合记录的数据。
 
+当你查询表的时候，你已经知道结果只会有一条结果，但因为你可能需要去fetch游标，或是你也许会去检查返回的记录数。
+在这种情况下，在查询语句上加上 `LIMIT 1` 可以增加性能。这样，MySQL数据库引擎会在找到一条数据后停止搜索，而不是在整张表或索引上继续查找下一条符合记录的数据。
 
 ``` php
 # do I have any users from Alabama?
@@ -51,51 +51,59 @@ if (mysql_num_rows($r) > 0) {
 ```
 
 ### 4. 为搜索字段建索引
+
 索引并不一定就是给主键(primary key)或是唯一(unique key)的字段。如果在你的表中，有某个字段你总要会经常用来做搜索，那么，请为其建立索引吧。
 ![index](https://cdn.tutsplus.com/net/uploads/legacy/500_mysql/search_index.jpg)
 你应该需要知道什么样的搜索是不能使用正常的索引的。索引使用需要符合字段独立，左原则，or原则。
+
 ### 5. 在Join表的时候索引和使用相同类型的列
+
 如果你的应用程序有很多 JOIN 查询，你应该确认两个表中Join的字段是被建过索引的。这样，MySQL内部会启动优化Join操作的机制。
 
 而且，这些被用来Join的字段，应该具有相同的类型。例如：如果你要把 DECIMAL 字段和一个 INT 字段Join在一起，MySQL就无法使用它们的索引。对于那些STRING类型，还需要有相同的字符集才行。（两个表的字符集有可能不一样）
+
 ```php
 # looking for companies in my state
 $r = mysql_query("SELECT company_name FROM users
     LEFT JOIN companies ON (users.state = companies.state)
     WHERE users.id = $user_id");
- 
+
 # both state columns should be indexed
 # and they both should be the same type and character encoding
 # or MySQL might do full table scans
 ```
+
 ### 6. 千万不要 ORDER BY RAND()
 
 如果你真的想把返回的数据行打乱了，你有N种方法可以达到这个目的。这样使用只让你的数据库的性能呈指数级的下降。这里的问题是：MySQL会不得不去执行RAND()函数（很耗CPU时间），而且这是为了每一行记录去记行，然后再对其排序。就算是你用了Limit 1也无济于事（因为要排序）。
+
 ```php
 # what NOT to do:
 $r = mysql_query("SELECT username FROM user ORDER BY RAND() LIMIT 1");
- 
+
 # much better:
 $r = mysql_query("SELECT count(*) FROM user");
 $d = mysql_fetch_row($r);
 $rand = mt_rand(0,$d[0] - 1);
- 
+
 $r = mysql_query("SELECT username FROM user LIMIT $rand, 1");
 ```
+
 ### 7. 避免 SELECT *
+
 从数据库里读出越多的数据，那么查询就会变得越慢，增加了磁盘操作的时间。并且，如果你的数据库服务器和WEB服务器是两台独立的服务器的话，这还会增加网络传输的负载。
 所以，你应该养成一个需要什么就取什么的好的习惯。
+
 ```php
 # not preferred
 $r = mysql_query("SELECT * FROM user WHERE user_id = 1");
 $d = mysql_fetch_assoc($r);
 echo "Welcome {$d['username']}";
- 
+
 # better:
 $r = mysql_query("SELECT username FROM user WHERE user_id = 1");
 $d = mysql_fetch_assoc($r);
 echo "Welcome {$d['username']}";
- 
 
 ```
 
@@ -115,7 +123,6 @@ ENUM 类型是非常快和紧凑的。在数据库内部，像TINYINT类型一�
 
 如果你有一个字段，这些字段的取值是有限而且固定的，那么，你应该使用 ENUM 而不是 VARCHAR。比如有个列名叫做“状态”，其值为“活动”，“非活动”，“搁置”，“过期”等。
 
-
 ### 10. 从 PROCEDURE ANALYSE() 取得建议
 
 PROCEDURE ANALYSE() 会让 MySQL 帮你去分析你的字段和其实际的数据，并会给你一些有用的建议。只有表中有实际的数据，这些建议才会变得有用，因为要做一些大的决定是需要有数据作为基础的。
@@ -132,9 +139,8 @@ PROCEDURE ANALYSE() 会让 MySQL 帮你去分析你的字段和其实际的数�
 
 NULL 需要额外的空间，并且，在你进行比较的时候，你的程序会更复杂。 当然，这里并不是说你就不能使用NULL了，现实情况是很复杂的，依然会有些情况下，你需要使用NULL值。
 
-
-
 ### 12. Prepared Statements
+
 Prepared Statements很像存储过程，是一种运行在后台的SQL语句集合，我们可以从使用 prepared statements 获得很多好处，无论是性能问题还是安全问题。
 
 Prepared Statements 可以检查一些你绑定好的变量，这样可以保护你的程序不会受到“SQL注入式”攻击。当然，你也可以手动地检查你的这些变量，然而，手动的检查容易出问题，而且很经常会被程序员忘了。当我们使用一些framework或是ORM的时候，这样的问题会好一些。
@@ -146,24 +152,25 @@ Prepared Statements 可以检查一些你绑定好的变量，这样可以保护
 当然，也有一些情况下，我们需要避免使用Prepared Statements，因为其不支持查询缓存。但据说版本5.1后支持了。
 
 在PHP中要使用prepared statements，你可以查看其使用手册：[mysqli](http://php.net/manual/zh/book.mysqli.php)扩展 或是使用数据库抽象层，如： [PDO](http://us.php.net/manual/zh/book.pdo.php).
+
 ```php
 # create a prepared statement
 if ($stmt = $mysqli->prepare("SELECT username FROM user WHERE state=?")) {
- 
+
     # bind parameters
     $stmt->bind_param("s", $state);
- 
+
     # execute
     $stmt->execute();
- 
+
     # bind result variables
     $stmt->bind_result($username);
- 
+
     # fetch value
     $stmt->fetch();
- 
+
     printf("%s is from %s\n", $username, $state);
- 
+
     $stmt->close();
 }
 
@@ -177,9 +184,10 @@ mysql_unbuffered_query() 发送一个SQL语句到MySQL而并不像mysql_query()�
 
 然而，这会有一些限制。因为你要么把所有行都读走，或是你要在进行下一次的查询前调用 mysql_free_result() 清除结果。而且， mysql_num_rows() 或 mysql_data_seek() 将无法使用。所以，是否使用无缓冲的查询你需要仔细考虑。
 
-> This extension was deprecated in PHP 5.5.0, and it was removed in PHP 7.0.0. Instead, the MySQLi or PDO_MySQL extension should be used. 
+> This extension was deprecated in PHP 5.5.0, and it was removed in PHP 7.0.0. Instead, the MySQLi or PDO_MySQL extension should be used.
 
 ### 14. 把IP地址存成 UNSIGNED INT
+
 如果你用整形来存放IP地址，只需要4个字节，并且是定长的字段。而且，这会为你带来查询上的优势，尤其是当你需要使用这样的WHERE条件：IP between ip1 and ip2。
 
 我们必需要使用UNSIGNED INT，因为 IP地址会使用整个32位的无符号整型。
@@ -188,8 +196,8 @@ mysql_unbuffered_query() 发送一个SQL语句到MySQL而并不像mysql_query()�
 
 ```php
 $r = "UPDATE users SET ip = INET_ATON('{$_SERVER['REMOTE_ADDR']}') WHERE user_id = $user_id";
-
 ```
+
 ### 15. 固定长度的表会更快
 
 如果表中的所有字段都是“固定长度”的，整个表会被认为是 “static” 或 “fixed-length”。 例如，表中没有如下类型的字段： VARCHAR，TEXT，BLOB。只要你包括了其中一个这些字段，那么这个表就不是“固定长度静态表”了，这样，MySQL 引擎会用另一种方法来处理。
@@ -201,13 +209,14 @@ $r = "UPDATE users SET ip = INET_ATON('{$_SERVER['REMOTE_ADDR']}') WHERE user_id
 使用“垂直分割”技术，你可以分割你的表成为两个一个是定长的，一个则是不定长的。
 
 ### 16. 垂直分割
+
 “垂直分割”是一种把数据库中的表按列变成几张表的方法，这样可以降低表的复杂度和字段的数目，从而达到优化的目的。
 示例一：在Users表中有一个字段是家庭地址，这个字段是可选字段，相比起，而且你在数据库操作的时候除了个人信息外，你并不需要经常读取或是改写这个字段。那么，为什么不把他放到另外一张表中呢？ 这样会让你的表有更好的性能，大量的时候，我对于用户表来说，只有用户ID，用户名，口令，用户角色等会被经常使用。小一点的表总是会有好的性能。
 
 另外，你需要注意的是，这些被分出去的字段所形成的表，你不会经常性地去Join他们，不然的话，这样的性能会比不分割时还要差，而且，会是极数级的下降。
 
-
 ### 17. 拆分大的 DELETE 或 INSERT 语句
+
 如果你需要在一个在线的网站上去执行一个大的 DELETE 或 INSERT 查询，你需要非常小心，要避免你的操作让你的整个网站停止相应。因为这两个操作是会锁表的，表一锁住了，别的操作都进不来了。
 
 Apache 会有很多的子进程或线程。所以，其工作起来相当有效率，而我们的服务器也不希望有太多的子进程，线程和数据库链接，这是极大的占服务器资源的事情，尤其是内存。
@@ -215,6 +224,7 @@ Apache 会有很多的子进程或线程。所以，其工作起来相当有效�
 如果你把你的表锁上一段时间，比如30秒钟，那么对于一个有很高访问量的站点来说，这30秒所积累的访问进程/线程，数据库链接，打开的文件数，可能不仅仅会让你的WEB服务Crash，还可能会让你的整台服务器马上挂掉。
 
 所以，如果要删除一个大量数据的行记录，一定把其拆分，使用 LIMIT 条件是一个好的方法。
+
 ```php
 while (1) {
     mysql_query("DELETE FROM logs WHERE log_date <= '2009-10-01' LIMIT 10000");
@@ -234,7 +244,6 @@ while (1) {
 
 如果一个表只会有几列罢了（比如说字典表，配置表），那么，我们就没有理由使用 INT 来做主键，使用 MEDIUMINT, SMALLINT 或是更小的 TINYINT 会更经济一些。如果你不需要记录时间，使用 DATE 要比 DATETIME 好得多。
 
-
 ### 19. 选择正确的存储引擎
 
 MyISAM 适合于一些需要大量查询的应用，但其对于有大量写操作并不是很好。甚至你只是需要update一个字段，整个表都会被锁起来，而别的进程，就算是读进程都无法操作直到读操作完成。另外，MyISAM 对于 SELECT COUNT(*) 这类的计算是超快无比的。
@@ -250,12 +259,12 @@ ORM 的最重要的是“Lazy Loading”，也就是说，只有在需要的去�
 ORM 还可以把你的SQL语句打包成一个事务，这会比单独执行他们快得多得多。
 
 ### 21. 小心“永久链接”
+
 “永久链接”的目的是用来减少重新创建MySQL链接的次数。当一个链接被创建了，它会永远处在连接的状态，就算是数据库操作已经结束了。而且，自从我们的Apache开始重用它的子进程后——也就是说，下一次的HTTP请求会重用Apache的子进程，并重用相同的 MySQL 链接。
 
 在理论上来说，这听起来非常的不错。但是从个人经验（也是大多数人的）上来说，这个功能制造出来的麻烦事更多。因为，你只有有限的链接数，内存问题，文件句柄数，等等。
 
 而且，Apache 运行在极端并行的环境中，会创建很多很多的了进程。这就是为什么这种“永久链接”的机制工作地不好的原因。在你决定要使用“永久链接”之前，你需要好好地考虑一下你的整个系统的架构。
-
 
 > This extension was deprecated in PHP 5.5.0, and it was removed in PHP 7.0.0. Instead, the MySQLi or PDO_MySQL extension should be used.
 

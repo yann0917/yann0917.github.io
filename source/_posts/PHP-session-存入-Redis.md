@@ -8,10 +8,13 @@ categories: Redis
 abbrlink: 26648
 date: 2017-05-01 00:01:19
 ---
+
 ### 原理
+
 > 把 session 默认的存储方式由`file` 改为 `redis` 会提高速度，由于redis是在内存中读取的，其读取速度必然比在文件中读取速度快，同时解决了session共享的问题。
 
 实现代码如下：
+
 ```php
 <?php
 header('Content-type:text/html;charset=utf-8');
@@ -28,7 +31,7 @@ $redis->connect('127.0.0.1',6379);
 echo 'session_id:'.session_id();
 echo "<br>";
 //redis用session_id作为key
-echo $redis->get('PHPREDIS_SESSION:'.session_id());
-
+echo $redis->get('PHPREDIS_SESSION:' . session_id());
 ```
+
 ---

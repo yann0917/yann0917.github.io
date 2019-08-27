@@ -9,29 +9,29 @@ date: 2017-05-01 17:07:47
 ---
 
 ### 概念
+
 > 1.存储引擎其实就是**如何实现存储数据**，**如何为存储的数据建立索引**以及**如何更新，查询数据**等技术实现的方法。
 >
 > 2.MySQL中的数据用各种不同的技术存储在文件（或内存）中，这些技术中的每一种技术都使用不同的存储机制，索引技巧，锁定水平并且最终提供广泛的不同功能和能力。在MySQL中将这些不同的技术及配套的相关功能称为存储引擎。
 
-
 ### 查看数据库存储引擎
 
 > 1.`show engines;`//查看MySQL支持的存储引擎
-> 2.`show variables like '% storage_engine'; `//查看默认支持的存储引擎
+> 2.`show variables like '% storage_engine';`//查看默认支持的存储引擎
 > 3.`show create table tablename ;` //查看某个表使用的存储引擎
-> 4.`show table status from database where name="tablename"; `// 查看某个数据库中某个数据表存储引擎
-
+> 4.`show table status from database where name="tablename";`// 查看某个数据库中某个数据表存储引擎
 
 ### 常用存储引擎的特点
+
 MySQL中常用的几种存储引擎：MyISAM、InnoDB、bdb、MEMORY，对比如下：
 
+#### MyISAM存储引擎
 
-#### MyISAM存储引擎:
 每一个表在MyISAM存储引擎中都以三个以表名命名的物理文件构成。
+
 1. 任何存储引擎都不可或缺的存放表结构定义的.frm（Form）文件
 2. 存放表数据的.MYD文件（My Data）
 3. 存放索引数据的.MYI文件（My Index）
-
 
 > 1. MyISAM 这种存储引擎不支持事务，不支持行级锁，只支持**并发插入的表锁**，主要用于高负载的select。所以其写入的并发处理能力相对较弱。
 > 2. MyISAM类型的数据表（.MYD文件）支持三种不同的存储结构：静态型、动态型、压缩型。
@@ -54,7 +54,7 @@ MySQL中常用的几种存储引擎：MyISAM、InnoDB、bdb、MEMORY，对比如
 >
 > 4. `COUNT(*)`问题——MyISAM存储引擎记录表行数，所以在使用`COUNT(*)`时，只需取出存储的行数，而不用遍历表，效率较高。
 
-#### innoDB存储引擎：
+#### innoDB存储引擎
 
 1. 同MyISAM一样的是，InnoDB存储引擎也有.frm文件存储表结构定义
 2. 与MyISAM不同的是，InnoDB的表数据与索引数据是存储在一起的，保存为.ibd文件（聚簇索引的形式存储数据），但在这个文件中每张表是独自占有一块表空间还是共享所有表空间，是由用户决定的（设置 `set global innodb_file_per_table = 1;`即可每张表独占一块表空间）。如果独享表空间，每个表的表数据与索引数据都会存放在一个.ibd(innoDB data)文件中；如果是共享表空间，通过` innodb_data_file_path `指定后，每次增加数据文件后必须停机重启才能生效，很不方便。
@@ -70,7 +70,7 @@ MySQL中常用的几种存储引擎：MyISAM、InnoDB、bdb、MEMORY，对比如
 > 5. 增删改查性能——如果执行大量的**增删改**操作，推荐使用InnoDB存储引擎，它在删除操作时是对行删除，不会重建表。
 > 6. COUNT(*)问题——InnoDB存储引擎会遍历表以计算数量，效率较低。
 
-#### MEMORY存储引擎：
+#### MEMORY存储引擎
 
 1. memory存储引擎相比前面的一些存储引擎，有点不一样，其使用存储在内存中的数据来创建表，而且**所有的数据也都存储在内存**中。正因为如此，如果mysqld进程发生异常，重启或关闭机器这些数据都会消失。所以memory存储引擎中的表的生命周期很短，一般只使用一次。
 
@@ -78,20 +78,17 @@ MySQL中常用的几种存储引擎：MyISAM、InnoDB、bdb、MEMORY，对比如
 
 3. memory存储引擎默认使用哈希（HASH）索引，其速度比使用B-Tree型要快，如果读者希望使用B树型，则在创建的时候可以引用。
 
-
-
-
 ### 存储引之间的相互转化
-1. `alter table tablename engine = Innodb /MyISAM/Memory ;` //修改这个表的存储引擎
 
+1. `alter table tablename engine = Innodb /MyISAM/Memory ;` //修改这个表的存储引擎
 
  > 优点：简单，而且适合所有的引擎。
  >
  > 缺点：
+ >
  > 1. 这种转化方式需要大量的时间 和I/O，mysql要执行从旧表 到新表的一行一行的复制所以效率比较低
  > 2. 在转化这期间**源表加了读锁**
  > 3. 从一种引擎到另一种引擎做表转化，所有属于原始引擎的专用特性都会丢失，比如从innodb到 myisam 则 innodb的索引会丢失！
-
 
 2.使用dump（转储） import（导入）
 

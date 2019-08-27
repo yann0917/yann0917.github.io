@@ -5,10 +5,13 @@ categories: php 函数库
 abbrlink: 15910
 date: 2017-04-29 23:19:47
 ---
+
 ###  PHP 操作 MySQL
+
 > PHP 5.5.0 起已废弃，并在自 PHP 7.0.0 开始被移除。应使用 MySQLi 或 PDO_MySQL 扩展来替换。
 
 基本的连接步骤如下：
+
 > 1. 连接数据库 `mysql_connect()`
 > 2. 设置字符集 `mysql_set_charset('utf8')`  `mysql_query('set names utf8')`
 > 3. 选择数据库 `mysql_select_db('db_name')`  `mysql_query('use db_name')`
@@ -16,7 +19,6 @@ date: 2017-04-29 23:19:47
 > 5. 打印结果集 `mysql_fetch_array()` `mysql_fetch_row`
 > 6. 释放结果集 `mysql_free_result($result)`
 > 7. 关闭连接 `mysql_close($link)`
-
 
 ```php
 <?php
@@ -46,6 +48,7 @@ mysql_free_result($result);
 
 // 关闭连接
 mysql_close($link);
-?> 
+?>
 ```
+
 ---

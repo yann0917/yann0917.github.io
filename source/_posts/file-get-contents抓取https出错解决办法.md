@@ -9,16 +9,21 @@ date: 2017-05-06 19:43:07
 ---
 
 ### 出错内容
+
 使用file_get_contents()获取`https://`url时出现以下错误：
 `Warning: file_get_contents(): Unable to find the wrapper "https" - did you forget to enable it when you configured PHP`
+
 ### 解决办法
+
 `file_get_contents — 将整个文件读入一个字符串`
 `如果要打开有特殊字符的 URL （比如说有空格），就需要使用 urlencode() 进行 URL 编码`
+
 #### 1. 开启openssl扩展
+
 > 在php.ini 中开启`extension=php_openssl.dll`，并重启服务器即可。
 
-
 #### 2. 使用curl函数禁止ssl
+
 ```php
 <?php
 //file_get_contents抓取https地址内容
