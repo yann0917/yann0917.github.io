@@ -5,7 +5,7 @@
 # Site
 title: Yann's blog
 subtitle: Stay hungry. Stay foolish.
-description: PHP
+description: Programmer
 author: Yann
 language: zh-Hans
 timezone: Asia/Shanghai
@@ -137,3 +137,8 @@ baidu_url_submit:
 mathjax:
   enable: true
   cdn: //cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
+
+# Social links
+social:
+  GitHub: https://github.com/yann0917
+  微博: http://weibo.com/zhaoyabo2010
