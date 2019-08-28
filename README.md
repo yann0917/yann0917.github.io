@@ -4,3 +4,4 @@
 
 1. [Hexo 文档](https://hexo.io/zh-cn/docs/)
 2. [ci](https://travis-ci.org/)
+3. [NexT 主题](http://theme-next.iissnan.com/getting-started.html)

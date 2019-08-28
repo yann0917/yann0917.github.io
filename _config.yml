@@ -120,3 +120,8 @@ baidu_url_submit:
   ## 请注意这是您的秘钥， 请不要发布在公众仓库里!
   path: baidu_urls.txt
   ## 文本文档的地址， 新链接会保存在此文本文档里
+
+# MathJax Support
+mathjax:
+  enable: true
+  cdn: //cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML
