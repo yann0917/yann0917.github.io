@@ -21,6 +21,7 @@ categories: Go
 - [gin-github](https://github.com/gin-gonic/gin)
 - [Go gin Example](https://github.com/EDDYCJY/go-gin-example)
 - [beego](https://beego.me/docs/intro/)
+- [go-micro](https://github.com/micro/go-micro)
 
 ## ORM
 
