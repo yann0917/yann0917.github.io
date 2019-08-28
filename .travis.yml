@@ -18,9 +18,11 @@ before_install:
 - npm install -g hexo-cli
 - npm install hexo-generator-sitemap --save
 - npm install hexo-generator-baidu-sitemap --save
+- npm install --save hexo-algolia
 install:
 - yarn
 script:
+- hexo algolia
 - hexo clean
 - hexo generate
 after_success:
