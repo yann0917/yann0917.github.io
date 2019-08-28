@@ -89,6 +89,12 @@ algolia:
     - path
     - content:strip
 
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+
 # hexo sitemap网站地图
 sitemap:
   path: sitemap.xml
