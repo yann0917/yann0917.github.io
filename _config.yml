@@ -85,9 +85,9 @@ deploy:
 # 执行 hexo algolia 时为appId
 # 执行 hexo d -g 时为 applicationID
 algolia:
-  applicationID: 88BGOXE9NP
-  apiKey: b211eee776bb846cc0e8fc509e900d20
-  adminApiKey: 66b1905001996ad56a3f410988436e7f
+  applicationID: F4BR9FXWHC
+  apiKey: d174af0373dac52babaa9098dd403279
+  adminApiKey: 4a17906dfc78a434d17a2e67429b2d6a
   indexName: hexo
   chunkSize: 5000
   fields:
