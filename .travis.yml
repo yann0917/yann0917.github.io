@@ -23,7 +23,6 @@ before_install:
 install:
 - yarn
 script:
-- hexo algolia
 - hexo clean
 - hexo generate
 after_success:
