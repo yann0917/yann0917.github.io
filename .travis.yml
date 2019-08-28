@@ -27,7 +27,7 @@ after_success:
 - cd ./public
 - git init
 - git add --all .
-- git commit -m ":art:Travis CI Auto Builder"
+- git commit -m ":construction_worker:"
 - git push --quiet --force https://$REPO_TOKEN@github.com/yann0917/yann0917.github.io.git
   master
 
