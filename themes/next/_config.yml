@@ -129,6 +129,8 @@ scheme: Mist
 social:
   GitHub: https://github.com/yann0917 || github
   E-Mail: mailto:zhaoyabo2011@gmail.com || envelope
+  Weibo: http://weibo.com/133617179 || weibo
+  csdn: http://blog.csdn.net/abc1991234 || 
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
@@ -142,9 +144,6 @@ social_icons:
   enable: true
   icons_only: false
   transition: false
-  GitHub: github
-  Twitter: twitter
-  微博: weibo
 
 # Blog rolls
 links_icon: link
@@ -382,11 +381,11 @@ changyan:
 # more info please open https://valine.js.org
 valine:
   enable: true
-  appid:  MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz
-  appkey:  HjGC1bnbGqg2cFP4VPMBWzPD
+  appid: MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz
+  appkey: HjGC1bnbGqg2cFP4VPMBWzPD
   notify: false # mail notifier , https://github.com/xCss/Valine/wiki
   verify: false # Verification code
-  placeholder: Just go go # comment box placeholder
+  placeholder: 小老弟，你好 # comment box placeholder
   avatar: mm # gravatar style
   guest_info: nick,mail,link # custom comment header
   pageSize: 10 # pagination size
@@ -535,7 +534,7 @@ rating:
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
   enable: true
-  app_id: MfsGou6m4JWEpXeXf1L67tnh
+  app_id: MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz
   app_key: HjGC1bnbGqg2cFP4VPMBWzPD
 
 # Another tool to show number of visitors to each article.
