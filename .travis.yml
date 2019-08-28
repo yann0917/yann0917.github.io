@@ -9,8 +9,6 @@ cache:
   - node_modules
 before_install:
 - openssl aes-256-cbc -K $encrypted_79e299e5a901_key -iv $encrypted_79e299e5a901_iv
-  -in id_rsa.enc -out ~\/.ssh/id_rsa -d
-- openssl aes-256-cbc -K $encrypted_1d8ec192051d_key -iv $encrypted_1d8ec192051d_iv
   -in id_rsa.enc -out ~/.ssh/id_rsa -d
 - chmod 600 ~/.ssh/id_rsa
 - git config --global user.name "yann0917"
