@@ -36,13 +36,6 @@ permalink_defaults:
 # i18n_dir: :lang
 # skip_render:
 
-menu:
-  home: /
-  archives: /archives
-  categories: /categories
-  tags: /tags
-  about: /about
-  commonweal: /404.html
 
 # Writing
 new_post_name: :title.md # File name of new posts
