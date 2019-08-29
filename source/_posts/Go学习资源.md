@@ -7,6 +7,8 @@ tags:
 categories: Go
 ---
 
+> 本文不定期汇总 go 学习资源，包括但不限于框架文档，开源图书，论坛等
+
 ## 社区
 
 - [Go 语言中文网](https://studygolang.com/)
@@ -37,3 +39,5 @@ categories: Go
 - [浅谈 Go 语言实现原理](https://draveness.me/golang/)
 - [煎鱼的迷之博客](https://book.eddycjy.com/golang/)
 - [通过 Go 语言学习测试驱动开发](https://studygolang.gitbook.io/learn-go-with-tests/)
+
+---
