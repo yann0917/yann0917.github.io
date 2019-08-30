@@ -32,6 +32,7 @@ categories: Go
 
 ## 书籍
 
+- [Go 入门指南](https://github.com/unknwon/the-way-to-go_ZH_CN/blob/master/eBook/directory.md)
 - [Go 语言圣经](https://github.com/gopl-zh/gopl-zh.github.com)
 - [Go语言高级编程(Advanced Go Programming)](https://chai2010.cn/advanced-go-programming-book/)
 - [Build Web Application with Golang](https://github.com/astaxie/build-web-application-with-golang/blob/master/zh/preface.md)
