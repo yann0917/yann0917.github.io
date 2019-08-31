@@ -6,7 +6,34 @@ tags:
 categories: Go
 ---
 
+## 知识点
+
+1. 编码
+   1. golang 默认编码是 `utf-8`;
+   2. golang 中 `string` 底层是通过 `byte数组` 实现的;
+   3. 中文字符在unicode下占2个字节，在utf-8编码下占3个字节;
+2. 基础数据类型
+   1. `rune` 数据类型是 `int32` 的别名，常用来处理unicode或utf-8字符，例如汉字的长度使用 `len([]rune("你好"))`;
+   2. `byte` 数据类型是 `uint8` 的别名，常用来处理ascii字符
+3. `rand` 包实现了用于加解密的更安全的随机数生成器
+   1. `rand.Seed(time.Now().UnixNano())` 设置随机种子
+   2. `rand.NewSource(time.Now().UnixNano())`
+   3. `Intn()`
+   4. `Int63()`
+4. `strings` 包实现了用于操作字符的简单函数
+   1. `strings.Builder`
+   2. `WriteByte()`
+   3. `String()`
+
 ## 结论
+
+1. 如果字符串是英文字母大小写，可以用 `byte` 代替 `rune`，速度提升 22% ，内存分配减少了 67%
+2. 用 `rand.Int63()` 代替 `rand.Intn()` 速度提升 21%
+3. 使用位运算性能下降了 22% ，但是充分利用 `rand.Int63()` 速度可提升 3 倍
+4. 使用 `rand.Source()` 代替 `rand.Rand()` 速度提升 17%
+5. 使用 `strings.Builder` 速度提升不大，但是内存分配减少 50%
+6. 使用 `unsafe` 代替 `strings.Builder` 速度提升 14%
+7. 优化到最后，与第一个生成随机字符串的方法对比可发现速度提升了 6 倍，内存分配减少了 83%
 
 ```bash
 goos: darwin
@@ -230,6 +257,6 @@ func BenchmarkBytesMaskImprSrcUnsafe(b *testing.B) {
 
 ## 参考
 
-- [how-to-generate-a-random-string-of-a-fixed-length-in-go](https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go)
+- [how to generate a random string of a fixed length in go](https://stackoverflow.com/questions/22892120/how-to-generate-a-random-string-of-a-fixed-length-in-go)
 
 ---
