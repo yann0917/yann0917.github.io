@@ -42,5 +42,8 @@ categories: Go
 - [煎鱼的迷之博客](https://book.eddycjy.com/golang/)
 - [通过 Go 语言学习测试驱动开发](https://studygolang.gitbook.io/learn-go-with-tests/)
 - [go101](https://go101.org/article/101.html)
+- [深入解析Go](https://github.com/tiancaiamao/go-internals)
+- [Go RPC 开发指南](https://books.studygolang.com/go-rpc-programming-guide/)
+- [go 语言并发编程](https://books.mlog.club/go-concurrency-programming/)
 
 ---
