@@ -8,7 +8,15 @@ categories: Go
 
 ## 命令汇总
 
-在终端输入 `go help` 可显示所有的命令及功能简介：
+在终端输入 `go help` 可显示所有的命令及功能简介，比较常用的有：
+
+- `go build` 用于编译我们指定的源码文件或代码包以及它们的依赖包
+- `go get` 根据要求和实际情况从互联网上下载或更新指定的代码包及其依赖包，并对它们进行编译和安装。
+- `go test` 用于对Go语言编写的程序进行测试
+- `go clean` 删除掉执行其它命令时产生的一些文件和目录
+- `go env` 用于打印Go语言的环境信息
+
+每个命令的参数可以用 `go help <command>` 查看
 
 ```shell
 Go is a tool for managing Go source code.
