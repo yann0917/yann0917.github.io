@@ -33,6 +33,11 @@ categories: PHP
 4. [我必须得告诉大家的 MySQL 优化原理](https://juejin.im/entry/590427815c497d005832dab9)
 5. [提高mysql千万级大数据SQL查询优化30条经验](https://blog.csdn.net/cjfeii/article/details/50247339)
 
+## 正则表达式
+
+1. [知道这20个正则表达式，能让你少写1,000行代码](https://zhuanlan.zhihu.com/p/29163295)
+2. [搞定PHP面试 - 正则表达式知识点整理](https://segmentfault.com/a/1190000017813507)
+
 ## NoSQL
 
 ### Redis
