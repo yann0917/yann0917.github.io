@@ -23,7 +23,7 @@ MYSQL_ROOT_HOST=%
 MYSQL_ROOT_PASSWORD=hSMZYpAGbNwVmERI
 ```
 
-## 容器编排
+## `docker-compose.yaml`
 
 ```yaml
 version: "3"
