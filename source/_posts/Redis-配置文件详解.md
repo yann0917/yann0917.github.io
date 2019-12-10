@@ -6,12 +6,15 @@ abbrlink: 65309
 date: 2017-05-02 12:29:29
 ---
 
-### redis.conf配置文件
+## redis.conf配置文件
+
+[redis.conf 下载地址](http://download.redis.io/redis-stable/redis.conf)
 
 > redis.conf 主要配置项有：
+>
 > 1. 文件包含 [包含其他配置文件]
-> 2. 常用[守护进程，TCP，监听客户端IP,日志文件]
-> 3. 快照[RDB 持久化]
+> 2. 常用 [守护进程，TCP，监听客户端IP,日志文件]
+> 3. 快照 [RDB 持久化]
 > 4. 主从复制
 > 5. 安全
 > 6. 限制
@@ -22,10 +25,10 @@ date: 2017-05-02 12:29:29
 > 11. 事件通知
 > 12. 高级配置项
 
-```config
+```txt
 daemonize yes #是否以后台进程运行，默认为no
 pidfile /var/run/redis.pid #如以后台进程运行，则需指定一个pid，默认为/var/run/redis.pid
-bind 127.0.0.1 #绑定主机IP，默认值为127.0.0.1（注释）
+bind 127.0.0.1 #绑定主机IP，默认值为127.0.0.1
 port 6379 #监听端口，默认为6379
 timeout 300 #超时时间，默认为300（秒）
 loglevel notice #日志记slave-serve-stale-data yes：在master服务器挂掉或者同步失败时，从服务器是否继续提供服务。录等级，有4个可选值，debug，verbose（默认值），notice，warning
@@ -39,15 +42,15 @@ rdbcompression yes #存储至本地数据库时是否压缩数据，默认为yes
 dbfilename dump.rdb #本地数据库文件名，默认值为dump.rdb
 dir ./ #本地数据库存放路径，默认值为 ./
 
-slaveof 10.0.0.12 6379 #当本机为从服务时，设置主服务的IP及端口（注释）
-masterauth elain #当本机为从服务时，设置主服务的连接密码（注释）
+slaveof 10.0.0.12 6379 #当本机为从服务时，设置主服务的IP及端口
+masterauth elain #当本机为从服务时，设置主服务的连接密码
 slave-serve-stale-data yes #在master服务器挂掉或者同步失败时，从服务器是否继续提供服务。
-requirepass elain #连接密码（注释）
+requirepass elain #连接密码
 
-maxclients 128 #最大客户端连接数，默认不限制（注释）
-maxmemory #设置最大内存，达到最大内存设置后，Redis会先尝试清除已到期或即将到期的Key，当此方法处理后，任到达最大内存设置，将无法再进行写入操作。（注释）
+maxclients 128 #最大客户端连接数，默认不限制
+maxmemory #设置最大内存，达到最大内存设置后，Redis会先尝试清除已到期或即将到期的Key，当此方法处理后，任到达最大内存设置，将无法再进行写入操作。
 appendonly no #是否在每次更新操作后进行日志记录，如果不开启，可能会在断电时导致一段时间内的数据丢失。因为redis本身同步数据文件是按上面save条件来同步的，所以有的数据会在一段时间内只存在于内存中。默认值为no
-appendfilename appendonly.aof #更新日志文件名，默认值为appendonly.aof（注释）
+appendfilename appendonly.aof #更新日志文件名，默认值为appendonly.aof
 appendfsync everysec #更新日志条件，共有3个可选值。no表示等操作系统进行数据缓存同步到磁盘，always表示每次更新操作后手动调用fsync()将数据写到磁盘，everysec表示每秒同步一次（默认值）。
 
 really-use-vm yes
