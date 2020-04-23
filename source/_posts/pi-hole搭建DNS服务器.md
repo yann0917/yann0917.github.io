@@ -1,10 +1,11 @@
 ---
 title: pi-hole搭建DNS服务器
-date: 2019-08-29 17:25:38
 tags:
   - RaspberryPi
   - 树莓派
 categories: RaspberryPi
+abbrlink: 61493
+date: 2019-08-29 17:25:38
 ---
 
 > pi hole 为互联网广告准备的黑洞.

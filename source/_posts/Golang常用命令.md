@@ -1,9 +1,10 @@
 ---
 title: Golang常用命令
-date: 2019-09-12 09:51:44
 tags:
   - Go
 categories: Go
+abbrlink: 62614
+date: 2019-09-12 09:51:44
 ---
 
 ## 命令汇总

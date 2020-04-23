@@ -1,10 +1,11 @@
 ---
 title: docker-compose部署jenkins
-date: 2019-11-01 09:44:15
 tags:
-    - Docker
+  - Docker
 categories:
-    - Docker
+  - Docker
+abbrlink: 34419
+date: 2019-11-01 09:44:15
 ---
 
 ## `docker-compose.yaml`

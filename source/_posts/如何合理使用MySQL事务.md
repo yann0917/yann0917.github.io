@@ -1,8 +1,9 @@
 ---
 title: 如何合理使用MySQL事务
-date: 2020-01-12 10:22:36
 tags: MySQL
 categories: MySQL
+abbrlink: 17490
+date: 2020-01-12 10:22:36
 ---
 
 ## MySQL事务隔离级别

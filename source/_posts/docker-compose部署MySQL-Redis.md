@@ -1,10 +1,11 @@
 ---
 title: docker-compose部署MySQL/Redis
-date: 2019-10-28 13:38:03
 tags:
-    - Docker
+  - Docker
 categories:
-    - Docker
+  - Docker
+abbrlink: 64499
+date: 2019-10-28 13:38:03
 ---
 
 ## 配置文件

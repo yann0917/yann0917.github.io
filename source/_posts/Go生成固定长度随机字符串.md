@@ -1,9 +1,10 @@
 ---
 title: Go生成固定长度随机字符串
-date: 2019-08-30 13:55:37
 tags:
- - Go
+  - Go
 categories: Go
+abbrlink: 28890
+date: 2019-08-30 13:55:37
 ---
 
 ## 知识点

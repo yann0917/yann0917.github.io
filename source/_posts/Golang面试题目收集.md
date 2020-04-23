@@ -1,9 +1,10 @@
 ---
 title: Golang面试题目收集
-date: 2019-10-24 13:03:37
 tags:
   - Go
 categories: Go
+abbrlink: 12734
+date: 2019-10-24 13:03:37
 ---
 
 1. [golang面试题整理](https://studygolang.com/articles/17796)

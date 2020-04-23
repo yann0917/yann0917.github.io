@@ -1,10 +1,11 @@
 ---
 title: Go学习资源
-date: 2019-08-28 08:13:23
 tags:
-    - Go
-    - links
+  - Go
+  - links
 categories: Go
+abbrlink: 49203
+date: 2019-08-28 08:13:23
 ---
 
 > 本文不定期汇总 go 学习资源，包括但不限于框架文档，开源图书，论坛等
