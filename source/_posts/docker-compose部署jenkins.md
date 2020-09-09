@@ -22,6 +22,8 @@ services:
       - '50000:50000'
     volumes:
       - '/var/jenkins_home:/var/jenkins_home'
+    environment:
+      - JAVA_OPTS=-Duser.timezone=Asia/Shanghai
 ```
 
 ### `jenkinsci/blueocean` 和 `jenkins/jenkins` 镜像的区别
@@ -39,10 +41,12 @@ services:
     > Attaching to jenkins
     > jenkins    | touch: cannot touch '/var/jenkins_home/copy_reference_file.log': Permission denied
     >jenkins    | Can not write to /var/jenkins_home/copy_reference_file.log. Wrong volume permissions?
+3. web 界面显示时区不正确
+  - 方案一(简单有效)：在『系统管理』-->『脚本命令行』里运行`System.setProperty('org.apache.commons.jelly.tags.fmt.timeZone', 'Asia/Shanghai')`
+  - 方案二：修改 docker-compose.yml 文件，新增变量`JAVA_OPTS=-Duser.timezone=Asia/Shanghai`，系统信息里的时区`user.timezone`则会由 `GMT`变更为`Asia/Shanghai`
 
 ### 参考资料
 
-1. 
-2. [compose file](https://yeasy.gitbooks.io/docker_practice/content/compose/compose_file.html)
-3. [Official Jenkins image to use from Docker Hub](https://jenkins.io/blog/2018/12/10/the-official-Docker-image/)
-4. [Permission denied](https://github.com/jenkinsci/docker/issues/177)
+1. [compose file](https://yeasy.gitbooks.io/docker_practice/content/compose/compose_file.html)
+2. [Official Jenkins image to use from Docker Hub](https://jenkins.io/blog/2018/12/10/the-official-Docker-image/)
+3. [Permission denied](https://github.com/jenkinsci/docker/issues/177)
