@@ -1,10 +1,11 @@
 ---
 title: docker-compose部署graylog
-date: 2021-03-25 10:56:18
 tags:
-    - Docker
+  - Docker
 categories:
-    - Docker
+  - Docker
+abbrlink: 34540
+date: 2021-03-25 10:56:18
 ---
 
 ## 简介

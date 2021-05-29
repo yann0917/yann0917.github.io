@@ -1,10 +1,11 @@
 ---
 title: docker-compose部署gocron定时任务管理系统
-date: 2020-09-30 09:56:34
 tags:
-    - Docker
+  - Docker
 categories:
-    - Docker
+  - Docker
+abbrlink: 29973
+date: 2020-09-30 09:56:34
 ---
 
 ## 简介

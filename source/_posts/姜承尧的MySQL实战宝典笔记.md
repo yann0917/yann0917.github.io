@@ -1,9 +1,10 @@
 ---
 title: 姜承尧的MySQL实战宝典笔记
-date: 2021-05-29 14:02:43
 tags:
   - MySQL
 categories: MySQL
+abbrlink: 53009
+date: 2021-05-29 14:02:43
 ---
 
 > 01~07 表设计篇

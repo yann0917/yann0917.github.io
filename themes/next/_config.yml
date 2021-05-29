@@ -92,14 +92,14 @@ index_with_subtitle: false
 # Value before `||` delimeter is the target link.
 # Value after `||` delimeter is the name of FontAwesome icon. If icon (with or without delimeter) is not specified, question icon will be loaded.
 menu:
-  home: / || home
-  tags: /tags/ || tags
-  categories: /categories/ || th
-  archives: /archives/ || archive
-  schedule: /schedule/ || calendar
-  # sitemap: /sitemap.xml || sitemap
-  about: /about/ || user
-  # commonweal: /404/ || heartbeat
+  home: /|| home
+  tags: /tags/|| tags
+  categories: /categories/|| th
+  archives: /archives/|| archive
+  schedule: /schedule/|| calendar
+  # sitemap: /sitemap.xml|| sitemap
+  about: /about/|| user
+  commonweal: /404/|| heartbeat
 
 # Enable/Disable menu icons.
 menu_icons:
@@ -130,7 +130,7 @@ social:
   GitHub: https://github.com/yann0917 || github
   E-Mail: mailto:zhaoyabo2011@gmail.com || envelope
   Weibo: http://weibo.com/133617179 || weibo
-  csdn: http://blog.csdn.net/abc1991234 || 
+  csdn: http://blog.csdn.net/abc1991234 ||
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
@@ -534,8 +534,8 @@ rating:
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
   enable: true
-  app_id: MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz
-  app_key: HjGC1bnbGqg2cFP4VPMBWzPD
+  app_id: d74Bu4ko9fkm6FvVG8hxuvvf-gzGzoHsz
+  app_key: qNn9vO1e4TEoVv1udoN1vCP2
 
 # Another tool to show number of visitors to each article.
 # visit https://console.firebase.google.com/u/0/ to get apiKey and projectId
