@@ -13,7 +13,7 @@ categories:
 
 包括以下四个组件：
 
-* mongodb 
+* mongodb
 * elasticsearch
 * graylog-server
 * graylog-web
