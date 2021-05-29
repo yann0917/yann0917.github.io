@@ -1,0 +1,1446 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="MySQL,优化," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1. 为查询缓存优化你的查询当有很多相同的查询被执行了多次的时候，这些查询结果会被放到一个缓存中，这样，后续的相同的查询就不用操作表而直接访问缓存结果了。 123456# query cache does NOT work$r &#x3D; mysql_query(&quot;SELECT username FROM user WHERE signup_date &gt;&#x3D; CURDATE()&quot;)">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MySQL 性能优化的最佳经验">
+<meta property="og:url" content="https://yann0917.github.io/2017/05/01/MySQL-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E6%9C%80%E4%BD%B3%E7%BB%8F%E9%AA%8C/index.html">
+<meta property="og:site_name" content="Yann&#39;s blog">
+<meta property="og:description" content="1. 为查询缓存优化你的查询当有很多相同的查询被执行了多次的时候，这些查询结果会被放到一个缓存中，这样，后续的相同的查询就不用操作表而直接访问缓存结果了。 123456# query cache does NOT work$r &#x3D; mysql_query(&quot;SELECT username FROM user WHERE signup_date &gt;&#x3D; CURDATE()&quot;)">
+<meta property="og:locale">
+<meta property="og:image" content="https://cdn.tutsplus.com/net/uploads/legacy/500_mysql/search_index.jpg">
+<meta property="article:published_time" content="2017-05-01T09:11:15.000Z">
+<meta property="article:modified_time" content="2021-05-29T08:14:37.568Z">
+<meta property="article:author" content="Yann">
+<meta property="article:tag" content="MySQL">
+<meta property="article:tag" content="优化">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.tutsplus.com/net/uploads/legacy/500_mysql/search_index.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yann0917.github.io/2017/05/01/MySQL-性能优化的最佳经验/"/>
+
+
+
+
+
+  <title>MySQL 性能优化的最佳经验 | Yann's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yann's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay hungry. Stay foolish.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yann0917.github.io/2017/05/01/MySQL-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E6%9C%80%E4%BD%B3%E7%BB%8F%E9%AA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/yann.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yann's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MySQL 性能优化的最佳经验</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-05-01T09:11:15+00:00">
+                2017-05-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/05/01/MySQL-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E6%9C%80%E4%BD%B3%E7%BB%8F%E9%AA%8C/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/05/01/MySQL-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E6%9C%80%E4%BD%B3%E7%BB%8F%E9%AA%8C/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/05/01/MySQL-%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E7%9A%84%E6%9C%80%E4%BD%B3%E7%BB%8F%E9%AA%8C/" class="leancloud_visitors" data-flag-title="MySQL 性能优化的最佳经验">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.4k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  16
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1-为查询缓存优化你的查询"><a href="#1-为查询缓存优化你的查询" class="headerlink" title="1. 为查询缓存优化你的查询"></a>1. 为查询缓存优化你的查询</h3><p>当有很多相同的查询被执行了多次的时候，这些查询结果会被放到一个缓存中，这样，后续的相同的查询就不用操作表而直接访问缓存结果了。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># query cache does NOT work</span></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT username FROM user WHERE signup_date &gt;= CURDATE()&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># query cache works!</span></span><br><span class="line"><span class="variable">$today</span> = date(<span class="string">&quot;Y-m-d&quot;</span>);</span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT username FROM user WHERE signup_date &gt;= &#x27;<span class="subst">$today</span>&#x27;&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<p>以上两条SQL语句的差别就是 CURDATE() ，MySQL的查询缓存对这个函数不起作用。所以，像 NOW() 和 RAND() 或是其它的非确定的SQL函数都不会开启查询缓存，因为这些函数返回的结果是易变的。所以，我们需要做的就是，在php语句中用一个变量来代替MySQL的函数，从而开启缓存。</p>
+<h3 id="2-EXPLAIN-你的-SELECT-查询"><a href="#2-EXPLAIN-你的-SELECT-查询" class="headerlink" title="2. EXPLAIN 你的 SELECT 查询"></a>2. EXPLAIN 你的 SELECT 查询</h3><p>使用 <code>EXPLAIN</code> 关键字可以让你知道MySQL是如何处理你的SQL语句的。这可以帮你分析你的查询语句或是表结构的性能瓶颈。<br>EXPLAIN 的查询结果还会告诉你哪个索引被利用(key列)，你的数据表是如何被搜索和排序的……查看rows列可以让我们找到潜在的性能问题。</p>
+<h3 id="3-当只要一行数据时使用-LIMIT-1"><a href="#3-当只要一行数据时使用-LIMIT-1" class="headerlink" title="3. 当只要一行数据时使用 LIMIT 1"></a>3. 当只要一行数据时使用 LIMIT 1</h3><p>当你查询表的时候，你已经知道结果只会有一条结果，但因为你可能需要去fetch游标，或是你也许会去检查返回的记录数。<br>在这种情况下，在查询语句上加上 <code>LIMIT 1</code> 可以增加性能。这样，MySQL数据库引擎会在找到一条数据后停止搜索，而不是在整张表或索引上继续查找下一条符合记录的数据。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># do I have any users from Alabama?</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># what NOT to do:</span></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT * FROM user WHERE state = &#x27;Alabama&#x27;&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (mysql_num_rows(<span class="variable">$r</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment"># much better:</span></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT 1 FROM user WHERE state = &#x27;Alabama&#x27; LIMIT 1&quot;</span>);</span><br><span class="line"><span class="keyword">if</span> (mysql_num_rows(<span class="variable">$r</span>) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">    <span class="comment"># ...</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-为搜索字段建索引"><a href="#4-为搜索字段建索引" class="headerlink" title="4. 为搜索字段建索引"></a>4. 为搜索字段建索引</h3><p>索引并不一定就是给主键(primary key)或是唯一(unique key)的字段。如果在你的表中，有某个字段你总要会经常用来做搜索，那么，请为其建立索引吧。<br><img src="https://cdn.tutsplus.com/net/uploads/legacy/500_mysql/search_index.jpg" alt="index"><br>你应该需要知道什么样的搜索是不能使用正常的索引的。索引使用需要符合字段独立，左原则，or原则。</p>
+<h3 id="5-在Join表的时候索引和使用相同类型的列"><a href="#5-在Join表的时候索引和使用相同类型的列" class="headerlink" title="5. 在Join表的时候索引和使用相同类型的列"></a>5. 在Join表的时候索引和使用相同类型的列</h3><p>如果你的应用程序有很多 JOIN 查询，你应该确认两个表中Join的字段是被建过索引的。这样，MySQL内部会启动优化Join操作的机制。</p>
+<p>而且，这些被用来Join的字段，应该具有相同的类型。例如：如果你要把 DECIMAL 字段和一个 INT 字段Join在一起，MySQL就无法使用它们的索引。对于那些STRING类型，还需要有相同的字符集才行。（两个表的字符集有可能不一样）</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># looking for companies in my state</span></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT company_name FROM users</span></span><br><span class="line"><span class="string">    LEFT JOIN companies ON (users.state = companies.state)</span></span><br><span class="line"><span class="string">    WHERE users.id = <span class="subst">$user_id</span>&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># both state columns should be indexed</span></span><br><span class="line"><span class="comment"># and they both should be the same type and character encoding</span></span><br><span class="line"><span class="comment"># or MySQL might do full table scans</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="6-千万不要-ORDER-BY-RAND"><a href="#6-千万不要-ORDER-BY-RAND" class="headerlink" title="6. 千万不要 ORDER BY RAND()"></a>6. 千万不要 ORDER BY RAND()</h3><p>如果你真的想把返回的数据行打乱了，你有N种方法可以达到这个目的。这样使用只让你的数据库的性能呈指数级的下降。这里的问题是：MySQL会不得不去执行RAND()函数（很耗CPU时间），而且这是为了每一行记录去记行，然后再对其排序。就算是你用了Limit 1也无济于事（因为要排序）。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># what NOT to do:</span></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT username FROM user ORDER BY RAND() LIMIT 1&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># much better:</span></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT count(*) FROM user&quot;</span>);</span><br><span class="line"><span class="variable">$d</span> = mysql_fetch_row(<span class="variable">$r</span>);</span><br><span class="line"><span class="variable">$rand</span> = mt_rand(<span class="number">0</span>,<span class="variable">$d</span>[<span class="number">0</span>] - <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT username FROM user LIMIT <span class="subst">$rand</span>, 1&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="7-避免-SELECT"><a href="#7-避免-SELECT" class="headerlink" title="7. 避免 SELECT *"></a>7. 避免 SELECT *</h3><p>从数据库里读出越多的数据，那么查询就会变得越慢，增加了磁盘操作的时间。并且，如果你的数据库服务器和WEB服务器是两台独立的服务器的话，这还会增加网络传输的负载。<br>所以，你应该养成一个需要什么就取什么的好的习惯。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># not preferred</span></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT * FROM user WHERE user_id = 1&quot;</span>);</span><br><span class="line"><span class="variable">$d</span> = mysql_fetch_assoc(<span class="variable">$r</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Welcome <span class="subst">&#123;$d[&#x27;username&#x27;]&#125;</span>&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment"># better:</span></span><br><span class="line"><span class="variable">$r</span> = mysql_query(<span class="string">&quot;SELECT username FROM user WHERE user_id = 1&quot;</span>);</span><br><span class="line"><span class="variable">$d</span> = mysql_fetch_assoc(<span class="variable">$r</span>);</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Welcome <span class="subst">&#123;$d[&#x27;username&#x27;]&#125;</span>&quot;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="8-永远为每张表设置一个ID"><a href="#8-永远为每张表设置一个ID" class="headerlink" title="8. 永远为每张表设置一个ID"></a>8. 永远为每张表设置一个ID</h3><p>我们应该为数据库里的每张表都设置一个ID做为其主键，而且最好的是一个INT型的（推荐使用UNSIGNED），并设置上自动增加的AUTO_INCREMENT标志。</p>
+<p>就算是你 users 表有一个主键叫 “username”的唯一字段，你也别让它成为主键。使用 VARCHAR 类型来当主键会使用得性能下降。另外，在你的程序中，你应该使用表的ID来构造你的数据结构。</p>
+<p>而且，在MySQL数据引擎下，还有一些操作需要使用主键，在这些情况下，主键的性能和设置变得非常重要，比如，集群，分区……</p>
+<p>在这里，只有一个情况是例外，那就是“关联表”的“外键”，也就是说，这个表的主键，通过若干个其他表的主键构成。我们把这个情况叫做“外键”。比如：有一个“学生表”有学生的ID，有一个“课程表”有课程ID，那么，“成绩表”就是“关联表”了，其关联了学生表和课程表，在成绩表中，学生ID和课程ID叫“外键”其共同组成主键。</p>
+<h3 id="9-使用-ENUM-而不是-VARCHAR"><a href="#9-使用-ENUM-而不是-VARCHAR" class="headerlink" title="9. 使用 ENUM 而不是 VARCHAR"></a>9. 使用 ENUM 而不是 VARCHAR</h3><p>ENUM 类型是非常快和紧凑的。在数据库内部，像TINYINT类型一样保存，但其外表上显示为字符串。这样一来，用这个字段来做一些选项列表变得相当的完美。</p>
+<p>如果你有一个字段，这些字段的取值是有限而且固定的，那么，你应该使用 ENUM 而不是 VARCHAR。比如有个列名叫做“状态”，其值为“活动”，“非活动”，“搁置”，“过期”等。</p>
+<h3 id="10-从-PROCEDURE-ANALYSE-取得建议"><a href="#10-从-PROCEDURE-ANALYSE-取得建议" class="headerlink" title="10. 从 PROCEDURE ANALYSE() 取得建议"></a>10. 从 PROCEDURE ANALYSE() 取得建议</h3><p>PROCEDURE ANALYSE() 会让 MySQL 帮你去分析你的字段和其实际的数据，并会给你一些有用的建议。只有表中有实际的数据，这些建议才会变得有用，因为要做一些大的决定是需要有数据作为基础的。</p>
+<p>例如，如果你创建了一个 INT 字段作为你的主键，然而并没有太多的数据，那么，PROCEDURE ANALYSE()会建议你把这个字段的类型改成 MEDIUMINT 。或是你使用了一个 VARCHAR 字段，因为数据不多，你可能会得到一个让你把它改成 ENUM 的建议。这些建议，都是可能因为数据不够多，所以决策做得就不够准。</p>
+<blockquote>
+<p>PROCEDURE ANALYSE() is deprecated as of MySQL 5.7.18, and is removed in MySQL 8.0.</p>
+</blockquote>
+<h3 id="11-尽可能的使用-NOT-NULL"><a href="#11-尽可能的使用-NOT-NULL" class="headerlink" title="11. 尽可能的使用 NOT NULL"></a>11. 尽可能的使用 NOT NULL</h3><p>除非你有一个很特别的原因去使用 NULL 值，你应该总是让你的字段保持 NOT NULL。</p>
+<p>首先，问问你自己“Empty”和“NULL”有多大的区别（如果是INT，那就是0和NULL）？如果你觉得它们之间没有什么区别，那么你就不要使用NULL。（你知道吗？在 Oracle 里，NULL 和 Empty 的字符串是一样的！)</p>
+<p>NULL 需要额外的空间，并且，在你进行比较的时候，你的程序会更复杂。 当然，这里并不是说你就不能使用NULL了，现实情况是很复杂的，依然会有些情况下，你需要使用NULL值。</p>
+<h3 id="12-Prepared-Statements"><a href="#12-Prepared-Statements" class="headerlink" title="12. Prepared Statements"></a>12. Prepared Statements</h3><p>Prepared Statements很像存储过程，是一种运行在后台的SQL语句集合，我们可以从使用 prepared statements 获得很多好处，无论是性能问题还是安全问题。</p>
+<p>Prepared Statements 可以检查一些你绑定好的变量，这样可以保护你的程序不会受到“SQL注入式”攻击。当然，你也可以手动地检查你的这些变量，然而，手动的检查容易出问题，而且很经常会被程序员忘了。当我们使用一些framework或是ORM的时候，这样的问题会好一些。</p>
+<p>在性能方面，当一个相同的查询被使用多次的时候，这会为你带来可观的性能优势。你可以给这些Prepared Statements定义一些参数，而MySQL只会解析一次。</p>
+<p>最新版本的MySQL在传输Prepared Statements是使用二进制形式，这会使得网络传输非常有效率。</p>
+<p>当然，也有一些情况下，我们需要避免使用Prepared Statements，因为其不支持查询缓存。但据说版本5.1后支持了。</p>
+<p>在PHP中要使用prepared statements，你可以查看其使用手册：<a target="_blank" rel="noopener" href="http://php.net/manual/zh/book.mysqli.php">mysqli</a>扩展 或是使用数据库抽象层，如： <a target="_blank" rel="noopener" href="http://us.php.net/manual/zh/book.pdo.php">PDO</a>.</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># create a prepared statement</span></span><br><span class="line"><span class="keyword">if</span> (<span class="variable">$stmt</span> = <span class="variable">$mysqli</span>-&gt;prepare(<span class="string">&quot;SELECT username FROM user WHERE state=?&quot;</span>)) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment"># bind parameters</span></span><br><span class="line">    <span class="variable">$stmt</span>-&gt;bind_param(<span class="string">&quot;s&quot;</span>, <span class="variable">$state</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"># execute</span></span><br><span class="line">    <span class="variable">$stmt</span>-&gt;execute();</span><br><span class="line"></span><br><span class="line">    <span class="comment"># bind result variables</span></span><br><span class="line">    <span class="variable">$stmt</span>-&gt;bind_result(<span class="variable">$username</span>);</span><br><span class="line"></span><br><span class="line">    <span class="comment"># fetch value</span></span><br><span class="line">    <span class="variable">$stmt</span>-&gt;fetch();</span><br><span class="line"></span><br><span class="line">    printf(<span class="string">&quot;%s is from %s\n&quot;</span>, <span class="variable">$username</span>, <span class="variable">$state</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$stmt</span>-&gt;close();</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="13-无缓冲的查询"><a href="#13-无缓冲的查询" class="headerlink" title="13. 无缓冲的查询"></a>13. 无缓冲的查询</h3><p>正常的情况下，当你在当你在你的脚本中执行一个SQL语句的时候，你的程序会停在那里直到这个SQL语句返回，然后你的程序再往下继续执行。你可以使用无缓冲查询来改变这个行为。</p>
+<p>mysql_unbuffered_query() 发送一个SQL语句到MySQL而并不像mysql_query()一样去自动fethch和缓存结果。这会相当节约很多可观的内存，尤其是那些会产生大量结果的查询语句，并且，你不需要等到所有的结果都返回，只需要第一行数据返回的时候，你就可以开始马上开始工作于查询结果了。</p>
+<p>然而，这会有一些限制。因为你要么把所有行都读走，或是你要在进行下一次的查询前调用 mysql_free_result() 清除结果。而且， mysql_num_rows() 或 mysql_data_seek() 将无法使用。所以，是否使用无缓冲的查询你需要仔细考虑。</p>
+<blockquote>
+<p>This extension was deprecated in PHP 5.5.0, and it was removed in PHP 7.0.0. Instead, the MySQLi or PDO_MySQL extension should be used.</p>
+</blockquote>
+<h3 id="14-把IP地址存成-UNSIGNED-INT"><a href="#14-把IP地址存成-UNSIGNED-INT" class="headerlink" title="14. 把IP地址存成 UNSIGNED INT"></a>14. 把IP地址存成 UNSIGNED INT</h3><p>如果你用整形来存放IP地址，只需要4个字节，并且是定长的字段。而且，这会为你带来查询上的优势，尤其是当你需要使用这样的WHERE条件：IP between ip1 and ip2。</p>
+<p>我们必需要使用UNSIGNED INT，因为 IP地址会使用整个32位的无符号整型。</p>
+<p>你可以使用 INET_ATON() 来把一个字符串IP转成一个整型，并使用 INET_NTOA() 把一个整形转成一个字符串IP。在PHP中，也有这样的函数 ip2long() 和 long2ip()。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$r</span> = <span class="string">&quot;UPDATE users SET ip = INET_ATON(&#x27;<span class="subst">&#123;$_SERVER[&#x27;REMOTE_ADDR&#x27;]&#125;</span>&#x27;) WHERE user_id = <span class="subst">$user_id</span>&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<h3 id="15-固定长度的表会更快"><a href="#15-固定长度的表会更快" class="headerlink" title="15. 固定长度的表会更快"></a>15. 固定长度的表会更快</h3><p>如果表中的所有字段都是“固定长度”的，整个表会被认为是 “static” 或 “fixed-length”。 例如，表中没有如下类型的字段： VARCHAR，TEXT，BLOB。只要你包括了其中一个这些字段，那么这个表就不是“固定长度静态表”了，这样，MySQL 引擎会用另一种方法来处理。</p>
+<p>固定长度的表会提高性能，因为MySQL搜寻得会更快一些，因为这些固定的长度是很容易计算下一个数据的偏移量的，所以读取的自然也会很快。而如果字段不是定长的，那么，每一次要找下一条的话，需要程序找到主键。</p>
+<p>并且，固定长度的表也更容易被缓存和重建。不过，唯一的副作用是，固定长度的字段会浪费一些空间，因为定长的字段无论你用不用，他都是要分配那么多的空间。</p>
+<p>使用“垂直分割”技术，你可以分割你的表成为两个一个是定长的，一个则是不定长的。</p>
+<h3 id="16-垂直分割"><a href="#16-垂直分割" class="headerlink" title="16. 垂直分割"></a>16. 垂直分割</h3><p>“垂直分割”是一种把数据库中的表按列变成几张表的方法，这样可以降低表的复杂度和字段的数目，从而达到优化的目的。<br>示例一：在Users表中有一个字段是家庭地址，这个字段是可选字段，相比起，而且你在数据库操作的时候除了个人信息外，你并不需要经常读取或是改写这个字段。那么，为什么不把他放到另外一张表中呢？ 这样会让你的表有更好的性能，大量的时候，我对于用户表来说，只有用户ID，用户名，口令，用户角色等会被经常使用。小一点的表总是会有好的性能。</p>
+<p>另外，你需要注意的是，这些被分出去的字段所形成的表，你不会经常性地去Join他们，不然的话，这样的性能会比不分割时还要差，而且，会是极数级的下降。</p>
+<h3 id="17-拆分大的-DELETE-或-INSERT-语句"><a href="#17-拆分大的-DELETE-或-INSERT-语句" class="headerlink" title="17. 拆分大的 DELETE 或 INSERT 语句"></a>17. 拆分大的 DELETE 或 INSERT 语句</h3><p>如果你需要在一个在线的网站上去执行一个大的 DELETE 或 INSERT 查询，你需要非常小心，要避免你的操作让你的整个网站停止相应。因为这两个操作是会锁表的，表一锁住了，别的操作都进不来了。</p>
+<p>Apache 会有很多的子进程或线程。所以，其工作起来相当有效率，而我们的服务器也不希望有太多的子进程，线程和数据库链接，这是极大的占服务器资源的事情，尤其是内存。</p>
+<p>如果你把你的表锁上一段时间，比如30秒钟，那么对于一个有很高访问量的站点来说，这30秒所积累的访问进程/线程，数据库链接，打开的文件数，可能不仅仅会让你的WEB服务Crash，还可能会让你的整台服务器马上挂掉。</p>
+<p>所以，如果要删除一个大量数据的行记录，一定把其拆分，使用 LIMIT 条件是一个好的方法。</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span> (<span class="number">1</span>) &#123;</span><br><span class="line">    mysql_query(<span class="string">&quot;DELETE FROM logs WHERE log_date &lt;= &#x27;2009-10-01&#x27; LIMIT 10000&quot;</span>);</span><br><span class="line">    <span class="keyword">if</span> (mysql_affected_rows() == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment"># done deleting</span></span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment"># you can even pause a bit</span></span><br><span class="line">    usleep(<span class="number">50000</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="18-越小的列会越快"><a href="#18-越小的列会越快" class="headerlink" title="18. 越小的列会越快"></a>18. 越小的列会越快</h3><p>对于大多数的数据库引擎来说，硬盘操作可能是最重大的瓶颈。所以，把你的数据变得紧凑会对这种情况非常有帮助，因为这减少了对硬盘的访问。</p>
+<p>如果一个表只会有几列罢了（比如说字典表，配置表），那么，我们就没有理由使用 INT 来做主键，使用 MEDIUMINT, SMALLINT 或是更小的 TINYINT 会更经济一些。如果你不需要记录时间，使用 DATE 要比 DATETIME 好得多。</p>
+<h3 id="19-选择正确的存储引擎"><a href="#19-选择正确的存储引擎" class="headerlink" title="19. 选择正确的存储引擎"></a>19. 选择正确的存储引擎</h3><p>MyISAM 适合于一些需要大量查询的应用，但其对于有大量写操作并不是很好。甚至你只是需要update一个字段，整个表都会被锁起来，而别的进程，就算是读进程都无法操作直到读操作完成。另外，MyISAM 对于 SELECT COUNT(*) 这类的计算是超快无比的。</p>
+<p>InnoDB 的趋势会是一个非常复杂的存储引擎，对于一些小的应用，它会比 MyISAM 还慢。他是它支持“行锁” ，于是在写操作比较多的时候，会更优秀。并且，他还支持更多的高级应用，比如：事务。</p>
+<h3 id="20-使用一个对象关系映射器（Object-Relational-Mapper）"><a href="#20-使用一个对象关系映射器（Object-Relational-Mapper）" class="headerlink" title="20. 使用一个对象关系映射器（Object Relational Mapper）"></a>20. 使用一个对象关系映射器（Object Relational Mapper）</h3><p>使用 ORM (Object Relational Mapper)，你能够获得可靠的性能增涨。一个ORM可以做的所有事情，也能被手动的编写出来。但是，这需要一个高级专家。</p>
+<p>ORM 的最重要的是“Lazy Loading”，也就是说，只有在需要的去取值的时候才会去真正的去做。但你也需要小心这种机制的副作用，因为这很有可能会因为要去创建很多很多小的查询反而会降低性能。</p>
+<p>ORM 还可以把你的SQL语句打包成一个事务，这会比单独执行他们快得多得多。</p>
+<h3 id="21-小心“永久链接”"><a href="#21-小心“永久链接”" class="headerlink" title="21. 小心“永久链接”"></a>21. 小心“永久链接”</h3><p>“永久链接”的目的是用来减少重新创建MySQL链接的次数。当一个链接被创建了，它会永远处在连接的状态，就算是数据库操作已经结束了。而且，自从我们的Apache开始重用它的子进程后——也就是说，下一次的HTTP请求会重用Apache的子进程，并重用相同的 MySQL 链接。</p>
+<p>在理论上来说，这听起来非常的不错。但是从个人经验（也是大多数人的）上来说，这个功能制造出来的麻烦事更多。因为，你只有有限的链接数，内存问题，文件句柄数，等等。</p>
+<p>而且，Apache 运行在极端并行的环境中，会创建很多很多的了进程。这就是为什么这种“永久链接”的机制工作地不好的原因。在你决定要使用“永久链接”之前，你需要好好地考虑一下你的整个系统的架构。</p>
+<blockquote>
+<p>This extension was deprecated in PHP 5.5.0, and it was removed in PHP 7.0.0. Instead, the MySQLi or PDO_MySQL extension should be used.</p>
+</blockquote>
+<h3 id="友情链接"><a href="#友情链接" class="headerlink" title="友情链接"></a>友情链接</h3><ul>
+<li><a target="_blank" rel="noopener" href="http://coolshell.cn/articles/1846.html">MYSQL性能优化的最佳20+条经验</a>(<a target="_blank" rel="noopener" href="https://code.tutsplus.com/tutorials/top-20-mysql-best-practices--net-7855">原文</a>)</li>
+</ul>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt=" 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt=" 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/MySQL/" rel="tag"># MySQL</a>
+          
+            <a href="/tags/%E4%BC%98%E5%8C%96/" rel="tag"># 优化</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/01/MySQL-%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E%E5%AF%B9%E6%AF%94/" rel="next" title="MySQL 存储引擎对比">
+                <i class="fa fa-chevron-left"></i> MySQL 存储引擎对比
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/05/01/MySQL-%E7%99%BE%E4%B8%87%E7%BA%A7%E6%95%B0%E6%8D%AE%E5%BA%93%E4%BC%98%E5%8C%96%E6%96%B9%E6%A1%88/" rel="prev" title="MySQL 百万级数据库优化方案">
+                MySQL 百万级数据库优化方案 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/yann.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yann0917" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zhaoyabo2011@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/133617179" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://blog.csdn.net/abc1991234" target="_blank" title="csdn">
+                      
+                        <i class="fa fa-fw fa-globe"></i>csdn</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%BA%E6%9F%A5%E8%AF%A2%E7%BC%93%E5%AD%98%E4%BC%98%E5%8C%96%E4%BD%A0%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">1.</span> <span class="nav-text">1. 为查询缓存优化你的查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-EXPLAIN-%E4%BD%A0%E7%9A%84-SELECT-%E6%9F%A5%E8%AF%A2"><span class="nav-number">2.</span> <span class="nav-text">2. EXPLAIN 你的 SELECT 查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%BD%93%E5%8F%AA%E8%A6%81%E4%B8%80%E8%A1%8C%E6%95%B0%E6%8D%AE%E6%97%B6%E4%BD%BF%E7%94%A8-LIMIT-1"><span class="nav-number">3.</span> <span class="nav-text">3. 当只要一行数据时使用 LIMIT 1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E4%B8%BA%E6%90%9C%E7%B4%A2%E5%AD%97%E6%AE%B5%E5%BB%BA%E7%B4%A2%E5%BC%95"><span class="nav-number">4.</span> <span class="nav-text">4. 为搜索字段建索引</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%9C%A8Join%E8%A1%A8%E7%9A%84%E6%97%B6%E5%80%99%E7%B4%A2%E5%BC%95%E5%92%8C%E4%BD%BF%E7%94%A8%E7%9B%B8%E5%90%8C%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%88%97"><span class="nav-number">5.</span> <span class="nav-text">5. 在Join表的时候索引和使用相同类型的列</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E5%8D%83%E4%B8%87%E4%B8%8D%E8%A6%81-ORDER-BY-RAND"><span class="nav-number">6.</span> <span class="nav-text">6. 千万不要 ORDER BY RAND()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-%E9%81%BF%E5%85%8D-SELECT"><span class="nav-number">7.</span> <span class="nav-text">7. 避免 SELECT *</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E6%B0%B8%E8%BF%9C%E4%B8%BA%E6%AF%8F%E5%BC%A0%E8%A1%A8%E8%AE%BE%E7%BD%AE%E4%B8%80%E4%B8%AAID"><span class="nav-number">8.</span> <span class="nav-text">8. 永远为每张表设置一个ID</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E4%BD%BF%E7%94%A8-ENUM-%E8%80%8C%E4%B8%8D%E6%98%AF-VARCHAR"><span class="nav-number">9.</span> <span class="nav-text">9. 使用 ENUM 而不是 VARCHAR</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E4%BB%8E-PROCEDURE-ANALYSE-%E5%8F%96%E5%BE%97%E5%BB%BA%E8%AE%AE"><span class="nav-number">10.</span> <span class="nav-text">10. 从 PROCEDURE ANALYSE() 取得建议</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-%E5%B0%BD%E5%8F%AF%E8%83%BD%E7%9A%84%E4%BD%BF%E7%94%A8-NOT-NULL"><span class="nav-number">11.</span> <span class="nav-text">11. 尽可能的使用 NOT NULL</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-Prepared-Statements"><span class="nav-number">12.</span> <span class="nav-text">12. Prepared Statements</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E6%97%A0%E7%BC%93%E5%86%B2%E7%9A%84%E6%9F%A5%E8%AF%A2"><span class="nav-number">13.</span> <span class="nav-text">13. 无缓冲的查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E6%8A%8AIP%E5%9C%B0%E5%9D%80%E5%AD%98%E6%88%90-UNSIGNED-INT"><span class="nav-number">14.</span> <span class="nav-text">14. 把IP地址存成 UNSIGNED INT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-%E5%9B%BA%E5%AE%9A%E9%95%BF%E5%BA%A6%E7%9A%84%E8%A1%A8%E4%BC%9A%E6%9B%B4%E5%BF%AB"><span class="nav-number">15.</span> <span class="nav-text">15. 固定长度的表会更快</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-%E5%9E%82%E7%9B%B4%E5%88%86%E5%89%B2"><span class="nav-number">16.</span> <span class="nav-text">16. 垂直分割</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-%E6%8B%86%E5%88%86%E5%A4%A7%E7%9A%84-DELETE-%E6%88%96-INSERT-%E8%AF%AD%E5%8F%A5"><span class="nav-number">17.</span> <span class="nav-text">17. 拆分大的 DELETE 或 INSERT 语句</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-%E8%B6%8A%E5%B0%8F%E7%9A%84%E5%88%97%E4%BC%9A%E8%B6%8A%E5%BF%AB"><span class="nav-number">18.</span> <span class="nav-text">18. 越小的列会越快</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-%E9%80%89%E6%8B%A9%E6%AD%A3%E7%A1%AE%E7%9A%84%E5%AD%98%E5%82%A8%E5%BC%95%E6%93%8E"><span class="nav-number">19.</span> <span class="nav-text">19. 选择正确的存储引擎</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-%E4%BD%BF%E7%94%A8%E4%B8%80%E4%B8%AA%E5%AF%B9%E8%B1%A1%E5%85%B3%E7%B3%BB%E6%98%A0%E5%B0%84%E5%99%A8%EF%BC%88Object-Relational-Mapper%EF%BC%89"><span class="nav-number">20.</span> <span class="nav-text">20. 使用一个对象关系映射器（Object Relational Mapper）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%B0%8F%E5%BF%83%E2%80%9C%E6%B0%B8%E4%B9%85%E9%93%BE%E6%8E%A5%E2%80%9D"><span class="nav-number">21.</span> <span class="nav-text">21. 小心“永久链接”</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5"><span class="nav-number">22.</span> <span class="nav-text">友情链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yann</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">46.9k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz',
+        appKey: 'HjGC1bnbGqg2cFP4VPMBWzPD',
+        placeholder: '小老弟，你好',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("d74Bu4ko9fkm6FvVG8hxuvvf-gzGzoHsz", "qNn9vO1e4TEoVv1udoN1vCP2");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

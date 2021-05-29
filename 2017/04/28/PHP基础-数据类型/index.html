@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="测试环境PHP version 5.3.29&#x2F;5.6.29&#x2F;7.1.0Apache 2.4.25  PHP中的数据类型 PHP 支持 8 种原始数据类型。   四种标量类型：   boolean（布尔型）   integer（整型）   float（浮点型，也称作 double)   string（字符串）     两种复合类型：   array（数组）   object（对象）     最后是">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP基础-数据类型">
+<meta property="og:url" content="https://yann0917.github.io/2017/04/28/PHP%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/index.html">
+<meta property="og:site_name" content="Yann&#39;s blog">
+<meta property="og:description" content="测试环境PHP version 5.3.29&#x2F;5.6.29&#x2F;7.1.0Apache 2.4.25  PHP中的数据类型 PHP 支持 8 种原始数据类型。   四种标量类型：   boolean（布尔型）   integer（整型）   float（浮点型，也称作 double)   string（字符串）     两种复合类型：   array（数组）   object（对象）     最后是">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-04-28T14:14:36.000Z">
+<meta property="article:modified_time" content="2021-05-29T08:14:37.568Z">
+<meta property="article:author" content="Yann">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yann0917.github.io/2017/04/28/PHP基础-数据类型/"/>
+
+
+
+
+
+  <title>PHP基础-数据类型 | Yann's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yann's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay hungry. Stay foolish.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yann0917.github.io/2017/04/28/PHP%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/yann.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yann's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP基础-数据类型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-28T14:14:36+00:00">
+                2017-04-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/28/PHP%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/04/28/PHP%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/04/28/PHP%E5%9F%BA%E7%A1%80-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="leancloud_visitors" data-flag-title="PHP基础-数据类型">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  3.6k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  15
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>测试环境<br>PHP version 5.3.29/5.6.29/7.1.0<br>Apache 2.4.25</p>
+</blockquote>
+<h3 id="PHP中的数据类型"><a href="#PHP中的数据类型" class="headerlink" title="PHP中的数据类型"></a>PHP中的数据类型</h3><blockquote>
+<p>PHP 支持 8 种原始数据类型。 </p>
+<ul>
+<li>四种标量类型：<br>   boolean（布尔型）<br>   integer（整型）<br>   float（浮点型，也称作 double)<br>   string（字符串）  </li>
+</ul>
+<ul>
+<li>两种复合类型：<br>   array（数组）<br>   object（对象）  </li>
+</ul>
+<ul>
+<li>最后是两种特殊类型：<br>   resource（资源）<br>   NULL（无类型） </li>
+</ul>
+</blockquote>
+<h3 id="Boolean"><a href="#Boolean" class="headerlink" title="Boolean"></a>Boolean</h3><blockquote>
+<p>当转换为 boolean 时，以下值被认为是 FALSE： </p>
+<ul>
+<li>布尔值 FALSE 本身  </li>
+<li>整型值0 （零）</li>
+<li>浮点型值 0.0（零）  </li>
+<li>空字符串，以及字符串 “0”  </li>
+<li>不包括任何元素的数组   </li>
+<li>特殊类型 NULL（包括尚未赋值的变量）  </li>
+<li>从空标记生成的 SimpleXML 对象  </li>
+</ul>
+<p>所有其它值都被认为是 TRUE（包括任何资源）。 </p>
+</blockquote>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example-1"></a>Example-1</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	 <span class="variable">$a</span>= <span class="string">&#x27;0.00&#x27;</span>;</span><br><span class="line">	 <span class="keyword">echo</span> <span class="variable">$a</span> ?<span class="string">&#x27;true&#x27;</span>:<span class="string">&#x27;false&#x27;</span>;<span class="comment">//true</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>(<span class="string">&#x27;key&#x27;</span>=&gt;<span class="literal">true</span>);</span><br><span class="line">	<span class="keyword">if</span>(<span class="variable">$array</span>[<span class="string">&#x27;key&#x27;</span>] != <span class="string">&#x27;false&#x27;</span>)</span><br><span class="line">	     <span class="keyword">echo</span> <span class="string">&#x27;The value of key is &#x27;</span>.<span class="variable">$array</span>[<span class="string">&#x27;key&#x27;</span>];</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	var_dump(<span class="number">0</span> == <span class="string">&#x27;all&#x27;</span>);<span class="comment">//bool(true)</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line">	<span class="comment">//TRUE和FALSE不能当成是1和0的常量</span></span><br><span class="line">	<span class="variable">$var1</span> = <span class="literal">TRUE</span>; </span><br><span class="line">	<span class="variable">$var2</span> = <span class="literal">FALSE</span>; </span><br><span class="line"></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$var1</span>; <span class="comment">// outputs: 1 </span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$var2</span>; <span class="comment">//outputs: nothing</span></span><br><span class="line">	<span class="keyword">echo</span> (<span class="keyword">int</span>)<span class="variable">$var2</span>; <span class="comment">//outputs:0 </span></span><br><span class="line"></span><br><span class="line">	<span class="comment">//注意 true 和 false 输出结果的差异</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="literal">false</span> ;		  <span class="comment">//nothing</span></span><br><span class="line">	<span class="keyword">echo</span> (<span class="literal">false</span>) ;		<span class="comment">//nothing</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="literal">false</span>+<span class="literal">false</span> ;    <span class="comment">//0</span></span><br><span class="line">	<span class="keyword">echo</span> (<span class="literal">false</span>+<span class="literal">false</span>) ;  <span class="comment">//0</span></span><br><span class="line">	<span class="keyword">echo</span> intval(<span class="literal">false</span>) ;  <span class="comment">//0</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&quot;&#x27;</span>.<span class="literal">false</span>.<span class="string">&#x27;&quot;&#x27;</span> ;  <span class="comment">//&quot;&quot;</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;&lt;hr/&gt;&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="literal">true</span> ;  		<span class="comment">//1</span></span><br><span class="line">	<span class="keyword">echo</span> (<span class="literal">true</span>) ;  	  <span class="comment">//1</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="literal">true</span>+<span class="literal">true</span> ; 	<span class="comment">//2</span></span><br><span class="line">	<span class="keyword">echo</span> (<span class="literal">true</span>+<span class="literal">true</span>) ;   <span class="comment">//2</span></span><br><span class="line">	<span class="keyword">echo</span> intval(<span class="literal">true</span>) ;  <span class="comment">//1</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&#x27;&quot;&#x27;</span>.<span class="literal">true</span>.<span class="string">&#x27;&quot;&#x27;</span> ;  <span class="comment">//&quot;1&quot;</span></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h3 id="Integer"><a href="#Integer" class="headerlink" title="Integer"></a>Integer</h3><blockquote>
+<p>整型值可以使用十进制，十六进制，八进制或二进制表示，前面可以加上可选的符号（- 或者 +）。 </p>
+<p>二进制表达的 integer 自 PHP 5.4.0 起可用，PHP 5.4.0 之前的版本则报语法错误。</p>
+<p>要使用八进制表达，数字前必须加上<code>0</code>（零）;要使用十六进制表达，数字前必须加上 <code>0x</code>;要使用二进制表达，数字前必须加上 <code>0b</code>。 </p>
+</blockquote>
+<h4 id="Example-1-1"><a href="#Example-1-1" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<ul>
+<li>PHP 7.0.0 之前的版本，如果向八进制数传递了一个非法数字（即 8 或 9），则后面其余数字会被忽略；</li>
+<li>PHP 7.0.0 之后，如果向八进制数传递了一个非法数字，则会解析错误；</li>
+</ul>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	var_dump(<span class="number">01090</span>); <span class="comment">// 八进制 010 = 十进制 8</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<ul>
+<li>如果给定的一个数超出了 integer 的范围，将会被解释为 float。同样如果执行的运算结果超出了 integer 范围，也会返回 float；</li>
+<li>PHP 不支持无符号整数；</li>
+<li>自 PHP 5.0.5 后，最大值可以用常量 <code>PHP_INT_MAX</code> 来表示；</li>
+<li>自 PHP 7.0.0 后，最小值可以用常量 <code>PHP_INT_MIN</code> 来表示；</li>
+</ul>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$max</span> = PHP_INT_MAX ; <span class="comment">//PHP 5.0.5版本后支持该常量</span></span><br><span class="line">	<span class="variable">$min</span> = PHP_INT_MIN; <span class="comment">//PHP 7.0.0 版本之后支持该常量</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$max</span>,<span class="variable">$min</span>;</span><br><span class="line"></span><br><span class="line">	<span class="variable">$large_number</span> = <span class="number">2147483647</span>;</span><br><span class="line">	var_dump(<span class="variable">$large_number</span>);                     <span class="comment">// int(2147483647)</span></span><br><span class="line"></span><br><span class="line">	<span class="variable">$large_number</span> = <span class="number">2147483648</span>;</span><br><span class="line">	var_dump(<span class="variable">$large_number</span>);                     <span class="comment">// float(2147483648)</span></span><br><span class="line"></span><br><span class="line">	<span class="variable">$million</span> = <span class="number">1000000</span>;</span><br><span class="line">	<span class="variable">$large_number</span> =  <span class="number">50000</span> * <span class="variable">$million</span>;</span><br><span class="line">	var_dump(<span class="variable">$large_number</span>);                     <span class="comment">// float(50000000000)</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-3"><a href="#Example-3" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>当从浮点数转换成整数时，将向下取整。如果浮点数超出了整数范围，则结果为未定义，因为没有足够的精度给出一个确切的整数结果。在此情况下没有警告，甚至没有任何通知！</p>
+<p>自 PHP7.0.0 之后 NAN和Infinity 强制转换成整型结果总是0</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	var_dump((<span class="keyword">int</span>)NAN); <span class="comment">// PHP 7.0.0之前为 -2147483648，之后为0</span></span><br><span class="line">	var_dump((<span class="keyword">int</span>)INF); <span class="comment">// PHP 7.0.0之前为 0 ，之后也是0</span></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-4"><a href="#Example-4" class="headerlink" title="Example-4"></a>Example-4</h4><blockquote>
+<p>决不要将未知的分数强制转换为 integer，这样有时会导致不可预料的结果。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> (<span class="keyword">int</span>) ((<span class="number">0.1</span>+<span class="number">0.7</span>) * <span class="number">10</span>); <span class="comment">// outputs: 7</span></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-5"><a href="#Example-5" class="headerlink" title="Example-5"></a>Example-5</h4><blockquote>
+<p>数字前面有0代表八进制，但是字符串型数字前面有0并不是八进制。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$x</span> = <span class="number">0123</span>;          <span class="comment">// 83</span></span><br><span class="line">	<span class="variable">$y</span> = <span class="string">&quot;0123&quot;</span> + <span class="number">0</span>;    <span class="comment">// 123 </span></span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$x</span>,<span class="variable">$y</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-6"><a href="#Example-6" class="headerlink" title="Example-6"></a>Example-6</h4><blockquote>
+<p>对超过int型最大值的数字进行取模运算时，会强制将float类型转化成int类型，从而出现错误。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">     <span class="variable">$i</span> = <span class="number">6887129852</span>; <span class="comment">//超过int型最大值则为float类型</span></span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&quot;i=<span class="subst">$i</span> &lt;br/&gt;\n&quot;</span>;</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&quot;i%36=&quot;</span>.(<span class="variable">$i</span>%<span class="number">36</span>).<span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&quot;alternative i%36=&quot;</span>.(<span class="variable">$i</span>-floor(<span class="variable">$i</span>/<span class="number">36</span>)*<span class="number">36</span>).<span class="string">&quot;\n&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Float"><a href="#Float" class="headerlink" title="Float"></a>Float</h3><blockquote>
+<p>某些数学运算会产生一个由常量 NAN 所代表的结果。此结果代表着一个在浮点数运算中未定义或不可表述的值。任何拿此值与其它任何值进行的松散或严格比较的结果都是 FALSE。 </p>
+<p>由于 NAN 代表着任何不同值，不应拿 NAN 去和其它值进行比较，包括其自身，应该用 is_nan() 来检查。 </p>
+<p>浮点数之间不能进行比较，要测试浮点数是否相等，要使用一个仅比该数值大一点的最小误差值。</p>
+</blockquote>
+<h4 id="Example-1-2"><a href="#Example-1-2" class="headerlink" title="Example-1"></a>Example-1</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">echo</span> intval(<span class="number">19.31</span>*<span class="number">100</span>),<span class="string">&#x27;&lt;br/&gt;&#x27;</span>; <span class="comment">//获取一个变量的整数,echo 1930</span></span><br><span class="line">	<span class="keyword">echo</span> number_format(<span class="number">19.31</span>*<span class="number">100</span>,<span class="number">20</span>); <span class="comment">//格式化数字</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;&lt;hr/&gt;&quot;</span>;</span><br><span class="line">	</span><br><span class="line">	<span class="comment">//不要拿浮点数进行比较</span></span><br><span class="line">	<span class="variable">$x</span> = <span class="number">8</span> - <span class="number">6.4</span>;  <span class="comment">// which is equal to 1.6</span></span><br><span class="line">	<span class="variable">$y</span> = <span class="number">1.6</span>;</span><br><span class="line">	<span class="comment">//echo number_format($y,20);</span></span><br><span class="line">	var_dump(<span class="variable">$x</span> == <span class="variable">$y</span>); <span class="comment">// is not true</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><blockquote>
+<p>一个字符串 string 就是由一系列的字符组成，其中每个字符等同于一个字节。这意味着 PHP 只能支持 256 的字符集，因此不支持 Unicode 。</p>
+<p>一个字符串可以用 4 种方式表达： </p>
+<ul>
+<li>单引号  </li>
+<li>双引号  </li>
+<li>heredoc 语法结构  </li>
+<li>nowdoc 语法结构（自 PHP 5.3.0 起） </li>
+</ul>
+</blockquote>
+<p>string 中的字符可以通过一个从 0 开始的下标，用类似 array 结构中的方括号包含对应的数字来访问和修改，比如 $str[42]，也可用花括号访问，比如 $str{42}。</p>
+<p>PHP 的字符串在内部是字节组成的数组。因此用花括号访问或修改字符串对多字节字符集很不安全。</p>
+<h4 id="Example-1-3"><a href="#Example-1-3" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>自 PHP 5.4 起字符串下标必须为整数或可转换为整数的字符串，否则会发出警告。</p>
+<p>PHP 5.5 增加了直接在字符串原型中用<code>[]</code>访问字符的支持。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&#x27;abc&#x27;</span>;</span><br><span class="line">	var_dump(<span class="variable">$str</span>[<span class="string">&#x27;1&#x27;</span>]);</span><br><span class="line">	var_dump(<span class="keyword">isset</span>(<span class="variable">$str</span>[<span class="string">&#x27;1&#x27;</span>]));</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//以下字符串下标在 PHP 5.4 以上的版本中会发出警告。</span></span><br><span class="line">	var_dump(<span class="variable">$str</span>[<span class="string">&#x27;1.0&#x27;</span>]);</span><br><span class="line">	var_dump(<span class="keyword">isset</span>(<span class="variable">$str</span>[<span class="string">&#x27;1.0&#x27;</span>]));</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">	var_dump(<span class="variable">$str</span>[<span class="string">&#x27;x&#x27;</span>]);</span><br><span class="line">	var_dump(<span class="keyword">isset</span>(<span class="variable">$str</span>[<span class="string">&#x27;x&#x27;</span>]));</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;&lt;br&gt;&quot;</span>;</span><br><span class="line">	var_dump(<span class="variable">$str</span>[<span class="string">&#x27;1x&#x27;</span>]);</span><br><span class="line">	var_dump(<span class="keyword">isset</span>(<span class="variable">$str</span>[<span class="string">&#x27;1x&#x27;</span>]));</span><br><span class="line"></span><br><span class="line">	<span class="comment">//PHP 5.5 支持在字符串原型中使用[]访问字符</span></span><br><span class="line">	var_dump(<span class="string">&#x27;abc&#x27;</span>[<span class="number">0</span>]);</span><br><span class="line">	var_dump(<span class="string">&#x27;abc&#x27;</span>&#123;<span class="number">1</span>&#125;);<span class="comment">//在PHP 5.6 版本中解析错误，在PHP 7.1 上运行成功</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-2-1"><a href="#Example-2-1" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>自 PHP 7.1.0 开始, 字符串支持负索引下标。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = [-<span class="number">3</span> =&gt; <span class="string">&#x27;foo&#x27;</span>];</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;The element at index -3 is <span class="subst">$array</span>[-3].&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-3-1"><a href="#Example-3-1" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>双引号内可以解析单引号内的变量，但是在关联数组中，双引号并不能解析单引号内的索引。<br>解决办法是使用复杂语法{}或者去掉索引的单引号。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$str</span> = <span class="string">&#x27;abc&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;this is a &#x27;<span class="subst">$str</span>&#x27;&quot;</span>.<span class="string">&#x27;&lt;br/&gt;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">	<span class="variable">$fruit</span>=<span class="keyword">array</span>(<span class="string">&#x27;a&#x27;</span>=&gt;<span class="string">&#x27;apple&#x27;</span>,<span class="string">&#x27;b&#x27;</span>=&gt;<span class="string">&#x27;banana&#x27;</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;This is a <span class="subst">$fruit</span>[&#x27;a&#x27;]&quot;</span>;  <span class="comment">//语法错误T_ENCAPSED_AND_WHITESPACE</span></span><br><span class="line">	<span class="comment">//解决办法</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;This is a <span class="subst">$fruit</span>[a]&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;This is a <span class="subst">&#123;$fruit[&#x27;a&#x27;]&#125;</span>&quot;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;This is a $&#123;fruit[&#x27;a&#x27;]&#125;&quot;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h3><blockquote>
+<p>PHP 中的数组实际上是一个<code>有序映射</code>。映射是一种把 values 关联到 keys 的类型。此类型在很多方面做了优化，因此可以把它当成真正的数组，或列表（向量），散列表（是映射的一种实现），字典，集合，栈，队列以及更多可能性。由于数组元素的值也可以是另一个数组，树形结构和多维数组也是允许的。 </p>
+<p>key 可以是 integer 或者 string。value 可以是任意类型。 </p>
+<p>如果对给出的值没有指定键名，则取当前最大的整数索引值，而新的键名将是该值加一。如果指定的键名已经有了值，则该值会被覆盖。 </p>
+</blockquote>
+<h4 id="Example-1-4"><a href="#Example-1-4" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>只对某些单元指定键名而对其它的空置，新的键名将是该值+1，如果当前还没有整数索引，则键名将为 0.</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$array</span> = <span class="keyword">array</span>(</span><br><span class="line">         <span class="string">&quot;a&quot;</span>,</span><br><span class="line">         <span class="string">&quot;b&quot;</span>,</span><br><span class="line">    <span class="number">6</span> =&gt; <span class="string">&quot;c&quot;</span>,</span><br><span class="line">         <span class="string">&quot;d&quot;</span>,</span><br><span class="line">);</span><br><span class="line">var_dump(<span class="variable">$array</span>);</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-2-2"><a href="#Example-2-2" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>自 5.4 起可以使用短数组定义语法，用 [] 替代 array()。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$array1</span> = <span class="keyword">array</span>(</span><br><span class="line">    <span class="string">&quot;foo&quot;</span> =&gt; <span class="string">&quot;bar&quot;</span>,</span><br><span class="line">    <span class="string">&quot;bar&quot;</span> =&gt; <span class="string">&quot;foo&quot;</span>,</span><br><span class="line">);</span><br><span class="line"><span class="comment">// 自 PHP 5.4 起，可使用[]代替array()</span></span><br><span class="line"><span class="variable">$array2</span> = [</span><br><span class="line">    <span class="string">&quot;foo&quot;</span> =&gt; <span class="string">&quot;bar&quot;</span>,</span><br><span class="line">    <span class="string">&quot;bar&quot;</span> =&gt; <span class="string">&quot;foo&quot;</span>,</span><br><span class="line">];</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<h4 id="Example-3-2"><a href="#Example-3-2" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>如果在数组定义中多个单元都使用了同一个键名，则只使用了最后一个，之前的都被覆盖了。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>(</span><br><span class="line">	    <span class="number">1</span>    =&gt; <span class="string">&quot;a&quot;</span>,</span><br><span class="line">	    <span class="string">&quot;1&quot;</span>  =&gt; <span class="string">&quot;b&quot;</span>,</span><br><span class="line">	    <span class="number">1.5</span>  =&gt; <span class="string">&quot;c&quot;</span>,</span><br><span class="line">	    <span class="literal">true</span> =&gt; <span class="string">&quot;d&quot;</span>,</span><br><span class="line">	);</span><br><span class="line">	var_dump(<span class="variable">$array</span>);</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="variable">$array</span> = <span class="keyword">array</span>(<span class="number">0</span>,</span><br><span class="line">     <span class="number">1</span>,</span><br><span class="line">     <span class="string">&quot;2.99999999&quot;</span> =&gt; <span class="number">56</span>,</span><br><span class="line">     <span class="number">2</span> =&gt; <span class="number">2</span>,</span><br><span class="line">     <span class="number">3.9999</span> =&gt; <span class="number">3</span>,</span><br><span class="line">     <span class="number">3</span> =&gt; <span class="number">3.1</span>,</span><br><span class="line">     <span class="number">1</span> =&gt; <span class="number">4</span>,</span><br><span class="line">     <span class="number">0</span> =&gt; <span class="number">6</span>,</span><br><span class="line"> );</span><br><span class="line">print_r(<span class="variable">$array</span>);</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h4 id="Examlpe-4"><a href="#Examlpe-4" class="headerlink" title="Examlpe-4"></a>Examlpe-4</h4><blockquote>
+<p>自 PHP 5.4 起可以用数组间接引用函数或方法调用的结果。之前只能通过一个临时变量。 </p>
+<p>自 PHP 5.5 起可以用数组间接引用一个数组原型。 </p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">getArray</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">	    <span class="keyword">return</span> <span class="keyword">array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="variable">$secondElement</span> = getArray()[<span class="number">1</span>];<span class="comment">// on PHP 5.4</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// PHP 5.4 之前只能通过一个临时变量</span></span><br><span class="line">	<span class="variable">$tmp</span> = getArray();</span><br><span class="line">	<span class="variable">$secondElement</span> = <span class="variable">$tmp</span>[<span class="number">1</span>];</span><br><span class="line">	<span class="comment">// or</span></span><br><span class="line">	<span class="keyword">list</span>(, <span class="variable">$secondElement</span>) = getArray();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Example-5-1"><a href="#Example-5-1" class="headerlink" title="Example-5"></a>Example-5</h4><blockquote>
+<p>unset() 函数允许删除数组中的某个键。但要注意数组并不会重建索引。如果需要删除后重建索引，可以用 array_values() 函数。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">// 创建一个简单的数组</span></span><br><span class="line">	<span class="variable">$array</span> = <span class="keyword">array</span>(<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>);</span><br><span class="line">	print_r(<span class="variable">$array</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 现在删除其中的所有元素，但保持数组本身不变:</span></span><br><span class="line">	<span class="keyword">foreach</span> (<span class="variable">$array</span> <span class="keyword">as</span> <span class="variable">$i</span> =&gt; <span class="variable">$value</span>) &#123;</span><br><span class="line">	    <span class="keyword">unset</span>(<span class="variable">$array</span>[<span class="variable">$i</span>]);</span><br><span class="line">	&#125;</span><br><span class="line">	print_r(<span class="variable">$array</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 添加一个单元（注意新的键名是 5）</span></span><br><span class="line">	<span class="variable">$array</span>[] = <span class="number">6</span>;</span><br><span class="line">	print_r(<span class="variable">$array</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="comment">// 重新索引：</span></span><br><span class="line">	<span class="variable">$array</span> = array_values(<span class="variable">$array</span>);</span><br><span class="line">	<span class="variable">$array</span>[] = <span class="number">7</span>;</span><br><span class="line">	print_r(<span class="variable">$array</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="Example-6-1"><a href="#Example-6-1" class="headerlink" title="Example-6"></a>Example-6</h4><blockquote>
+<p>在双引号字符串中，不给索引加上引号是有效的，但是最好始终在用字符串表示的数组索引上加上引号。<br>以下是例子错的，但可以正常运行。错误是因为代码中有一个未定义的常量（bar）而不是字符串（’bar’－注意引号），而 PHP 可能会在以后定义此常量，不幸的是你的代码中有同样的名字。它能运行，是因为 PHP 自动将裸字符串转换成一个其值为该裸字符串的正常字符串。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$foo</span>[bar] = <span class="string">&#x27;enemy&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$foo</span>[bar];</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-7"><a href="#Example-7" class="headerlink" title="Example-7"></a>Example-7</h4><blockquote>
+<p>对于任意 integer，float，string，boolean 和 resource 类型，如果将一个值转换为数组，将得到一个仅有一个元素的数组，其下标为 0，该元素即为此标量的值。</p>
+<p>如果一个 object 类型转换为 array，则结果为一个数组，其单元为该对象的属性。键名将为成员变量名，不过有几点例外：静态属性不可访问；私有变量前会加上类名作前缀；保护变量前会加上一个 ‘*’ 做前缀。这些前缀的前后都各有一个 NULL 字符(\0)。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">private</span> <span class="variable">$A</span>; <span class="comment">// 转换成数组后索引为\0A\0A</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">private</span> <span class="variable">$A</span>; <span class="comment">// 转换成数组后索引为\0B\0A</span></span><br><span class="line">	    <span class="keyword">public</span> <span class="variable">$AA</span>; <span class="comment">// 转换成数组后索引为AA</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	var_dump((<span class="keyword">array</span>) <span class="keyword">new</span> B());</span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h3><blockquote>
+<p>如果将一个对象转换成对象，它将不会有任何变化。如果其它任何类型的值被转换成对象，将会创建一个内置类 <code>stdClass</code>的实例。如果该值为 NULL，则新的实例为空。数组转换成对象将使键名成为属性名并具有相对应的值。对于任何其它的值，名为 <code>scalar</code> 的成员变量将包含该值。</p>
+</blockquote>
+<h4 id="Example-1-5"><a href="#Example-1-5" class="headerlink" title="Example-1"></a>Example-1</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$obj1</span> = (<span class="keyword">object</span>) <span class="keyword">array</span>(<span class="string">&#x27;1&#x27;</span> =&gt; <span class="string">&#x27;foo&#x27;</span>, <span class="number">2</span>=&gt;<span class="string">&#x27;bar&#x27;</span>);</span><br><span class="line">	var_dump(<span class="variable">$obj1</span>);  </span><br><span class="line">	<span class="comment">// outputs : object(stdClass)#1 (2) &#123; [1]=&gt; string(3) &quot;foo&quot; [2]=&gt; string(3) &quot;bar&quot; &#125;</span></span><br><span class="line">	var_dump(<span class="keyword">isset</span>(<span class="variable">$obj1</span>-&gt;&#123;<span class="string">&#x27;1&#x27;</span>&#125;)); </span><br><span class="line">	<span class="comment">// outputs : &#x27;bool(false)&#x27;</span></span><br><span class="line">	var_dump(key(<span class="variable">$obj1</span>)); </span><br><span class="line">	<span class="comment">// outputs : &#x27;int(1)&#x27;</span></span><br><span class="line"></span><br><span class="line">	<span class="variable">$obj2</span> = (<span class="keyword">object</span>) <span class="string">&#x27;ciao&#x27;</span>;</span><br><span class="line">	var_dump(<span class="variable">$obj2</span>);</span><br><span class="line">	<span class="keyword">echo</span> <span class="variable">$obj2</span>-&gt;scalar;  <span class="comment">// outputs : &#x27;ciao&#x27;</span></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-2-3"><a href="#Example-2-3" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>自 5.4 起可以使用短数组定义语法，创建一个stdClass对象。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">   <span class="variable">$object</span> =(<span class="keyword">object</span>) [</span><br><span class="line">     <span class="string">&#x27;propertyOne&#x27;</span> =&gt; <span class="string">&#x27;foo&#x27;</span>,</span><br><span class="line">     <span class="string">&#x27;propertyTwo&#x27;</span> =&gt; <span class="number">42</span>,</span><br><span class="line">   ];</span><br><span class="line">   var_dump(<span class="variable">$object</span>);</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-3-3"><a href="#Example-3-3" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>自 PHP 7.0.0 之后，多了以下几种创建空对象的方法。（在PHP 7.1.0上成功运行）</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$obj1</span> = <span class="keyword">new</span> \<span class="built_in">stdClass</span>; <span class="comment">// stdClass 对象实例</span></span><br><span class="line">	<span class="variable">$obj2</span> = <span class="keyword">new</span> <span class="class"><span class="keyword">class</span></span>&#123;&#125;; <span class="comment">// class@anonymous 对象实例</span></span><br><span class="line">	<span class="variable">$obj3</span> = (<span class="keyword">object</span>)[]; <span class="comment">// 空数组强转对象</span></span><br><span class="line">	<span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;&quot;</span>;</span><br><span class="line">	var_dump(<span class="variable">$obj1</span>); <span class="comment">// object(stdClass)#1 (0) &#123;&#125;</span></span><br><span class="line">	var_dump(<span class="variable">$obj2</span>); <span class="comment">// object(class@anonymous)#2 (0) &#123;&#125;</span></span><br><span class="line">	var_dump(<span class="variable">$obj3</span>); <span class="comment">// object(stdClass)#3 (0) &#123;&#125;</span></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Resource"><a href="#Resource" class="headerlink" title="Resource"></a>Resource</h3><blockquote>
+<p>资源 resource 是一种特殊变量，保存了到外部资源的一个引用。资源是通过专门的函数来建立和使用的。</p>
+<p>由于资源类型变量保存有为打开文件、数据库连接、图形画布区域等的特殊句柄，因此将其它类型的值转换为资源没有意义。</p>
+<p>由于 Zend 引擎引进了引用计数系统，可以自动检测到一个资源不再被引用了（和 Java 一样）。这种情况下此资源使用的所有外部资源都会被垃圾回收系统释放。因此，很少需要手工释放内存。 请注意：持久数据库连接比较特殊，它们不会被垃圾回收系统销毁。</p>
+</blockquote>
+<h3 id="NULL"><a href="#NULL" class="headerlink" title="NULL"></a>NULL</h3><blockquote>
+<p>NULL 值表示一个变量没有值。NULL 类型唯一可能的值就是 NULL。 </p>
+<p>使用 (unset) $var 将一个变量转换为 null 将不会删除该变量或 unset 其值。仅是返回 NULL 值而已。</p>
+</blockquote>
+<h4 id="Example-1-6"><a href="#Example-1-6" class="headerlink" title="Example-1"></a>Example-1</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$test</span>[<span class="string">&#x27;_string&#x27;</span>] = <span class="string">&quot;&quot;</span>;</span><br><span class="line">	<span class="variable">$test</span>[<span class="string">&#x27;_int&#x27;</span>] = <span class="number">0</span>;</span><br><span class="line">	<span class="variable">$test</span>[<span class="string">&#x27;_float&#x27;</span>] = <span class="number">0.0</span>;</span><br><span class="line">	<span class="variable">$test</span>[<span class="string">&#x27;_null&#x27;</span>] = <span class="literal">null</span>;</span><br><span class="line">	<span class="variable">$test</span>[<span class="string">&#x27;_arr&#x27;</span>] = <span class="keyword">array</span>();</span><br><span class="line">	<span class="variable">$test</span>[<span class="string">&#x27;_obj&#x27;</span>] = <span class="keyword">new</span> \<span class="built_in">stdClass</span>; <span class="comment">//is not null</span></span><br><span class="line"></span><br><span class="line">	 <span class="keyword">foreach</span>(<span class="variable">$test</span> <span class="keyword">as</span> <span class="variable">$key</span> =&gt; <span class="variable">$value</span>)</span><br><span class="line">	 &#123;</span><br><span class="line">	     <span class="keyword">echo</span> <span class="variable">$key</span>.<span class="string">&quot;: &quot;</span>;</span><br><span class="line">	     <span class="keyword">if</span>(<span class="variable">$value</span> == <span class="literal">null</span>)</span><br><span class="line">	         <span class="keyword">echo</span> <span class="string">&quot;is null\n&quot;</span>;</span><br><span class="line">	     <span class="keyword">else</span></span><br><span class="line">	         <span class="keyword">echo</span> <span class="string">&quot;is not null\n&quot;</span>;</span><br><span class="line">	 &#125;</span><br><span class="line">	 <span class="keyword">die</span>();</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-2-4"><a href="#Example-2-4" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>有趣的是貌似只有当变量<code>$a=&quot;0&quot;</code>的时候以下条件才能成立。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="string">&#x27;0&#x27;</span>;</span><br><span class="line">	<span class="keyword">echo</span> (<span class="variable">$a</span> != <span class="literal">NULL</span>) &amp;&amp; ((<span class="keyword">bool</span>)<span class="variable">$a</span> == <span class="literal">NULL</span>) ?<span class="string">&#x27;not null&#x27;</span>:<span class="string">&#x27;null&#x27;</span>;</span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Example-3-4"><a href="#Example-3-4" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>注意unset($a)函数销毁变量和$a = NULL的区别</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="comment">// unset($a)</span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">5</span>;</span><br><span class="line">	<span class="variable">$b</span> = &amp; <span class="variable">$a</span>;</span><br><span class="line">	<span class="keyword">unset</span>(<span class="variable">$a</span>);</span><br><span class="line">	<span class="keyword">print</span> <span class="string">&quot;b <span class="subst">$b</span> &quot;</span>; <span class="comment">// b 5 </span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// $a = NULL; </span></span><br><span class="line">	<span class="variable">$a</span> = <span class="number">5</span>;</span><br><span class="line">	<span class="variable">$b</span> = &amp; <span class="variable">$a</span>;</span><br><span class="line">	<span class="variable">$a</span> = <span class="literal">NULL</span>;</span><br><span class="line">	<span class="keyword">print</span> <span class="string">&quot;b <span class="subst">$b</span> &quot;</span>; <span class="comment">// b </span></span><br><span class="line">	<span class="keyword">print</span>(! <span class="keyword">isset</span>(<span class="variable">$b</span>)); <span class="comment">// 1 </span></span><br><span class="line"><span class="meta">?&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt=" 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt=" 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/28/PHP%E5%9F%BA%E7%A1%80-%E6%B3%A8%E9%87%8A/" rel="next" title="PHP基础-注释">
+                <i class="fa fa-chevron-left"></i> PHP基础-注释
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/28/PHP%E5%9F%BA%E7%A1%80-%E5%8F%98%E9%87%8F%E5%92%8C%E5%B8%B8%E9%87%8F/" rel="prev" title="PHP基础-变量和常量">
+                PHP基础-变量和常量 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/yann.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yann0917" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zhaoyabo2011@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/133617179" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://blog.csdn.net/abc1991234" target="_blank" title="csdn">
+                      
+                        <i class="fa fa-fw fa-globe"></i>csdn</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP%E4%B8%AD%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.</span> <span class="nav-text">PHP中的数据类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boolean"><span class="nav-number">2.</span> <span class="nav-text">Boolean</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1"><span class="nav-number">2.1.</span> <span class="nav-text">Example-1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Integer"><span class="nav-number">3.</span> <span class="nav-text">Integer</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-1"><span class="nav-number">3.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2"><span class="nav-number">3.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3"><span class="nav-number">3.3.</span> <span class="nav-text">Example-3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-4"><span class="nav-number">3.4.</span> <span class="nav-text">Example-4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-5"><span class="nav-number">3.5.</span> <span class="nav-text">Example-5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-6"><span class="nav-number">3.6.</span> <span class="nav-text">Example-6</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Float"><span class="nav-number">4.</span> <span class="nav-text">Float</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-2"><span class="nav-number">4.1.</span> <span class="nav-text">Example-1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String"><span class="nav-number">5.</span> <span class="nav-text">String</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-3"><span class="nav-number">5.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-1"><span class="nav-number">5.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3-1"><span class="nav-number">5.3.</span> <span class="nav-text">Example-3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Array"><span class="nav-number">6.</span> <span class="nav-text">Array</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-4"><span class="nav-number">6.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-2"><span class="nav-number">6.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3-2"><span class="nav-number">6.3.</span> <span class="nav-text">Example-3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Examlpe-4"><span class="nav-number">6.4.</span> <span class="nav-text">Examlpe-4</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-5-1"><span class="nav-number">6.5.</span> <span class="nav-text">Example-5</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-6-1"><span class="nav-number">6.6.</span> <span class="nav-text">Example-6</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-7"><span class="nav-number">6.7.</span> <span class="nav-text">Example-7</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Object"><span class="nav-number">7.</span> <span class="nav-text">Object</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-5"><span class="nav-number">7.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-3"><span class="nav-number">7.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3-3"><span class="nav-number">7.3.</span> <span class="nav-text">Example-3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Resource"><span class="nav-number">8.</span> <span class="nav-text">Resource</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NULL"><span class="nav-number">9.</span> <span class="nav-text">NULL</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-6"><span class="nav-number">9.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-4"><span class="nav-number">9.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3-4"><span class="nav-number">9.3.</span> <span class="nav-text">Example-3</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yann</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">46.9k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz',
+        appKey: 'HjGC1bnbGqg2cFP4VPMBWzPD',
+        placeholder: '小老弟，你好',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("d74Bu4ko9fkm6FvVG8hxuvvf-gzGzoHsz", "qNn9vO1e4TEoVv1udoN1vCP2");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

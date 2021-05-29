@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="测试环境PHP version 5.3.29&#x2F;5.6.29&#x2F;7.1.0Apache 2.4.25  PHP 对待对象的方式与引用和句柄相同，即每个变量都持有对象的引用，而不是整个对象的拷贝。 类常量Example-1 自 PHP 5.5 起，关键词 class 也可用于类名的解析。使用 ClassName::class 可以获取一个字符串，包含了类 ClassName 的完全限定名称，这对使用了">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP基础-类与对象">
+<meta property="og:url" content="https://yann0917.github.io/2017/04/29/PHP%E5%9F%BA%E7%A1%80-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/index.html">
+<meta property="og:site_name" content="Yann&#39;s blog">
+<meta property="og:description" content="测试环境PHP version 5.3.29&#x2F;5.6.29&#x2F;7.1.0Apache 2.4.25  PHP 对待对象的方式与引用和句柄相同，即每个变量都持有对象的引用，而不是整个对象的拷贝。 类常量Example-1 自 PHP 5.5 起，关键词 class 也可用于类名的解析。使用 ClassName::class 可以获取一个字符串，包含了类 ClassName 的完全限定名称，这对使用了">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-04-29T05:42:58.000Z">
+<meta property="article:modified_time" content="2021-05-29T08:14:37.568Z">
+<meta property="article:author" content="Yann">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yann0917.github.io/2017/04/29/PHP基础-类与对象/"/>
+
+
+
+
+
+  <title>PHP基础-类与对象 | Yann's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yann's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay hungry. Stay foolish.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yann0917.github.io/2017/04/29/PHP%E5%9F%BA%E7%A1%80-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/yann.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yann's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP基础-类与对象</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T05:42:58+00:00">
+                2017-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-%E7%B1%BB%E4%B8%8E%E5%AF%B9%E8%B1%A1/" class="leancloud_visitors" data-flag-title="PHP基础-类与对象">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  4.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  19
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>测试环境<br>PHP version 5.3.29/5.6.29/7.1.0<br>Apache 2.4.25</p>
+</blockquote>
+<p>PHP 对待对象的方式与引用和句柄相同，即每个变量都持有对象的引用，而不是整个对象的拷贝。</p>
+<h3 id="类常量"><a href="#类常量" class="headerlink" title="类常量"></a>类常量</h3><h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>自 PHP 5.5 起，关键词 <code>class</code> 也可用于类名的解析。使用 ClassName::class 可以获取一个字符串，包含了类 ClassName 的完全限定名称，这对使用了 <strong>命名空间</strong> 的类尤其有用。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">namespace</span> <span class="title">NS</span> &#123;</span><br><span class="line">        <span class="title">class</span> <span class="title">ClassName</span> &#123;</span><br><span class="line">        &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="title">echo</span> <span class="title">ClassName</span>::<span class="title">class</span>; <span class="comment">//outputs NS\ClassName</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>属性和方法位于不同的“存储空间”，这就意味着不能直接调用一个赋值给属性的匿名方法，需要先把属性赋值给一个变量。</p>
+<p>PHP 7.0.0 之后则可以将该属性用 <code>()</code> 括起来然后直接调用该匿名方法。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span>	</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$bar</span>;</span><br><span class="line">	    </span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;bar = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">2</span>;</span><br><span class="line">            &#125;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$obj</span> = <span class="keyword">new</span> Foo();</span><br><span class="line"></span><br><span class="line">    <span class="comment">// as of PHP 5.3.0:</span></span><br><span class="line">    <span class="variable">$func</span> = <span class="variable">$obj</span>-&gt;bar;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$func</span>(), PHP_EOL;</span><br><span class="line">	</span><br><span class="line">    <span class="comment">// alternatively, as of PHP 7.0.0:</span></span><br><span class="line">    <span class="keyword">echo</span> (<span class="variable">$obj</span>-&gt;bar)(), PHP_EOL; </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-3"><a href="#Example-3" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>PHP 5.4 引进了一种新的创建对象后调用成员方法的表达式。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> (<span class="keyword">new</span> DateTime())-&gt;format(<span class="string">&#x27;Y&#x27;</span>);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="属性"><a href="#属性" class="headerlink" title="属性"></a>属性</h3><h4 id="Example-1-1"><a href="#Example-1-1" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>属性常量的初始化值必须是常量，PHP 5.6 之后也可以是常量表达式。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SimpleClass</span></span>&#123;</span><br><span class="line">   <span class="comment">//PHP 5.6.0+有效:</span></span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$var1</span> = <span class="string">&#x27;hello &#x27;</span> . <span class="string">&#x27;world&#x27;</span>;</span><br><span class="line">   <span class="comment">//PHP 5.3.0+有效:</span></span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$var2</span> = <span class="string">&lt;&lt;&lt;EOD</span></span><br><span class="line"><span class="string">hello world</span></span><br><span class="line"><span class="string">EOD</span>;</span><br><span class="line">   <span class="comment">//PHP 5.6.0+有效:</span></span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$var3</span> = <span class="number">1</span>+<span class="number">2</span>;</span><br><span class="line">   <span class="comment">// 无效的属性声明:</span></span><br><span class="line">   <span class="comment">// public $var4 = self::myStaticMethod();</span></span><br><span class="line">   <span class="comment">// public $var5 = $myVar;</span></span><br><span class="line"></span><br><span class="line">   <span class="comment">// 有效的属性声明:</span></span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$var6</span> = myConstant;</span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$var7</span> = <span class="keyword">array</span>(<span class="literal">true</span>, <span class="literal">false</span>);</span><br><span class="line"></span><br><span class="line">   <span class="comment">//PHP 5.3.0+有效:</span></span><br><span class="line">   <span class="keyword">public</span> <span class="variable">$var8</span> = &lt;&lt;&lt;<span class="string">&#x27;EOD&#x27;</span></span><br><span class="line">hello world</span><br><span class="line">EOD;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-2-1"><a href="#Example-2-1" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p><code>$this</code> 可以强转成数组。如果一个 object 类型转换为 array，则结果为一个数组，其单元为该对象的属性。键名将为成员变量名，不过有几点例外：静态属性不可访问；私有变量前会加上类名作前缀；受保护变量前会加上一个 ‘*’ 做前缀。这些前缀的前后都各有一个 NULL 字符(\0)。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">TestA</span> </span>&#123; </span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$var1</span> = <span class="number">1</span>; </span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$var2</span> = <span class="number">2</span>; </span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$var3</span> = <span class="number">3</span>; </span><br><span class="line">        <span class="built_in">static</span> <span class="variable">$var4</span> = <span class="number">4</span>; </span><br><span class="line">	     </span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">toArray</span>(<span class="params"></span>) </span>&#123; </span><br><span class="line">            <span class="keyword">return</span> (<span class="keyword">array</span>) <span class="keyword">$this</span>; </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">TestB</span> <span class="keyword">extends</span> <span class="title">TestA</span></span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$var5</span> = <span class="number">5</span>;</span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$var6</span> = <span class="number">6</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$var7</span> = <span class="number">7</span>;</span><br><span class="line">        <span class="built_in">static</span> <span class="variable">$var8</span> = <span class="number">8</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$t</span> = <span class="keyword">new</span> TestB; </span><br><span class="line">    print_r(<span class="variable">$t</span>-&gt;toArray()); </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="构造方法"><a href="#构造方法" class="headerlink" title="构造方法"></a>构造方法</h3><p>与其它方法不同，当<code>__construct()</code>被与父类<code> __construct()</code> 具有不同参数的方法覆盖时，PHP 不会产生一个 E_STRICT 错误信息。即构造方法可以重载。</p>
+<h4 id="Example-1-2"><a href="#Example-1-2" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>尝试从析构方法中抛出异常会导致fatal error，然而以下代码在PHP 7.1.0上会导致出错，在PHP 5.3.29 和PHP 5.6.29都能正常运行。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Something</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">         <span class="keyword">echo</span> <span class="keyword">__METHOD__</span> . <span class="string">&#x27;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">     &#125;</span><br><span class="line"></span><br><span class="line">     <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__destruct</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">         <span class="keyword">echo</span> <span class="keyword">__METHOD__</span> .<span class="string">&#x27;&lt;br/&gt;&#x27;</span>;</span><br><span class="line">         <span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Exception</span>(<span class="string">&quot;Exception thrown out of ::__destruct()&quot;</span>, <span class="number">1</span>);</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">try</span>&#123;</span><br><span class="line">     <span class="variable">$Something</span> = <span class="keyword">new</span> Something();</span><br><span class="line">     <span class="variable">$Something</span> = <span class="literal">null</span>; <span class="comment">// will cause to call the objects ::__destruct()</span></span><br><span class="line">     <span class="comment">// also possible: unset($Something);</span></span><br><span class="line">&#125;<span class="keyword">catch</span>(<span class="built_in">Exception</span> <span class="variable">$e</span>)&#123;</span><br><span class="line">     <span class="keyword">echo</span> <span class="string">&#x27;Exception: &#x27;</span> . <span class="variable">$e</span>-&gt;getMessage() . PHP_EOL.<span class="string">&#x27;&lt;br/&gt;&#x27;</span>;</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="keyword">echo</span> <span class="string">&#x27;End of script -- no Fatal Error.&#x27;</span>;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h3><blockquote>
+<p>对属性或方法的访问控制，是通过在前面添加关键字 public（公有），protected（受保护）或 private（私有）来实现的。</p>
+<ul>
+<li><p>被定义为公有的类成员可以在任何地方被访问。</p>
+</li>
+<li><p>被定义为受保护的类成员则可以被其自身以及其子类和父类访问。</p>
+</li>
+<li><p>被定义为私有的类成员则只能被其定义所在的类访问。</p>
+</li>
+</ul>
+</blockquote>
+<h4 id="Example-1-3"><a href="#Example-1-3" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>上述说法并不严谨，通过<code>call_user_func()</code>和<code>Closure::bind()</code>复制一个指定的绑定对象和类作用域的闭包，可以在类外访问类成员内部的私有成员和受保护成员。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Sealed</span> </span>&#123; </span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$value</span> = <span class="string">&#x27;foo&#x27;</span>; </span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="variable">$sealed</span> = <span class="keyword">new</span> Sealed;</span><br><span class="line">    var_dump(<span class="variable">$sealed</span>); <span class="comment">// private $value =&gt; string(3) &quot;foo&quot;</span></span><br><span class="line">	</span><br><span class="line">    <span class="comment">// call_user_func — 把第一个参数作为回调函数调用。</span></span><br><span class="line">    <span class="comment">// PHP5.4 Closure::bind — 复制一个闭包，绑定指定的$this对象和类作用域。</span></span><br><span class="line">    call_user_func(\<span class="built_in">Closure</span>::bind(</span><br><span class="line">        <span class="function"><span class="keyword">function</span> (<span class="params"></span>) <span class="keyword">use</span> (<span class="params"><span class="variable">$sealed</span></span>) </span>&#123; <span class="variable">$sealed</span>-&gt;value = <span class="string">&#x27;BAZ&#x27;</span>; &#125;,</span><br><span class="line">        <span class="literal">null</span>,</span><br><span class="line">        <span class="variable">$sealed</span></span><br><span class="line">    ));</span><br><span class="line">	</span><br><span class="line">    var_dump(<span class="variable">$sealed</span>); <span class="comment">// private $value =&gt; string(3) &quot;BAZ&quot;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-2-2"><a href="#Example-2-2" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>PHP 5.3 之后可以使用简单的变量动态调用类的静态方法或常量，但是使用对象属性调用类的静态方法或类常量，在PHP 7.0之前的版本会抛出语法错误。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Foo</span></span>&#123;</span><br><span class="line">        <span class="keyword">const</span> BAR = <span class="string">&#x27;const&#x27;</span>;</span><br><span class="line">	     </span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&#x27;static&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">echo</span> Foo::BAR ; <span class="comment">// outputs &quot;const&quot;</span></span><br><span class="line">    <span class="keyword">echo</span> Foo::bar() ; <span class="comment">// outputs &quot;static&quot;</span></span><br><span class="line">	</span><br><span class="line">    <span class="variable">$var</span> = <span class="string">&#x27;Foo&#x27;</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$var</span>::BAR ; <span class="comment">// outputs &quot;const&quot; in PHP 5.3.0</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$var</span>::bar(); <span class="comment">// outputs &quot;static&quot; in PHP 5.3.0</span></span><br><span class="line">	</span><br><span class="line">    <span class="comment">//PHP 7.0 之后有效</span></span><br><span class="line">    <span class="variable">$object</span> = <span class="keyword">new</span> <span class="built_in">stdClass</span>; </span><br><span class="line">    <span class="variable">$object</span>-&gt;class = <span class="string">&#x27;Foo&#x27;</span>; </span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$object</span>-&gt;class::BAR . PHP_EOL; <span class="comment">// outputs &quot;const&quot; in PHP 7</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$object</span>-&gt;class::bar() . PHP_EOL; <span class="comment">// outputs &quot;static&quot; in PHP 7</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="抽象类"><a href="#抽象类" class="headerlink" title="抽象类"></a>抽象类</h3><h4 id="Example-1-4"><a href="#Example-1-4" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>不能在抽象类的内部通过self实现抽象类内部的抽象方法。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Basic</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">doWork</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">new</span> <span class="built_in">self</span>())-&gt;work();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">abstract</span> <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">work</span>(<span class="params"></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Keeks</span> <span class="keyword">extends</span> <span class="title">Basic</span> </span>&#123;</span><br><span class="line">        <span class="keyword">protected</span> <span class="function"><span class="keyword">function</span> <span class="title">work</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&#x27;Keeks&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> Keeks::doWork();</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-2-3"><a href="#Example-2-3" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>继承一个抽象类的时候，子类必须定义父类中的所有抽象方法；另外，这些方法的访问控制必须和父类中一样（或者更为宽松）。<br>此外抽象方法的调用方式必须匹配，即类型和所需参数数量必须一致。（如果子类参数列表中有默认参数则例外）</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">// fatal error,子类方法的调用方法必须和抽象父类的类型和数量一致</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">my_class</span> </span>&#123;</span><br><span class="line">        <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">my_function</span>(<span class="params"><span class="variable">$number</span></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">subclass</span> <span class="keyword">extends</span> <span class="title">my_class</span> </span>&#123;</span><br><span class="line">        <span class="comment">//now $string isn&#x27;t initialized</span></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">my_function</span>(<span class="params"><span class="variable">$new_number</span>, <span class="variable">$string</span> </span>)</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$new_number</span> . <span class="variable">$string</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$var</span> = <span class="keyword">new</span> subclass();</span><br><span class="line">    <span class="variable">$var</span>-&gt;my_function(<span class="number">1024</span>, <span class="string">&#x27; is an integer!!!&#x27;</span>);</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>子类可以定义父类抽象方法中不存在的可选参数。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">// 子类的方法调用必须和抽象类的类型和参数一致</span></span><br><span class="line">    <span class="comment">// 但是子类定义的方法参数和数量可以和父类的不一致（如子类设置了默认参数）</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">my_class</span> </span>&#123;</span><br><span class="line">        <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">my_function</span>(<span class="params"><span class="variable">$number</span></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">subclass</span> <span class="keyword">extends</span> <span class="title">my_class</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">my_function</span>(<span class="params"><span class="variable">$new_number</span>, <span class="variable">$string</span> = <span class="string">&#x27; is an integer!!!&#x27;</span></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$new_number</span> . <span class="variable">$string</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$var</span> = <span class="keyword">new</span> subclass();</span><br><span class="line">    <span class="variable">$var</span>-&gt;my_function(<span class="number">1024</span>); </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>子类的方法调用可以和抽象父类的类型和参数不一致，如重写了子类的默认参数。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="comment">// 子类的方法调用可以和抽象父类的类型和参数不一致</span></span><br><span class="line">    <span class="comment">// 子类定义的方法参数和数量可以和父类的不一致（如重写了子类的默认参数）</span></span><br><span class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">my_class</span> </span>&#123;</span><br><span class="line">        <span class="keyword">abstract</span> <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">my_function</span>(<span class="params"><span class="variable">$number</span></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">subclass</span> <span class="keyword">extends</span> <span class="title">my_class</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">my_function</span>(<span class="params"><span class="variable">$new_number</span>, <span class="variable">$string</span> = <span class="string">&#x27; is a float!!!&#x27;</span></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="variable">$new_number</span> . <span class="variable">$string</span>;</span><br><span class="line">        &#125;	</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="variable">$var</span> = <span class="keyword">new</span> subclass();</span><br><span class="line">    <span class="comment">//added &#x27; is an integer&#x27;</span></span><br><span class="line">    <span class="variable">$var</span>-&gt;my_function(<span class="number">1024</span>, <span class="string">&#x27; is an integer!!!&#x27;</span>); </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-3-1"><a href="#Example-3-1" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>抽象类的抽象方法可以是静态的，但最好不要这么做。虽然在PHP 7.1上无错误，但是在PHP5.6.29上提示Strict standards：静态方法不能用在抽象类里。这是因为静态方法只能由该类调用，但是抽象类意味着一定要有其他的类去实现它的方法。</p>
+<p>虽然抽象类不能被实例化，但是抽象类可以调用类内的静态非抽象方法。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">FOO</span></span>&#123;</span><br><span class="line">        <span class="keyword">abstract</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">dump</span>(<span class="params"></span>)</span>;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">bar</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;test\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">BAR</span> <span class="keyword">extends</span> <span class="title">FOO</span></span>&#123;</span><br><span class="line">        <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">dump</span>(<span class="params"></span>)</span>&#123;var_dump(<span class="string">&quot;BAR&quot;</span>);&#125;</span><br><span class="line">    &#125;</span><br><span class="line">    BAR::dump(); <span class="comment">// string(3) &quot;BAR&quot;</span></span><br><span class="line">    FOO::bar(); <span class="comment">// test</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-4"><a href="#Example-4" class="headerlink" title="Example-4"></a>Example-4</h4><blockquote>
+<p>抽象类不一定是基类，也可以继承自非抽象类。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sneeze</span>(<span class="params"></span>) </span>&#123; <span class="keyword">echo</span> <span class="string">&#x27;achoooo&#x27;</span>,<span class="string">&#x27;&lt;br/&gt;&#x27;</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">Bar</span> <span class="keyword">extends</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="keyword">abstract</span> <span class="function"><span class="keyword">function</span> <span class="title">hiccup</span>(<span class="params"></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Baz</span> <span class="keyword">extends</span> <span class="title">Bar</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">hiccup</span>(<span class="params"></span>) </span>&#123; <span class="keyword">echo</span> <span class="string">&#x27;hiccup!&#x27;</span>,<span class="string">&#x27;&lt;br/&gt;&#x27;</span>; &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$baz</span> = <span class="keyword">new</span> Baz();</span><br><span class="line">    <span class="variable">$baz</span>-&gt;sneeze(); <span class="comment">// achoooo</span></span><br><span class="line">    <span class="variable">$baz</span>-&gt;hiccup(); <span class="comment">//hiccup!</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h3 id="对象接口"><a href="#对象接口" class="headerlink" title="对象接口"></a>对象接口</h3><ul>
+<li>要实现一个接口，使用<code>implements</code>操作符。类中必须实现接口中定义的所有方法，否则会报一个致命错误。</li>
+<li>类可以实现多个接口，用逗号来分隔多个接口的名称。 接口也可以多继承，通过使用<code> extends</code> 操作符。</li>
+<li>实现多个接口时，接口中的方法不能有重名。</li>
+<li>类要实现接口，必须使用和接口中所定义的方法完全一致的方式，否则会导致致命错误。</li>
+<li>接口中也可以定义常量。接口常量和类常量的使用完全相同，但是不能被子类或子接口所重写。</li>
+</ul>
+<h4 id="Example-1-5"><a href="#Example-1-5" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>实现接口的方法时，如果方法的参数中设置了默认值，则可以和接口中定义的方法不一致，且不会报错。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"><span class="variable">$foo</span></span>)</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Bar</span> <span class="keyword">implements</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"><span class="variable">$foo</span>, <span class="variable">$bar</span> = <span class="literal">null</span></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$foo</span> . <span class="variable">$bar</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$bar</span> = <span class="keyword">new</span> Bar();</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$bar</span>-&gt;foo(<span class="string">&#x27;Study&#x27;</span>, <span class="string">&#x27;Good&#x27;</span>); </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-2-4"><a href="#Example-2-4" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>接口中的常量不能被子类或子接口重写，但是可以使用一个(抽象)类实现该接口，然后另一个类继承实现该接口的类，就可以重写接口常量。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">inter1</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> interface1 = <span class="string">&quot;I am from interface 1&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">abstract</span> <span class="class"><span class="keyword">class</span> <span class="title">AbsClass</span> <span class="keyword">implements</span> <span class="title">inter1</span> </span>&#123;</span><br><span class="line">	     </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Test</span> <span class="keyword">extends</span> <span class="title">AbsClass</span> </span>&#123;</span><br><span class="line">        <span class="keyword">const</span> interface1 = <span class="string">&quot;I am from test class&quot;</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">display</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> inter1::interface1;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line">            <span class="keyword">echo</span> Test::interface1;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$Obj</span> = <span class="keyword">new</span> Test();</span><br><span class="line">    <span class="variable">$Obj</span>-&gt;display();</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-3-2"><a href="#Example-3-2" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>可以在类声明之前实例化该类的对象，但是并不能在实现接口之前实例化实现接口的类。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="variable">$bar</span> = <span class="keyword">new</span> FooA(); <span class="comment">// 有效</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">FooA</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// $bar = new FooB(); // 无效 - 抛出致命错误，找不到类FooB</span></span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">foo2</span></span>&#123;&#125;</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">FooB</span> <span class="keyword">implements</span> <span class="title">foo2</span></span>&#123;&#125;</span><br><span class="line">    <span class="variable">$bar</span> = <span class="keyword">new</span> FooB();</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Trait"><a href="#Trait" class="headerlink" title="Trait"></a>Trait</h3><p>自 PHP 5.4.0 起，PHP 实现了一种代码复用的方法，称为 trait。Trait 为了减少单继承语言的限制，使开发人员能够自由地在不同层次结构内独立的类中复用 method。<a target="_blank" rel="noopener" href="http://php.net/manual/zh/language.oop5.traits.php">详见手册</a></p>
+<h4 id="Example-1-6"><a href="#Example-1-6" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>从基类继承的成员会被 trait 插入的成员所覆盖。优先顺序是来自当前类的成员覆盖了 trait 的方法，而 trait 则覆盖了被继承的方法。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">trait</span> <span class="title">Hello</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sayHello</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;Hello &#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="class"><span class="keyword">trait</span> <span class="title">World</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sayWorld</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;World&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">MyHelloWorld</span> </span>&#123;</span><br><span class="line">        <span class="keyword">use</span> <span class="title">Hello</span>, <span class="title">World</span>; <span class="comment">// 通过逗号分隔，在 use 声明列出多个 trait</span></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">sayExclamationMark</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&#x27;!&#x27;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="variable">$o</span> = <span class="keyword">new</span> MyHelloWorld();</span><br><span class="line">    <span class="variable">$o</span>-&gt;sayHello();</span><br><span class="line">    <span class="variable">$o</span>-&gt;sayWorld();</span><br><span class="line">    <span class="variable">$o</span>-&gt;sayExclamationMark();</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-2-5"><a href="#Example-2-5" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>如果 trait 定义了一个属性，那类将不能定义同样名称的属性，否则会产生一个错误。如果该属性在类中的定义与在 trait 中的定义兼容（同样的可见性和初始值）则错误的级别是 E_STRICT，否则是一个致命错误。 </p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">trait</span> <span class="title">PropertiesTrait</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$same</span> = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$different</span> = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">PropertiesExample</span> </span>&#123;</span><br><span class="line">        <span class="keyword">use</span> <span class="title">PropertiesTrait</span>;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$same</span> = <span class="literal">true</span>; <span class="comment">// Strict Standards</span></span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$different</span> = <span class="literal">true</span>; <span class="comment">// 致命错误</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="匿名类"><a href="#匿名类" class="headerlink" title="匿名类"></a>匿名类</h3><h4 id="Example-1-7"><a href="#Example-1-7" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>PHP 7 开始支持匿名类。可以传递参数到匿名类的构造器，也可以继承（extends）其他类、实现接口（implement s），以及像其他普通的类一样使用 trait。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">SomeClass</span> </span>&#123;&#125;</span><br><span class="line">    <span class="class"><span class="keyword">interface</span> <span class="title">SomeInterface</span> </span>&#123;&#125;</span><br><span class="line">    <span class="class"><span class="keyword">trait</span> <span class="title">SomeTrait</span> </span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    var_dump(<span class="keyword">new</span> <span class="class"><span class="keyword">class</span>(10) <span class="keyword">extends</span> <span class="title">SomeClass</span> <span class="keyword">implements</span> <span class="title">SomeInterface</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$num</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__construct</span>(<span class="params"><span class="variable">$num</span></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">$this</span>-&gt;num = <span class="variable">$num</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">use</span> <span class="title">SomeTrait</span>;</span><br><span class="line">    &#125;); </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-2-6"><a href="#Example-2-6" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>匿名类由引擎分配名字，如下所示：</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">echo</span> get_class(<span class="keyword">new</span> <span class="class"><span class="keyword">class</span> </span>&#123;&#125;); <span class="comment">// class@anonymous G:\www\php\\test.php00480021</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="重载"><a href="#重载" class="headerlink" title="重载"></a>重载</h3><p>PHP所提供的”重载”（overloading）是指动态地”创建”类属性和方法。我们是通过魔术方法（magic methods）来实现的。<br>当调用当前环境下未定义或不可见的类属性或方法时，重载方法会被调用。<br>所有的重载方法都必须被声明为 public。 </p>
+<h4 id="Example-1-8"><a href="#Example-1-8" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>程序运行时已经存在类的实例化对象的属性，但是被unset()之后，也可以实现重载。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123; </span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$property1</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$name</span></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Get called for &quot;</span> . get_class(<span class="keyword">$this</span>) . <span class="string">&quot;-&gt;\$<span class="subst">$name</span> \n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$Test</span> = <span class="keyword">new</span> Test();</span><br><span class="line">    <span class="keyword">unset</span>(<span class="variable">$Test</span>-&gt;property1); <span class="comment">// enable overloading</span></span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$Test</span>-&gt;property1; <span class="comment">// Get called for Test-&gt;$property1</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-2-7"><a href="#Example-2-7" class="headerlink" title="Example-2"></a>Example-2</h4><blockquote>
+<p>可以通过魔术方法在类外获取私有属性。但是不应该在程序运行时动态改变属性值。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">order</span></span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$OrderID</span>=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$OrderAmount</span>=<span class="number">0.00</span>;</span><br><span class="line">	     </span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__set</span>(<span class="params"><span class="variable">$name</span>=<span class="string">&#x27;&#x27;</span>, <span class="variable">$value</span>=<span class="string">&#x27;&#x27;</span></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">if</span>(property_exists(<span class="keyword">$this</span>, <span class="variable">$name</span>))&#123;</span><br><span class="line">                <span class="keyword">$this</span>-&gt;<span class="variable">$name</span> = <span class="variable">$value</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">	</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">__get</span>(<span class="params"><span class="variable">$name</span>=<span class="string">&#x27;&#x27;</span></span>)</span>&#123;</span><br><span class="line">            <span class="variable">$value</span> = <span class="literal">null</span>;</span><br><span class="line">            <span class="keyword">if</span>(property_exists(<span class="keyword">$this</span>, <span class="variable">$name</span>))&#123;</span><br><span class="line">                <span class="variable">$value</span> = <span class="keyword">$this</span>-&gt;<span class="variable">$name</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> <span class="variable">$value</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">	</span><br><span class="line">    <span class="variable">$order</span> = <span class="keyword">new</span> order();</span><br><span class="line">    <span class="variable">$order</span>-&gt;OrderID = <span class="string">&#x27;201305062202&#x27;</span>;</span><br><span class="line">    <span class="variable">$order</span>-&gt;OrderAmount = <span class="number">23.45</span>;</span><br><span class="line">    <span class="variable">$order</span>-&gt;InvalidMember = <span class="string">&#x27;Missed Assignment&#x27;</span>;</span><br><span class="line">	</span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&#x27;&lt;pre&gt;&#x27;</span>, print_r(<span class="variable">$order</span>, <span class="literal">true</span>), <span class="string">&#x27;&lt;/pre&gt;&#x27;</span>;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h4 id="Example-3-3"><a href="#Example-3-3" class="headerlink" title="Example-3"></a>Example-3</h4><blockquote>
+<p>调用对象不存在的方法时请区分静态方法和非静态方法，静态方法用<code>__callstatic()</code>调用，非静态方法用<code>__call()</code>调用。而且非静态方法只能通过类的实例化对象调用，否则会报错。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> </span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">TestClass</span> </span>&#123; </span><br><span class="line">        <span class="function"><span class="keyword">function</span> <span class="title">__call</span>(<span class="params"><span class="variable">$method</span>, <span class="variable">$args</span></span>) </span>&#123; </span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;Non-Static Method <span class="subst">&#123;$method&#125;</span> with args: &quot;</span> . print_r(<span class="variable">$args</span>, <span class="literal">TRUE</span>); </span><br><span class="line">        &#125; </span><br><span class="line">        <span class="built_in">static</span> <span class="function"><span class="keyword">function</span>  <span class="title">__callstatic</span>(<span class="params"><span class="variable">$method</span>, <span class="variable">$args</span></span>) </span>&#123; </span><br><span class="line">            <span class="keyword">echo</span> <span class="string">&quot;Static Method <span class="subst">&#123;$method&#125;</span> with args: &quot;</span> . print_r(<span class="variable">$args</span>, <span class="literal">TRUE</span>); </span><br><span class="line">        &#125; </span><br><span class="line">    &#125; </span><br><span class="line"></span><br><span class="line">    <span class="variable">$obj</span> = <span class="keyword">new</span> TestClass(); </span><br><span class="line">    <span class="variable">$obj</span>-&gt;method_doesnt_exist(<span class="string">&#x27;Non-static Method&#x27;</span>); </span><br><span class="line">    <span class="keyword">echo</span> <span class="string">&quot;&lt;br/&gt;&quot;</span>;</span><br><span class="line">    TestClass::method_doesnt_exist(<span class="string">&#x27;Static Method&#x27;</span>); </span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Final关键字"><a href="#Final关键字" class="headerlink" title="Final关键字"></a>Final关键字</h3><ul>
+<li><p>如果父类中的方法被声明为 final，则子类无法覆盖该方法。如果一个类被声明为 final，则不能被继承。</p>
+</li>
+<li><p>属性不能被定义为 final，只有类和方法才能被定义为 final。</p>
+</li>
+</ul>
+<h4 id="Example-1-9"><a href="#Example-1-9" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>类的私有成员不能被继承，所以子类中可以定义父类的同名方法，但是如果父类定义了 <code>private final</code> 方法，子类中一定不要出现与同类同名的方法，否则会报错。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="keyword">final</span> <span class="function"><span class="keyword">function</span> <span class="title">method</span>(<span class="params"></span>)</span>&#123;&#125;     </span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">        <span class="keyword">private</span> <span class="function"><span class="keyword">function</span> <span class="title">method</span>(<span class="params"></span>)</span>&#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="后期静态绑定"><a href="#后期静态绑定" class="headerlink" title="后期静态绑定"></a>后期静态绑定</h3><p>“后期绑定”的意思是说，static:: 不再被解析为定义当前方法所在的类，而是在实际运行时计算的。也可以称之为”静态绑定”，因为它可以用于（但不限于）静态方法的调用。</p>
+<h4 id="Example-1-10"><a href="#Example-1-10" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>后期静态绑定的解析会一直到取得一个完全解析了的静态调用为止。另一方面，如果静态调用使用 <code>parent:: </code> 或者 <code> self::</code> 将转发调用信息。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="built_in">static</span>::who();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">who</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="keyword">__CLASS__</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">test</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            A::foo();</span><br><span class="line">            <span class="built_in">parent</span>::foo();</span><br><span class="line">            <span class="built_in">self</span>::foo();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">who</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="keyword">__CLASS__</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">C</span> <span class="keyword">extends</span> <span class="title">B</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="built_in">static</span> <span class="function"><span class="keyword">function</span> <span class="title">who</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="keyword">__CLASS__</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    C::test(); <span class="comment">// outputs A C C</span></span><br><span class="line">    B::test(); <span class="comment">// outputs A B B</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="对象和引用"><a href="#对象和引用" class="headerlink" title="对象和引用"></a>对象和引用</h3><p>PHP 的引用是别名，就是两个不同的变量名字指向相同的内容。在php5，一个对象变量只是保存一个<strong>标识符</strong>来访问真正的对象内容。 </p>
+<h4 id="Example-1-11"><a href="#Example-1-11" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>当对象作为参数传递，作为结果返回，或者赋值给另外一个变量，另外一个变量跟原来的不是引用的关系，只是他们都保存着同一个<strong>标识符的拷贝</strong>，这个标识符指向同一个对象的真正内容。</p>
+<p>请注意unset删除对象和给对象赋值为null的区别。 </p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">A</span> </span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$foo</span> = <span class="number">1</span>;</span><br><span class="line">    &#125;  </span><br><span class="line"></span><br><span class="line">    <span class="variable">$a</span> = <span class="keyword">new</span> A;</span><br><span class="line">    <span class="variable">$b</span> = <span class="variable">$a</span>;</span><br><span class="line">    <span class="variable">$a</span>-&gt;foo = <span class="number">2</span>;</span><br><span class="line">    <span class="variable">$a</span> = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$b</span>-&gt;foo.<span class="string">&quot;&lt;br/&gt;\n&quot;</span>; <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line">    <span class="variable">$c</span> = <span class="keyword">new</span> A;</span><br><span class="line">    <span class="variable">$d</span> = &amp;<span class="variable">$c</span>;</span><br><span class="line">    <span class="variable">$c</span>-&gt;foo = <span class="number">2</span>;</span><br><span class="line">    <span class="variable">$c</span> = <span class="literal">NULL</span>;</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$d</span>-&gt;foo.<span class="string">&quot;&lt;br/&gt;\n&quot;</span>; <span class="comment">// Notice:  Trying to get property of non-object...</span></span><br><span class="line"></span><br><span class="line">    <span class="variable">$e</span> = <span class="keyword">new</span> A;</span><br><span class="line">    <span class="variable">$f</span> = &amp;<span class="variable">$e</span>;</span><br><span class="line">    <span class="variable">$e</span> -&gt;foo = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">unset</span>(<span class="variable">$e</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$f</span>-&gt;foo.<span class="string">&quot;&lt;br/&gt;\n&quot;</span>; <span class="comment">// 2</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="序列化和反序列化"><a href="#序列化和反序列化" class="headerlink" title="序列化和反序列化"></a>序列化和反序列化</h3><p>所有php里面的值都可以使用函数serialize()来返回一个包含字节流的字符串来表示。unserialize()函数能够重新把字符串变回php原来的值。 序列化一个对象将会保存对象的所有变量，但是不会保存对象的方法，只会保存类的名字。</p>
+<h4 id="Example-1-12"><a href="#Example-1-12" class="headerlink" title="Example-1"></a>Example-1</h4><blockquote>
+<p>对象的静态成员不能被序列化，<code>protected</code>类型的受保护属性前加<code>*</code>做前缀，<code>private</code>类型的私有属性前加类名做前缀，反序列化后只保存对象的变量，不保留方法。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file &quot;classa.php&quot;</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">        <span class="keyword">public</span> <span class="variable">$one</span> = <span class="number">1</span>;</span><br><span class="line">        <span class="built_in">static</span> <span class="variable">$two</span> = <span class="number">2</span>; <span class="comment">//静态成员并没有存储在序列化文件中</span></span><br><span class="line">        <span class="keyword">protected</span> <span class="variable">$three</span> =<span class="number">3</span>;</span><br><span class="line">        <span class="keyword">private</span> <span class="variable">$four</span> = <span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">show_one</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="keyword">$this</span> -&gt;one;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">public</span> <span class="function"><span class="keyword">function</span> <span class="title">show_two</span>(<span class="params"></span>)</span>&#123;</span><br><span class="line">            <span class="keyword">echo</span> <span class="built_in">self</span>::<span class="variable">$two</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file &quot;page1.php&quot;</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	</span><br><span class="line">    <span class="keyword">include</span> <span class="string">&quot;classa.php&quot;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$a</span> = <span class="keyword">new</span> A;</span><br><span class="line">    <span class="variable">$s</span> = serialize(<span class="variable">$a</span>);</span><br><span class="line"></span><br><span class="line">    file_put_contents(<span class="string">&#x27;store.txt&#x27;</span>, <span class="variable">$s</span>);</span><br><span class="line">    <span class="keyword">echo</span> <span class="variable">$s</span>; </span><br><span class="line">    <span class="comment">//O:1:&quot;A&quot;:3:&#123;s:3:&quot;one&quot;;i:1;s:8:&quot;*three&quot;;i:3;s:7:&quot;Afour&quot;;i:4;&#125;</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// file &quot;page2.php&quot;</span></span><br><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	</span><br><span class="line">    <span class="keyword">include</span> <span class="string">&#x27;classa.php&#x27;</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable">$s</span> = file_get_contents(<span class="string">&#x27;store.txt&#x27;</span>);</span><br><span class="line">    <span class="variable">$a</span> = unserialize(<span class="variable">$s</span>);</span><br><span class="line"></span><br><span class="line">    <span class="variable">$a</span> -&gt; show_one();</span><br><span class="line">    <span class="variable">$a</span> -&gt; show_two();</span><br><span class="line">    var_dump(<span class="variable">$a</span>) ; </span><br><span class="line"></span><br><span class="line"><span class="comment">/* object(A)#1 (3) &#123; </span></span><br><span class="line"><span class="comment">        [&quot;one&quot;]=&gt; int(1) </span></span><br><span class="line"><span class="comment">        [&quot;three&quot;:protected]=&gt; int(3) </span></span><br><span class="line"><span class="comment">        [&quot;four&quot;:&quot;A&quot;:private]=&gt; int(4) </span></span><br><span class="line"><span class="comment">    &#125;</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt=" 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt=" 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-%E5%87%BD%E6%95%B0/" rel="next" title="PHP基础-函数">
+                <i class="fa fa-chevron-left"></i> PHP基础-函数
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4/" rel="prev" title="PHP基础-命名空间">
+                PHP基础-命名空间 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/yann.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yann0917" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zhaoyabo2011@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/133617179" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://blog.csdn.net/abc1991234" target="_blank" title="csdn">
+                      
+                        <i class="fa fa-fw fa-globe"></i>csdn</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B1%BB%E5%B8%B8%E9%87%8F"><span class="nav-number">1.</span> <span class="nav-text">类常量</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1"><span class="nav-number">1.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2"><span class="nav-number">1.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3"><span class="nav-number">1.3.</span> <span class="nav-text">Example-3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B1%9E%E6%80%A7"><span class="nav-number">2.</span> <span class="nav-text">属性</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-1"><span class="nav-number">2.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-1"><span class="nav-number">2.2.</span> <span class="nav-text">Example-2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">构造方法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-2"><span class="nav-number">3.1.</span> <span class="nav-text">Example-1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6"><span class="nav-number">4.</span> <span class="nav-text">访问控制</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-3"><span class="nav-number">4.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-2"><span class="nav-number">4.2.</span> <span class="nav-text">Example-2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8A%BD%E8%B1%A1%E7%B1%BB"><span class="nav-number">5.</span> <span class="nav-text">抽象类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-4"><span class="nav-number">5.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-3"><span class="nav-number">5.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3-1"><span class="nav-number">5.3.</span> <span class="nav-text">Example-3</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-4"><span class="nav-number">5.4.</span> <span class="nav-text">Example-4</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E6%8E%A5%E5%8F%A3"><span class="nav-number">6.</span> <span class="nav-text">对象接口</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-5"><span class="nav-number">6.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-4"><span class="nav-number">6.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3-2"><span class="nav-number">6.3.</span> <span class="nav-text">Example-3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Trait"><span class="nav-number">7.</span> <span class="nav-text">Trait</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-6"><span class="nav-number">7.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-5"><span class="nav-number">7.2.</span> <span class="nav-text">Example-2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8C%BF%E5%90%8D%E7%B1%BB"><span class="nav-number">8.</span> <span class="nav-text">匿名类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-7"><span class="nav-number">8.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-6"><span class="nav-number">8.2.</span> <span class="nav-text">Example-2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E8%BD%BD"><span class="nav-number">9.</span> <span class="nav-text">重载</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-8"><span class="nav-number">9.1.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2-7"><span class="nav-number">9.2.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3-3"><span class="nav-number">9.3.</span> <span class="nav-text">Example-3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Final%E5%85%B3%E9%94%AE%E5%AD%97"><span class="nav-number">10.</span> <span class="nav-text">Final关键字</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-9"><span class="nav-number">10.1.</span> <span class="nav-text">Example-1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E6%9C%9F%E9%9D%99%E6%80%81%E7%BB%91%E5%AE%9A"><span class="nav-number">11.</span> <span class="nav-text">后期静态绑定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-10"><span class="nav-number">11.1.</span> <span class="nav-text">Example-1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E8%B1%A1%E5%92%8C%E5%BC%95%E7%94%A8"><span class="nav-number">12.</span> <span class="nav-text">对象和引用</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-11"><span class="nav-number">12.1.</span> <span class="nav-text">Example-1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96%E5%92%8C%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">13.</span> <span class="nav-text">序列化和反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1-12"><span class="nav-number">13.1.</span> <span class="nav-text">Example-1</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yann</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">46.9k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz',
+        appKey: 'HjGC1bnbGqg2cFP4VPMBWzPD',
+        placeholder: '小老弟，你好',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("d74Bu4ko9fkm6FvVG8hxuvvf-gzGzoHsz", "qNn9vO1e4TEoVv1udoN1vCP2");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

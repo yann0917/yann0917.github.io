@@ -1,0 +1,1485 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Redis,PHP," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="PHP 操作 Redis  Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 Redis 将数据库完全保存在内存中，仅使用磁盘进行持久化。所以可以实现非常高的读写操作； Redis 跟其他键值存储的数据相比，具有丰富的数据类型。 Redis 可以将数据复制到任意的从机中。 在一些需要大容量数据集的应用，Redis也并不适合，因为它的数据集不会超">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP 操作 Redis">
+<meta property="og:url" content="https://yann0917.github.io/2017/04/30/PHP-%E6%93%8D%E4%BD%9C-Redis/index.html">
+<meta property="og:site_name" content="Yann&#39;s blog">
+<meta property="og:description" content="PHP 操作 Redis  Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。 Redis 将数据库完全保存在内存中，仅使用磁盘进行持久化。所以可以实现非常高的读写操作； Redis 跟其他键值存储的数据相比，具有丰富的数据类型。 Redis 可以将数据复制到任意的从机中。 在一些需要大容量数据集的应用，Redis也并不适合，因为它的数据集不会超">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-04-30T02:04:02.000Z">
+<meta property="article:modified_time" content="2021-05-29T08:14:37.568Z">
+<meta property="article:author" content="Yann">
+<meta property="article:tag" content="Redis">
+<meta property="article:tag" content="PHP">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yann0917.github.io/2017/04/30/PHP-操作-Redis/"/>
+
+
+
+
+
+  <title>PHP 操作 Redis | Yann's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yann's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay hungry. Stay foolish.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yann0917.github.io/2017/04/30/PHP-%E6%93%8D%E4%BD%9C-Redis/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/yann.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yann's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP 操作 Redis</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-30T02:04:02+00:00">
+                2017-04-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Redis/" itemprop="url" rel="index">
+                    <span itemprop="name">Redis</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/30/PHP-%E6%93%8D%E4%BD%9C-Redis/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/04/30/PHP-%E6%93%8D%E4%BD%9C-Redis/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/04/30/PHP-%E6%93%8D%E4%BD%9C-Redis/" class="leancloud_visitors" data-flag-title="PHP 操作 Redis">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2.2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  10
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="PHP-操作-Redis"><a href="#PHP-操作-Redis" class="headerlink" title="PHP 操作 Redis"></a>PHP 操作 Redis</h3><blockquote>
+<ul>
+<li>Redis 是一个开源（BSD许可）的，内存中的数据结构存储系统，它可以用作数据库、缓存和消息中间件。</li>
+<li>Redis 将数据库完全保存在内存中，仅使用磁盘进行持久化。所以可以实现非常高的读写操作；</li>
+<li>Redis 跟其他键值存储的数据相比，具有丰富的数据类型。</li>
+<li>Redis 可以将数据复制到任意的从机中。</li>
+<li>在一些需要大容量数据集的应用，Redis也并不适合，因为它的数据集不会超过系统可用的内存。所以如果你有大数据应用，而且主要是读取访问模式，那么Redis并不是正确的选择。</li>
+</ul>
+</blockquote>
+<p>PHP 操作 Redis 基本步骤如下：</p>
+<ol>
+<li>实例化 Redis 对象 <code>$redis = new Redis();</code>；</li>
+<li>连接 Redis 服务器 <code>$redis-&gt;connect(&#39;127.0.0.1&#39;, 6379);</code>；</li>
+<li>设置 Redis 模式；</li>
+<li>进行基本的操作；</li>
+</ol>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//创建redis实例</span></span><br><span class="line"><span class="variable">$redis</span> = <span class="keyword">new</span> Redis();</span><br><span class="line"><span class="comment">//连接redis实例，有以下几种方式</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="number">6379</span>);</span><br><span class="line"><span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>); <span class="comment">// port 6379 by default</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="number">6379</span>, <span class="number">2.5</span>); <span class="comment">// 2.5 sec timeout.</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;/tmp/redis.sock&#x27;</span>); <span class="comment">// unix domain socket.</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>, <span class="number">6379</span>, <span class="number">1</span>, <span class="literal">NULL</span>, <span class="number">100</span>); <span class="comment">// 1 sec timeout, 100ms delay between reconnection attempts.</span></span><br><span class="line"><span class="comment">//如果设置密码，则使用以下方法进行密码认证</span></span><br><span class="line"><span class="variable">$redis</span>-&gt;auth(<span class="string">&#x27;foobared&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+<h4 id="返回类型"><a href="#返回类型" class="headerlink" title="返回类型"></a>返回类型</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">Redis::REDIS_STRING - <span class="keyword">String</span></span><br><span class="line">Redis::REDIS_SET - Set</span><br><span class="line">Redis::REDIS_LIST - <span class="keyword">List</span></span><br><span class="line">Redis::REDIS_ZSET - Sorted set</span><br><span class="line">Redis::REDIS_HASH - Hash</span><br><span class="line">Redis::REDIS_NOT_FOUND - Not found / other</span><br></pre></td></tr></table></figure>
+
+<h3 id="string-操作"><a href="#string-操作" class="headerlink" title="string 操作"></a>string 操作</h3><blockquote>
+<p>Strings 数据结构是简单的key-value类型，value其实不仅是String，也可以是数字，除了一般的set,get之外还有以下功能：</p>
+<ul>
+<li>获取字符串长度</li>
+<li>往字符串append内容</li>
+<li>设置和获取字符串的某一段内容</li>
+<li>设置及获取字符串的某一位（bit）</li>
+<li>批量设置一系列字符串的内容</li>
+</ul>
+</blockquote>
+<p>string 操作用到的命令有:<br><code>getSet</code> <code>append</code> <code>getRange</code> <code>setRange</code> <code>strlen</code> <code>getBit/setBit</code> <code>incr, incrBy</code> <code>decr, decrBy</code> <code>get</code> <code>set</code> <code>setex</code> <code>setnx</code> <code>delete</code> <code>mset</code> <code>mget</code></p>
+<h4 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h4><blockquote>
+<ol>
+<li>计数</li>
+</ol>
+</blockquote>
+<h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example-1"></a>Example-1</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="variable">$redis</span>= <span class="keyword">new</span> Redis();</span><br><span class="line"> <span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>,<span class="number">6379</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;key&#x27;</span>,<span class="string">&#x27;string value&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;set(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;123&#x27;</span>);</span><br><span class="line"> <span class="variable">$result</span> = <span class="variable">$redis</span>-&gt;getMultiple([<span class="string">&#x27;key&#x27;</span>,<span class="string">&#x27;test&#x27;</span>]);</span><br><span class="line"> <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;&quot;</span>;</span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;incr(<span class="string">&#x27;test&#x27;</span>));</span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;decr(<span class="string">&#x27;test&#x27;</span>));</span><br><span class="line"> print_r(<span class="variable">$result</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="list-操作"><a href="#list-操作" class="headerlink" title="list 操作"></a>list 操作</h3><blockquote>
+<p>Redis list的实现为一个双向链表，即可以支持反向查找和遍历，更方便操作，不过带来了部分额外的内存开销，Redis内部的很多实现，包括发送缓冲队列等也都是用的这个数据结构。<br>用Lists的PUSH操作，将任务存在Lists中，然后工作线程再用POP操作将任务取出进行执行。Redis还提供了操作Lists中某一段的api，你可以直接查询，删除Lists中某一段的元素。</p>
+</blockquote>
+<p>list 操作用到的命令有(以<code>l</code>开头)：</p>
+<p><code>lPush/rPush</code> <code>lPushx/rPushx</code> <code>lPop/rPop</code> <code>blPop/brPop</code> <code>lSize</code> <code>lIndex, lGet</code> <code>lSet</code> <code>lRange, lGetRange</code> <code>lTrim, listTrim</code> <code>lRem, lRemove</code> <code>lInsert</code> <code>rpoplpush</code></p>
+<h4 id="使用场景-1"><a href="#使用场景-1" class="headerlink" title="使用场景"></a>使用场景</h4><blockquote>
+<ol>
+<li>显示最新的项目列表</li>
+<li>删除与过滤</li>
+</ol>
+</blockquote>
+<h4 id="Example-2"><a href="#Example-2" class="headerlink" title="Example-2"></a>Example-2</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="variable">$redis</span>= <span class="keyword">new</span> Redis();</span><br><span class="line"> <span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>,<span class="number">6379</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;delete(<span class="string">&#x27;test&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;lpush(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;111&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;lpush(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;222&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;rpush(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;333&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;rpush(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;444&#x27;</span>);</span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;lpop(<span class="string">&#x27;test&#x27;</span>)); <span class="comment">//string(3) &quot;222&quot;</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;rpop(<span class="string">&#x27;test&#x27;</span>)); <span class="comment">//string(3) &quot;444&quot;</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;lsize(<span class="string">&#x27;test&#x27;</span>)); <span class="comment">//int(2)</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;lset(<span class="string">&#x27;test&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;555&#x27;</span>)); <span class="comment">//bool(true) &quot;555&quot;</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;lget(<span class="string">&#x27;test&#x27;</span>,<span class="number">1</span>)); <span class="comment">//string(3)</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;lgetRange(<span class="string">&#x27;test&#x27;</span>,<span class="number">0</span>,-<span class="number">1</span>));</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="set-操作"><a href="#set-操作" class="headerlink" title="set 操作"></a>set 操作</h3><blockquote>
+<p>Set 集合的概念就是一堆<strong>不重复值的组合</strong>。<br>当你需要存储一个列表数据，又不希望出现重复数据时，set是一个很好的选择，并且set提供了判断某个成员是否在一个set集合内的重要接口，这个也是list所不能提供的。<br>Redis 还为集合提供了求交集、并集、差集等操作，可以非常方便的实现如共同关注、共同喜好、二度好友等功能。</p>
+</blockquote>
+<p>set 操作用到的命令有(以<code>s</code>开头)：<br><code>sAdd</code> <code>sRem, sRemove</code> <code>sMove</code> <code>sIsMember, sContains</code> <code>sCard, sSize</code> <code>sPop</code> <code>sRandMember</code> <code>sInter</code> <code>sInterStore</code> <code>sUnion</code> <code>sUnionStore</code> <code>sDiff</code> <code>sDiffStore</code>  <code>sMembers, sGetMembers</code></p>
+<h4 id="使用场景-2"><a href="#使用场景-2" class="headerlink" title="使用场景"></a>使用场景</h4><blockquote>
+<ol>
+<li>特定时间内的特定项目</li>
+<li>删除与过滤</li>
+</ol>
+</blockquote>
+<h4 id="Example-3"><a href="#Example-3" class="headerlink" title="Example-3"></a>Example-3</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="variable">$redis</span>= <span class="keyword">new</span> Redis();</span><br><span class="line"> <span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>,<span class="number">6379</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;delete(<span class="string">&#x27;test&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;delete(<span class="string">&#x27;test1&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;sadd(<span class="string">&#x27;test&#x27;</span>,<span class="number">111</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;sadd(<span class="string">&#x27;test&#x27;</span>,<span class="number">333</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;sadd(<span class="string">&#x27;test&#x27;</span>,<span class="number">222</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;sadd(<span class="string">&#x27;test1&#x27;</span>,<span class="number">444</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;sadd(<span class="string">&#x27;test1&#x27;</span>,<span class="number">555</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;sremove(<span class="string">&#x27;test&#x27;</span>,<span class="number">111</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;smove(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;test1&#x27;</span>,<span class="number">333</span>);</span><br><span class="line"> <span class="keyword">echo</span> <span class="string">&quot;&lt;pre&gt;&quot;</span>;</span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;sort(<span class="string">&#x27;test1&#x27;</span>));</span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;scontains(<span class="string">&#x27;test1&#x27;</span>,<span class="number">555</span>)); <span class="comment">//检查集合中是否存在指定的值</span></span><br><span class="line"> <span class="keyword">echo</span> <span class="variable">$redis</span>-&gt;ssize(<span class="string">&#x27;test1&#x27;</span>); <span class="comment">//返回集合中存储值的数量</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;sinter(<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;test1&#x27;</span>)); <span class="comment">//返回一个所有指定键的交集。</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;sdiffstore(<span class="string">&#x27;new&#x27;</span>,<span class="string">&#x27;test&#x27;</span>,<span class="string">&#x27;test1&#x27;</span>)); <span class="comment">//执行sdiff命令并把结果储存到新建的变量中。</span></span><br><span class="line"> print_r(<span class="variable">$redis</span>-&gt;smembers(<span class="string">&#x27;new&#x27;</span>)); <span class="comment">//返回集合的内容</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="zset-sorted-set-操作"><a href="#zset-sorted-set-操作" class="headerlink" title="zset (sorted set)操作"></a>zset (sorted set)操作</h3><blockquote>
+<p>Redis sorted set的使用场景与set类似，区别是set不是自动有序的，而sorted set可以通过用户额外提供一个优先级(score)的参数来为成员排序，并且是插入有序的，即自动排序。当你需要一个有序的并且不重复的集合列表，那么可以选择sorted set数据结构。</p>
+</blockquote>
+<p>zset 操作用到的命令有(以<code>z</code>开头)：<br><code>zAdd</code> <code>zDelete, zRem</code> <code>zRange</code> <code>zRevRange</code> <code>zRangeByScore, zRevRangeByScore</code> <code>zCount</code> <code>zRemRangeByScore, zDeleteRangeByScore</code> <code>zSize, zCard</code> <code>zScore</code> <code>zRank, zRevRank</code> <code>zIncrBy</code> <code>zUnion/zInter</code></p>
+<h4 id="使用场景-3"><a href="#使用场景-3" class="headerlink" title="使用场景"></a>使用场景</h4><blockquote>
+<ol>
+<li>排行榜相关</li>
+<li>按照用户投票和时间排序</li>
+<li>处理过期项目</li>
+<li>社交关系</li>
+</ol>
+</blockquote>
+<h4 id="Example-4"><a href="#Example-4" class="headerlink" title="Example-4"></a>Example-4</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="variable">$redis</span>= <span class="keyword">new</span> Redis();</span><br><span class="line"> <span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>,<span class="number">6379</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;zadd(<span class="string">&#x27;zset&#x27;</span>,<span class="number">1</span>,<span class="string">&#x27;b&#x27;</span>); <span class="comment">//向有序集合key中添加元素value，score用于排序。</span></span><br><span class="line"> <span class="variable">$redis</span>-&gt;zadd(<span class="string">&#x27;zset&#x27;</span>,<span class="number">0</span>,<span class="string">&#x27;a&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;zadd(<span class="string">&#x27;zset&#x27;</span>,<span class="number">2</span>,<span class="string">&#x27;c&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;zset&#x27;</span>, <span class="number">4</span>, <span class="string">&#x27;R&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;zAdd(<span class="string">&#x27;zset&#x27;</span>, <span class="number">5</span>, <span class="string">&#x27;d&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;zdelete(<span class="string">&#x27;zset&#x27;</span>,<span class="string">&#x27;c&#x27;</span>); <span class="comment">// 删除有序集合key中的元素value</span></span><br><span class="line"> print_r(<span class="variable">$redis</span>-&gt;zrange(<span class="string">&#x27;zset&#x27;</span>,<span class="number">0</span>,-<span class="number">1</span>)); <span class="comment">// 返回有序集合key中的index从start到end的所有元素【升序】</span></span><br><span class="line"> print_r(<span class="variable">$redis</span>-&gt;zcount(<span class="string">&#x27;zset&#x27;</span>,<span class="number">0</span>,<span class="number">3</span>)); <span class="comment">// 返回有序集合key中，index从start到end间的【包括start和end】所有元素的个数。</span></span><br><span class="line"> <span class="variable">$redis</span>-&gt;zIncrBy(<span class="string">&#x27;zset&#x27;</span>, <span class="number">2</span>, <span class="string">&#x27;R&#x27;</span>); <span class="comment">// 将有序集合key中的元素value的score增加increment,不存在则创建</span></span><br><span class="line"> print_r(<span class="variable">$redis</span>-&gt;zScore(<span class="string">&#x27;zset&#x27;</span>,<span class="string">&#x27;R&#x27;</span>)); <span class="comment">// 返回有序集合key中元素value的score</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="hash-操作"><a href="#hash-操作" class="headerlink" title="hash 操作"></a>hash 操作</h3><blockquote>
+<p>Hash结构可以使你像在数据库中Update一个属性一样只修改某一项属性值。<br>Redis Hash对应Value内部实际就是一个HashMap，实际这里会有2种不同实现:</p>
+<ul>
+<li>这个Hash的成员比较少时Redis为了节省内存会采用类似一维数组的方式来紧凑存储，而不会采用真正的HashMap结构，对应的value redisObject的encoding为zipmap;</li>
+<li>当成员数量增大时会自动转成真正的HashMap,此时encoding为ht。</li>
+</ul>
+</blockquote>
+<p>hash 操作用到的命令有(以<code>h</code>开头)：<br><code>hSet</code> <code>hGet</code> <code>hLen</code> <code>hDel</code> <code>hKeys</code> <code>hVals</code> <code>hGetAll</code> <code>hIncrBy</code> <code>hExists</code> <code>hMset</code> <code>hMget</code></p>
+<h4 id="使用场景-4"><a href="#使用场景-4" class="headerlink" title="使用场景"></a>使用场景</h4><blockquote>
+<ol>
+<li>消息通知</li>
+</ol>
+</blockquote>
+<h4 id="Example-5"><a href="#Example-5" class="headerlink" title="Example-5"></a>Example-5</h4><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"> <span class="variable">$redis</span>= <span class="keyword">new</span> Redis();</span><br><span class="line"> <span class="variable">$redis</span>-&gt;connect(<span class="string">&#x27;127.0.0.1&#x27;</span>,<span class="number">6379</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;hset(<span class="string">&#x27;hash&#x27;</span>,<span class="string">&#x27;lang1&#x27;</span>,<span class="string">&#x27;php&#x27;</span>); <span class="comment">// 向哈希表hash中添加key为key，值为value的元素。</span></span><br><span class="line"> <span class="variable">$redis</span>-&gt;hset(<span class="string">&#x27;hash&#x27;</span>,<span class="string">&#x27;lang2&#x27;</span>,<span class="string">&#x27;mysql&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;hset(<span class="string">&#x27;hash&#x27;</span>,<span class="string">&#x27;lang3&#x27;</span>,<span class="string">&#x27;mysql2&#x27;</span>);</span><br><span class="line"> <span class="variable">$redis</span>-&gt;hset(<span class="string">&#x27;hash&#x27;</span>,<span class="string">&#x27;lang4&#x27;</span>,<span class="string">&#x27;1&#x27;</span>);</span><br><span class="line"> <span class="keyword">echo</span> <span class="variable">$redis</span>-&gt;hget(<span class="string">&#x27;hash&#x27;</span>,<span class="string">&#x27;lang1&#x27;</span>);</span><br><span class="line"> <span class="keyword">echo</span> <span class="variable">$redis</span>-&gt;hlen(<span class="string">&#x27;hash&#x27;</span>); <span class="comment">// 返回哈希表hash中元素的个数</span></span><br><span class="line"> <span class="variable">$redis</span>-&gt;hdel(<span class="string">&#x27;hash&#x27;</span>,<span class="string">&#x27;lang3&#x27;</span>);</span><br><span class="line"> print_r(<span class="variable">$redis</span>-&gt;hvals(<span class="string">&#x27;hash&#x27;</span>)); <span class="comment">// 返回哈希表hash中所有的value</span></span><br><span class="line"> print_r(<span class="variable">$redis</span>-&gt;hgetall(<span class="string">&#x27;hash&#x27;</span>)); <span class="comment">// 返回哈希表hash中所有的元素</span></span><br><span class="line"> var_dump( <span class="variable">$redis</span>-&gt;hExists(<span class="string">&#x27;hash&#x27;</span>, <span class="string">&#x27;lang1&#x27;</span>) ); <span class="comment">// 检测哈希表hash中是否有元素key</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;hincrby(<span class="string">&#x27;hash&#x27;</span>,<span class="string">&#x27;lang4&#x27;</span>,<span class="number">3</span>)); <span class="comment">// 哈希表hash中元素key的value加number</span></span><br><span class="line"> <span class="variable">$redis</span>-&gt;hMSet(<span class="string">&#x27;hash&#x27;</span>,[<span class="string">&#x27;lang5&#x27;</span>=&gt;<span class="string">&#x27;java&#x27;</span>,<span class="string">&#x27;lang6&#x27;</span>=&gt;<span class="string">&#x27;c&#x27;</span>]); <span class="comment">// 批量向哈希表hash中添加元素。</span></span><br><span class="line"> var_dump(<span class="variable">$redis</span>-&gt;hMget(<span class="string">&#x27;hash&#x27;</span>,[<span class="string">&#x27;lang1&#x27;</span>,<span class="string">&#x27;lang2&#x27;</span>])); <span class="comment">// 量获取哈希表hash中的元素。</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Redis-操作"><a href="#Redis-操作" class="headerlink" title="Redis 操作"></a>Redis 操作</h3><ul>
+<li><p>事务模式： <code>multi, exec, discard</code> 分别是开启事务，执行事务，取消事务</p>
+</li>
+<li><p>清除数据库<br>a. 清除当前数据库 <code>flushDB</code><br>b. 清除所有数据库 <code>flushAll</code></p>
+</li>
+<li><p>随机返回key <code>randomKey</code></p>
+</li>
+<li><p>选择一个数据库 <code>select</code></p>
+</li>
+<li><p>转移一个 key 到另一个数据库 <code>move</code></p>
+</li>
+<li><p>查看数据库有多少key <code>dbSize</code></p>
+</li>
+<li><p>使用 AOF 进行数据持久化 <code>bgrewriteaof</code></p>
+</li>
+<li><p>选择从服务器 <code>saveof</code></p>
+</li>
+<li><p>数据保存到磁盘<br>a. 同步保存到磁盘 <code>save</code><br>b. 异步保存到磁盘 <code>bgsave</code></p>
+</li>
+<li><p>返回 Redis 的版本信息 <code>info</code></p>
+</li>
+</ul>
+<h3 id="友情链接"><a href="#友情链接" class="headerlink" title="友情链接"></a>友情链接</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/phpredis/phpredis">github phpredis</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.cnblogs.com/weafer/archive/2011/09/21/2184059.html">php redis操作</a></li>
+<li><a target="_blank" rel="noopener" href="http://redisdoc.com/">Redis 命令参考</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/tonysz126/article/details/8280696/">Redis 和 Memcached的区别</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.csdn.net/hguisu/article/details/8836819">Redis应用场景</a></li>
+</ul>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt=" 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt=" 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Redis/" rel="tag"># Redis</a>
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/29/PDO-%E6%93%8D%E4%BD%9C-MySQL/" rel="next" title="PDO 操作 MySQL">
+                <i class="fa fa-chevron-left"></i> PDO 操作 MySQL
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/30/PHP-session-%E5%AD%98%E5%85%A5-Redis/" rel="prev" title="PHP session 存入 Redis">
+                PHP session 存入 Redis <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/yann.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yann0917" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zhaoyabo2011@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/133617179" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://blog.csdn.net/abc1991234" target="_blank" title="csdn">
+                      
+                        <i class="fa fa-fw fa-globe"></i>csdn</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E6%93%8D%E4%BD%9C-Redis"><span class="nav-number">1.</span> <span class="nav-text">PHP 操作 Redis</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B"><span class="nav-number">1.1.</span> <span class="nav-text">返回类型</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#string-%E6%93%8D%E4%BD%9C"><span class="nav-number">2.</span> <span class="nav-text">string 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-number">2.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-1"><span class="nav-number">2.2.</span> <span class="nav-text">Example-1</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#list-%E6%93%8D%E4%BD%9C"><span class="nav-number">3.</span> <span class="nav-text">list 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-1"><span class="nav-number">3.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-2"><span class="nav-number">3.2.</span> <span class="nav-text">Example-2</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#set-%E6%93%8D%E4%BD%9C"><span class="nav-number">4.</span> <span class="nav-text">set 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-2"><span class="nav-number">4.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-3"><span class="nav-number">4.2.</span> <span class="nav-text">Example-3</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#zset-sorted-set-%E6%93%8D%E4%BD%9C"><span class="nav-number">5.</span> <span class="nav-text">zset (sorted set)操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-3"><span class="nav-number">5.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-4"><span class="nav-number">5.2.</span> <span class="nav-text">Example-4</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hash-%E6%93%8D%E4%BD%9C"><span class="nav-number">6.</span> <span class="nav-text">hash 操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%9C%BA%E6%99%AF-4"><span class="nav-number">6.1.</span> <span class="nav-text">使用场景</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Example-5"><span class="nav-number">6.2.</span> <span class="nav-text">Example-5</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Redis-%E6%93%8D%E4%BD%9C"><span class="nav-number">7.</span> <span class="nav-text">Redis 操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%8B%E6%83%85%E9%93%BE%E6%8E%A5"><span class="nav-number">8.</span> <span class="nav-text">友情链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yann</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">46.9k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz',
+        appKey: 'HjGC1bnbGqg2cFP4VPMBWzPD',
+        placeholder: '小老弟，你好',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("d74Bu4ko9fkm6FvVG8hxuvvf-gzGzoHsz", "qNn9vO1e4TEoVv1udoN1vCP2");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

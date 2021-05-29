@@ -1,0 +1,1439 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="php," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="测试环境PHP version 5.3.29&#x2F;5.6.29&#x2F;7.1.0Apache 2.4.25  常量是一个简单值的标识符（名字）。如同其名称所暗示的，在脚本执行期间该值不能改变（除了所谓的魔术常量，它们其实不是常量）。常量默认为大小写敏感。传统上常量标识符总是大写的。  常量和变量有如下不同：  常量前面没有美元符号（$）； 在PHP5.3.0之前的版本中，常量只能用 define() 函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP基础-const关键字与define()函数定义常量的区别">
+<meta property="og:url" content="https://yann0917.github.io/2017/04/29/PHP%E5%9F%BA%E7%A1%80-const%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8Edefine-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB/index.html">
+<meta property="og:site_name" content="Yann&#39;s blog">
+<meta property="og:description" content="测试环境PHP version 5.3.29&#x2F;5.6.29&#x2F;7.1.0Apache 2.4.25  常量是一个简单值的标识符（名字）。如同其名称所暗示的，在脚本执行期间该值不能改变（除了所谓的魔术常量，它们其实不是常量）。常量默认为大小写敏感。传统上常量标识符总是大写的。  常量和变量有如下不同：  常量前面没有美元符号（$）； 在PHP5.3.0之前的版本中，常量只能用 define() 函数">
+<meta property="og:locale">
+<meta property="article:published_time" content="2017-04-29T05:16:08.000Z">
+<meta property="article:modified_time" content="2021-05-29T08:14:37.568Z">
+<meta property="article:author" content="Yann">
+<meta property="article:tag" content="php">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://yann0917.github.io/2017/04/29/PHP基础-const关键字与define-函数定义常量的区别/"/>
+
+
+
+
+
+  <title>PHP基础-const关键字与define()函数定义常量的区别 | Yann's blog</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Yann's blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">Stay hungry. Stay foolish.</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://yann0917.github.io/2017/04/29/PHP%E5%9F%BA%E7%A1%80-const%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8Edefine-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/yann.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Yann's blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">PHP基础-const关键字与define()函数定义常量的区别</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-04-29T05:16:08+00:00">
+                2017-04-29
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/php/" itemprop="url" rel="index">
+                    <span itemprop="name">php</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-const%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8Edefine-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-const%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8Edefine-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-const%E5%85%B3%E9%94%AE%E5%AD%97%E4%B8%8Edefine-%E5%87%BD%E6%95%B0%E5%AE%9A%E4%B9%89%E5%B8%B8%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB/" class="leancloud_visitors" data-flag-title="PHP基础-const关键字与define()函数定义常量的区别">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计&#58;</span>
+                
+                <span title="字数统计">
+                  2k
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">
+                  8
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>测试环境<br>PHP version 5.3.29/5.6.29/7.1.0<br>Apache 2.4.25</p>
+</blockquote>
+<p>常量是一个简单值的标识符（名字）。如同其名称所暗示的，在脚本执行期间该值不能改变（除了所谓的魔术常量，它们其实不是常量）。常量默认为大小写敏感。传统上常量标识符总是大写的。</p>
+<blockquote>
+<p>常量和变量有如下不同：</p>
+<ul>
+<li>常量前面没有美元符号（$）；</li>
+<li>在PHP5.3.0之前的版本中，常量只能用 define() 函数定义，而不能通过赋值语句；</li>
+<li>常量可以不用理会变量的作用域而在任何地方定义和访问；</li>
+<li>常量一旦定义就不能被重新定义或者取消定义；</li>
+<li>常量的值只能是标量；<br>注意：在PHP5.6之后可以使用const关键字定义数组常量，在PHP7.0.0之后可以使用define()定义数组常量。</li>
+</ul>
+</blockquote>
+<h3 id="define-函数"><a href="#define-函数" class="headerlink" title="define()函数"></a>define()函数</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">bool</span> define(<span class="keyword">string</span> <span class="variable">$name</span>, <span class="keyword">mixed</span> <span class="variable">$value</span>[,<span class="keyword">bool</span> <span class="variable">$case_insensitive</span> = <span class="literal">false</span>])</span><br><span class="line">函数用于在运行时定义一个常量。</span><br><span class="line">参数:</span><br><span class="line">name：常量名。</span><br><span class="line">value：常量的值；</span><br><span class="line">	仅允许标量和 <span class="literal">null</span>。标量的类型是 <span class="keyword">integer</span>， <span class="keyword">float</span>，<span class="keyword">string</span> 或者 <span class="keyword">boolean</span>。</span><br><span class="line">	也能够定义常量值的类型为 resource ，但并不推荐这么做，可能会导致未知状况的发生。</span><br><span class="line">	PHP <span class="number">7.0</span>.<span class="number">0</span> 版本后<span class="keyword">array</span> values are allowed.</span><br><span class="line">case_insensitive：可选项，如果设置为 <span class="literal">TRUE</span>，该常量则大小写不敏感。默认是大小写敏感的。</span><br><span class="line">返回值：</span><br><span class="line">	成功时返回 <span class="literal">TRUE</span>， 或者在失败时返回 <span class="literal">FALSE</span>。</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="const常量"><a href="#const常量" class="headerlink" title="const常量"></a>const常量</h3><blockquote>
+<ul>
+<li>PHP 5.3.0 后支持const关键字；</li>
+<li>const 可以用在类内和类外；</li>
+<li>PHP 7.1.0 之后可显式写访问控制修饰符，之前的版本均不可使用；</li>
+<li>const定义的常量在PHP 5.6.0 之后可用于常量运算；</li>
+<li>const的值除了标量外，PHP 5.6.0 版本后还可以是常量表达式，不能是变量，类属性，函数调用；</li>
+</ul>
+</blockquote>
+<h3 id="Example-1"><a href="#Example-1" class="headerlink" title="Example-1"></a>Example-1</h3><blockquote>
+<p>常量在PHP不同版本中的差异。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">// PHP 5.3.0开始支持const关键字</span></span><br><span class="line"><span class="keyword">const</span> CONSTANT = <span class="string">&#x27;Hello World&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> CONSTANT;</span><br><span class="line"></span><br><span class="line"><span class="comment">// PHP 5.6.0 const开始支持运算和数组常量</span></span><br><span class="line"><span class="keyword">const</span> ANOTHER_CONST = CONSTANT.<span class="string">&#x27;; Goodbye World&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> ANOTHER_CONST;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ANIMALS = <span class="keyword">array</span>(<span class="string">&#x27;dog&#x27;</span>, <span class="string">&#x27;cat&#x27;</span>, <span class="string">&#x27;bird&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> ANIMALS[<span class="number">1</span>]; <span class="comment">// outputs &quot;cat&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// PHP 7.0.0 define()开始支持数组常量</span></span><br><span class="line">define(<span class="string">&#x27;ANIMAL&#x27;</span>, <span class="keyword">array</span>(<span class="string">&#x27;dog&#x27;</span>,<span class="string">&#x27;cat&#x27;</span>,<span class="string">&#x27;bird&#x27;</span>));</span><br><span class="line"><span class="keyword">echo</span> ANIMAL[<span class="number">2</span>]; <span class="comment">// outputs &quot;bird&quot;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Example-2"><a href="#Example-2" class="headerlink" title="Example-2"></a>Example-2</h3><figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* MyClass为了说明以下情况：</span></span><br><span class="line"><span class="comment">* 1.const可用于类内部</span></span><br><span class="line"><span class="comment">* 2.PHP7.1.0之后可显式写访问控制修饰符，之前的版本均不可使用</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyClass</span></span></span><br><span class="line"><span class="class"></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">const</span> CONSTANT = <span class="string">&#x27;constant value&#x27;</span>; <span class="comment">//PHP 7.1.0支持访问控制修饰符可见</span></span><br><span class="line">	<span class="comment">//define(&#x27;DEFINECONST&#x27;,&#x27;defineConst&#x27;);    //语法错误，define()不能用于类内</span></span><br><span class="line">	<span class="function"><span class="keyword">function</span> <span class="title">showConstant</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">		<span class="keyword">echo</span>  <span class="built_in">self</span>::CONSTANT. <span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> ONE = <span class="number">1</span>; <span class="comment">//const可在类外使用</span></span><br><span class="line">define(<span class="string">&#x27;PI&#x27;</span>,<span class="number">3.14</span>); <span class="comment">//defnie()可在类外使用</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* Foo类为了说明以下情况：</span></span><br><span class="line"><span class="comment">* 1.const定义的常量在PHP 5.6.0 之后可用于运算</span></span><br><span class="line"><span class="comment">* 2.const的值在PHP 5.6.0 之后可以是常量表达式</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Foo</span> </span>&#123;</span><br><span class="line">	<span class="comment">// As of PHP 5.6.0</span></span><br><span class="line">	<span class="keyword">public</span> <span class="variable">$i</span>=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">const</span> TWO = ONE * <span class="number">2</span>;</span><br><span class="line">	<span class="keyword">const</span> THREE = ONE + <span class="built_in">self</span>::TWO;</span><br><span class="line">	<span class="keyword">const</span> SENTENCE = <span class="string">&#x27;The value of THREE is &#x27;</span>.<span class="built_in">self</span>::THREE;</span><br><span class="line">	<span class="keyword">const</span> CONST_VAR1 = <span class="number">1</span> + <span class="number">1</span>; <span class="comment">//支持常量算数运算</span></span><br><span class="line">	<span class="keyword">const</span> CONST_VAR2 = <span class="string">&#x27;Hello&#x27;</span>.<span class="string">&#x27; World!&#x27;</span> ; <span class="comment">//支持字符串运算</span></span><br><span class="line">	<span class="keyword">const</span> CONST_VAR3 = (<span class="number">1</span>&lt;&lt;<span class="number">2</span>); <span class="comment">//支持常量位运算</span></span><br><span class="line">	<span class="keyword">const</span> CONST_VAR4 = <span class="number">1</span>&lt;<span class="number">0</span>; <span class="comment">//支持常量比较运算</span></span><br><span class="line">	<span class="keyword">const</span> CONST_VAR5 = <span class="literal">true</span>||<span class="literal">false</span>; <span class="comment">//支持常量逻辑运算</span></span><br><span class="line">	<span class="comment">// const CONST_VAR6 = $i; //语法错误</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">echo</span> Foo::SENTENCE .<span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> PI*<span class="number">2</span> .<span class="string">&quot;&lt;br/&gt;\n&quot;</span>; <span class="comment">//define()定义的常量可用于运算</span></span><br><span class="line"><span class="keyword">echo</span> Foo::CONST_VAR1 .<span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> Foo::CONST_VAR2 .<span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> Foo::CONST_VAR3 .<span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> Foo::CONST_VAR4 .<span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line"><span class="keyword">echo</span> Foo::CONST_VAR5 .<span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> MyClass::CONSTANT . <span class="string">&quot;&lt;br/&gt;\n&quot;</span>;</span><br><span class="line"><span class="variable">$class</span> = <span class="keyword">new</span> MyClass();</span><br><span class="line"><span class="variable">$class</span>-&gt;showConstant();</span><br><span class="line"></span><br><span class="line">define(<span class="string">&#x27;DEFINE_VAR1&#x27;</span>,<span class="variable">$class</span> <span class="keyword">instanceof</span> MyClass);</span><br><span class="line"><span class="comment">// const CONST_VAR4 = $class instanceof MyClass; //const不支持类型运算符instanceof</span></span><br><span class="line">var_dump(DEFINE_VAR1);</span><br><span class="line"><span class="variable">$i</span>=<span class="number">4</span>;</span><br><span class="line">define(<span class="string">&#x27;DEFINE_VAR2&#x27;</span>, <span class="variable">$i</span> &lt;&lt; <span class="number">1</span>);</span><br><span class="line"><span class="keyword">echo</span> DEFINE_VAR2;</span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="variable">$class</span>::CONSTANT.<span class="string">&quot;&lt;br/&gt;\n&quot;</span>; <span class="comment">// As of PHP 5.3.0</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Example-3"><a href="#Example-3" class="headerlink" title="Example-3"></a>Example-3</h3><blockquote>
+<p>不能在函数内、循环内以及if语句之内用const来定义常量。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">	<span class="keyword">if</span> (<span class="number">1</span>) &#123;</span><br><span class="line">		<span class="comment">// const CONST_VAR1 = &#x27;BAR1&#x27;; //语法错误</span></span><br><span class="line">		define(<span class="string">&#x27;CONST_VAR2&#x27;</span>, <span class="string">&#x27;BAR2&#x27;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Example-4"><a href="#Example-4" class="headerlink" title="Example-4"></a>Example-4</h3><blockquote>
+<p>define()可以定义大小写不敏感的常量，而const没有此功能。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//define()的第3个参数为true时，表示大小写不敏感</span></span><br><span class="line">define(<span class="string">&#x27;DEFINE_VAR&#x27;</span>, <span class="string">&#x27;define_test&#x27;</span>, <span class="literal">true</span>);</span><br><span class="line"><span class="keyword">echo</span> DEFINE_VAR; <span class="comment">//define_test</span></span><br><span class="line"><span class="keyword">echo</span> define_var; <span class="comment">//define_test</span></span><br><span class="line"><span class="keyword">echo</span> DefINE_Var; <span class="comment">//define_test</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> CONST_VAR = <span class="string">&#x27;const_test&#x27;</span>;</span><br><span class="line"><span class="keyword">echo</span> CONST_VAR;  <span class="comment">//const_test</span></span><br><span class="line"><span class="keyword">echo</span> const_var;  <span class="comment">//PHP提示常量未定义</span></span><br><span class="line"><span class="keyword">echo</span> ConST_Var;  <span class="comment">//PHP提示常量未定义</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Example-5"><a href="#Example-5" class="headerlink" title="Example-5"></a>Example-5</h3><blockquote>
+<p>const定义的常量受命名空间的限制，define()定义的常量不受命名空间的限制。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">first</span>;</span><br><span class="line"><span class="keyword">const</span> CONST_VAR1 = <span class="string">&#x27;FIRST_CONST_VAR1&#x27;</span>;</span><br><span class="line">define(<span class="string">&#x27;DEFINE_VAR&#x27;</span>, <span class="string">&#x27;define_var&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> <span class="title">second</span>;</span><br><span class="line"><span class="keyword">const</span> CONST_VAR1 = <span class="string">&#x27;SECOND_CONST_VAR1&#x27;</span>;</span><br><span class="line">define(<span class="string">&#x27;DEFINE_VAR&#x27;</span>, <span class="string">&#x27;define_var&#x27;</span>);<span class="comment">//Notice: Constant DEFINE_VAR already defined</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Example-6"><a href="#Example-6" class="headerlink" title="Example-6"></a>Example-6</h3><blockquote>
+<p>使用define()定义常量时，可以使用PHP内置关键字声明常量，使用constant()返回常量值，但是使用const定义PHP内置关键字常量则会报错，不能重新声明常量。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">define(<span class="string">&#x27;TRUE&#x27;</span>,<span class="string">&#x27;My constant value&#x27;</span>);</span><br><span class="line"><span class="keyword">echo</span> constant(<span class="string">&#x27;TRUE&#x27;</span>); <span class="comment">// outputs &#x27;My constant value&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//const ECHO = &#x27;My constant value ECHO&#x27;; //致命错误，不能重新声明常量</span></span><br><span class="line"><span class="keyword">echo</span> <span class="keyword">ECHO</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="Example-7-const关键词拓展"><a href="#Example-7-const关键词拓展" class="headerlink" title="Example-7 const关键词拓展"></a>Example-7 const关键词拓展</h3><blockquote>
+<p>php7.0.0之后self代表的类常量只能是当前类，PHP 7.0.0 之前的版本则有后期静态绑定的意味。</p>
+</blockquote>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span></span>&#123;</span><br><span class="line">	<span class="keyword">const</span> X=<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">const</span> Y=<span class="built_in">self</span>::X;</span><br><span class="line">&#125;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">B</span> <span class="keyword">extends</span> <span class="title">A</span></span>&#123;</span><br><span class="line">	<span class="keyword">const</span> X=<span class="number">1.0</span>;</span><br><span class="line">&#125;</span><br><span class="line">var_dump(B::Y); <span class="comment">// PHP 5.6.29 运行结果为float(1), PHP 7.1.0 运行结果为int(1)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>PHP中const关键字和define()函数定义常量的区别：</p>
+<h3 id="版本差异"><a href="#版本差异" class="headerlink" title="版本差异"></a>版本差异</h3><blockquote>
+<p>函数define()在PHP4和PHP5中均可使用，关键字const只能在PHP 5.3.0及其后的版本中使用。<br>PHP 5.6.0 const开始支持常量运算和数组常量<br>PHP 7.0.0 define()开始支持数组常量</p>
+</blockquote>
+<h3 id="定义位置的区别"><a href="#定义位置的区别" class="headerlink" title="定义位置的区别"></a>定义位置的区别</h3><blockquote>
+<p>由于函数define()定义的常量是在 <strong><code>执行define()函数</code></strong> 时定义的，因此可以在函数内、循环内、if语句内等函数能够被调用的任何地方使用define()函数定义常量;<br>由于const关键字定义的常量是在 <strong><code>编译</code></strong> 时定义的，因此const关键字定义常量必须处于最顶端的作用区域。这也就意味着不能在函数内、循环内以及if语句之内用const来定义常量。</p>
+</blockquote>
+<h3 id="对值的表达式支持的差异"><a href="#对值的表达式支持的差异" class="headerlink" title="对值的表达式支持的差异"></a>对值的表达式支持的差异</h3><blockquote>
+<p>虽然关键字const和define()定义的常量值都只能为null或标量数据(boolean，integer，float和string类型)以及resource类型(不推荐定义resource类型的常量，否则可能出现无法预知的结果)。PHP5.6.0 之前的版本中const关键字定义的常量值的表达式中不支持算术运算符、位运算符、比较运算符等多种运算符，而这些运算符在define()函数定义常量时都是可以直接使用的。</p>
+<p>php5.6.0 之后的版本中constant关键字的值支持常量表达式，表达式可以是算术运算符、位运算符、比较运算符等多种运算符，不过define()函数定义常量时还支持变量。</p>
+<p>define()支持instanceof操作符，const不支持instanceof操作符。</p>
+</blockquote>
+<h3 id="对命名空间限制的差异"><a href="#对命名空间限制的差异" class="headerlink" title="对命名空间限制的差异"></a>对命名空间限制的差异</h3><blockquote>
+<p>const定义的常量受命名空间的限制，define()定义的常量不受命名空间的限制。</p>
+</blockquote>
+<h3 id="对字符大小写敏感的支持差异"><a href="#对字符大小写敏感的支持差异" class="headerlink" title="对字符大小写敏感的支持差异"></a>对字符大小写敏感的支持差异</h3><blockquote>
+<p>函数define()可以接收第3个参数，如果该参数为true，则表示常量名的大小写不敏感。而使用const关键字定义常量却没有提供类似的功能。</p>
+</blockquote>
+<h3 id="对系统内置关键字重新声明的差异"><a href="#对系统内置关键字重新声明的差异" class="headerlink" title="对系统内置关键字重新声明的差异"></a>对系统内置关键字重新声明的差异</h3><blockquote>
+<p>使用define()定义常量时，可以使用PHP内置关键字声明常量，使用constant()返回常量值，但是使用const定义PHP关键字常量则会报错，不能重新声明常量。</p>
+</blockquote>
+<hr>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+      <div>
+        <div style="padding: 10px 0; margin: 20px auto; width: 90%; text-align: center;">
+  <div>坚持原创技术分享，您的支持将鼓励我继续创作！</div>
+  <button id="rewardButton" disable="enable" onclick="var qr = document.getElementById('QR'); if (qr.style.display === 'none') {qr.style.display='block';} else {qr.style.display='none'}">
+    <span>打赏</span>
+  </button>
+  <div id="QR" style="display: none;">
+
+    
+      <div id="wechat" style="display: inline-block">
+        <img id="wechat_qr" src="/images/wechat.jpg" alt=" 微信支付"/>
+        <p>微信支付</p>
+      </div>
+    
+
+    
+      <div id="alipay" style="display: inline-block">
+        <img id="alipay_qr" src="/images/alipay.jpg" alt=" 支付宝"/>
+        <p>支付宝</p>
+      </div>
+    
+
+    
+
+  </div>
+</div>
+
+      </div>
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/php/" rel="tag"># php</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/29/%E6%8A%80%E8%83%BD%E9%93%BE%E6%8E%A5%E6%BA%90/" rel="next" title="技能链接源">
+                <i class="fa fa-chevron-left"></i> 技能链接源
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/04/29/PHP%E5%9F%BA%E7%A1%80-%E8%A1%A8%E8%BE%BE%E5%BC%8F/" rel="prev" title="PHP基础-表达式">
+                PHP基础-表达式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/yann.jpg"
+                alt="" />
+            
+              <p class="site-author-name" itemprop="name"></p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">46</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">19</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/yann0917" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:zhaoyabo2011@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://weibo.com/133617179" target="_blank" title="Weibo">
+                      
+                        <i class="fa fa-fw fa-weibo"></i>Weibo</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://blog.csdn.net/abc1991234" target="_blank" title="csdn">
+                      
+                        <i class="fa fa-fw fa-globe"></i>csdn</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#define-%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">define()函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#const%E5%B8%B8%E9%87%8F"><span class="nav-number">2.</span> <span class="nav-text">const常量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-1"><span class="nav-number">3.</span> <span class="nav-text">Example-1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-2"><span class="nav-number">4.</span> <span class="nav-text">Example-2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-3"><span class="nav-number">5.</span> <span class="nav-text">Example-3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-4"><span class="nav-number">6.</span> <span class="nav-text">Example-4</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-5"><span class="nav-number">7.</span> <span class="nav-text">Example-5</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-6"><span class="nav-number">8.</span> <span class="nav-text">Example-6</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Example-7-const%E5%85%B3%E9%94%AE%E8%AF%8D%E6%8B%93%E5%B1%95"><span class="nav-number">9.</span> <span class="nav-text">Example-7 const关键词拓展</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Summary"><span class="nav-number"></span> <span class="nav-text">Summary</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E5%B7%AE%E5%BC%82"><span class="nav-number">1.</span> <span class="nav-text">版本差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89%E4%BD%8D%E7%BD%AE%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">2.</span> <span class="nav-text">定义位置的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%80%BC%E7%9A%84%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%94%AF%E6%8C%81%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">3.</span> <span class="nav-text">对值的表达式支持的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%91%BD%E5%90%8D%E7%A9%BA%E9%97%B4%E9%99%90%E5%88%B6%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">4.</span> <span class="nav-text">对命名空间限制的差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%AD%97%E7%AC%A6%E5%A4%A7%E5%B0%8F%E5%86%99%E6%95%8F%E6%84%9F%E7%9A%84%E6%94%AF%E6%8C%81%E5%B7%AE%E5%BC%82"><span class="nav-number">5.</span> <span class="nav-text">对字符大小写敏感的支持差异</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E7%B3%BB%E7%BB%9F%E5%86%85%E7%BD%AE%E5%85%B3%E9%94%AE%E5%AD%97%E9%87%8D%E6%96%B0%E5%A3%B0%E6%98%8E%E7%9A%84%E5%B7%AE%E5%BC%82"><span class="nav-number">6.</span> <span class="nav-text">对系统内置关键字重新声明的差异</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; 2017 &mdash; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love" id="heart">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yann</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+      <span class="post-meta-item-text">Site words total count&#58;</span>
+    
+    <span title="Site words total count">46.9k</span>
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'MfsGou6m4JWEpXeXf1L67tnh-gzGzoHsz',
+        appKey: 'HjGC1bnbGqg2cFP4VPMBWzPD',
+        placeholder: '小老弟，你好',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("d74Bu4ko9fkm6FvVG8hxuvvf-gzGzoHsz", "qNn9vO1e4TEoVv1udoN1vCP2");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
